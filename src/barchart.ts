@@ -40,7 +40,9 @@ export function barchart({
 	dataLabelGroupClass,
 	imageLabelSubGroupClass,
 	imageLabelContainerClass,
-	colors,
+	fillColors,
+	strokeColors,
+	strokeWidths,
 	gradientColors,
 	gradientMode,
 	gradientDirection,
@@ -171,10 +173,12 @@ export function barchart({
 	}
 	if (barGroupClass) barGroup.classList.add(barGroupClass);
 	if (labelGroupClass) textGroup.classList.add(labelGroupClass);
-	if (dataLabels && dataLabelGroupClass)
+	if (dataLabels && dataLabelGroupClass) {
 		datalabelTextGroup.classList.add(dataLabelGroupClass);
-	if (imageLabelContainerClass)
+	}
+	if (imageLabelContainerClass) {
 		imageLabelGroup.classList.add(imageLabelContainerClass);
+	}
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
@@ -192,18 +196,31 @@ export function barchart({
 		 * If we have a colors array
 		 *  Grab the color at the current modulated (is that the right word?) index
 		 *  Else fill with white
+		 *
+		 * Future me update:
+		 * This now comes from "fillColors" but I'm going to leave the variable name as "color" for now
 		 */
 		let color: string = "#ffffff";
 		if (isGradient && gradientId) {
 			if (gradientMode === "continuous") color = "transparent";
 			else color = `url('#${gradientId}')`;
-		} else if (colors && colors.length > 0) {
-			color = colors[i % colors.length];
+		} else if (fillColors && fillColors.length > 0) {
+			color = fillColors[i % fillColors.length];
 		}
 		const labelColor = labelColors
 			? labelColors[i % labelColors.length]
 			: "#ffffff";
 		const dataLabelColor = color === "#ffffff" ? "#000000" : "#ffffff";
+
+		let stroke: string | undefined;
+		if (strokeColors && strokeColors.length > 0) {
+			stroke = strokeColors[i % strokeColors.length];
+		}
+
+		let strokeWidth: number | undefined;
+		if (strokeWidths && strokeWidths.length > 0) {
+			strokeWidth = strokeWidths[i % strokeWidths.length];
+		}
 
 		const [trueBarHeight, trueBarWidth] = calcBarDims(
 			placement,
@@ -224,7 +241,15 @@ export function barchart({
 			trueBarHeight,
 		);
 
-		const bar = createBar(barX, barY, trueBarWidth, trueBarHeight, color);
+		const bar = createBar(
+			barX,
+			barY,
+			trueBarWidth,
+			trueBarHeight,
+			color,
+			stroke,
+			strokeWidth,
+		);
 		if (barClass) bar.classList.add(barClass);
 		barGroup.appendChild(bar);
 

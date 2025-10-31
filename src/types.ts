@@ -196,6 +196,22 @@ export type ManyLinearGradientOptions = {
 	gradientDirection: LinearGradientDirection;
 };
 
+export type BarChartStyleOptions = {
+	/**
+	 * Used as the "fill" on resulting bars.
+	 * Defaults to `["#ffffff"]` if not supplied.
+	 */
+	fillColors: string[];
+	/**
+	 * Used as the stroke on resulting bars.
+	 */
+	strokeColors: string[];
+	/**
+	 * Used as the "stroke-width" on resulting bars.
+	 */
+	strokeWidths: number[];
+};
+
 export type BarChartClasses = {
 	/**
 	 * Name is ambiguous, but attached to parent group of both label & bar groups
@@ -248,13 +264,14 @@ export type BarChartOptionsBase = {
 	 * Which results in even spacing between all bars based on the available space for the surface the bars are being attached to.
 	 */
 	gap: number;
-	/**
-	 * Defaults to `#ffffff`
-	 */
-	colors: string[];
+	// /**
+	//  * Defaults to `#ffffff`
+	//  */
+	// colors: string[];
 } & BarChartClasses &
 	LinearGradientOptions &
 	Labels &
+	BarChartStyleOptions &
 	ChartOptions;
 
 export type BarChartNumericalOpts = Optional<BarChartOptionsBase> & {
@@ -264,12 +281,14 @@ export type BarChartNumericalOpts = Optional<BarChartOptionsBase> & {
 	readonly data: number[];
 };
 
-export type BarChartStackedOpts = Optional<BarChartOptionsBase> & {
-	/**
-	 * A 2D array of numbers, each sub-array representing a stack of bars.
-	 */
-	readonly data: number[][];
-};
+export type BarChartStackedOpts = Prettify<
+	Optional<BarChartOptionsBase> & {
+		/**
+		 * A 2D array of numbers, each sub-array representing a stack of bars.
+		 */
+		readonly data: number[][];
+	}
+>;
 
 export type BarChartOptions = BarChartNumericalOpts | BarChartStackedOpts;
 

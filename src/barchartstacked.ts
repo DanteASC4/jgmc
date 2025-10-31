@@ -42,7 +42,10 @@ export function barchartStacked({
 	dataLabelGroupClass,
 	imageLabelSubGroupClass,
 	imageLabelContainerClass,
-	colors,
+	fillColors,
+	strokeColors,
+	strokeWidths,
+	// colors,
 	// labelColors,
 	gradientColors,
 	gradientMode,
@@ -161,10 +164,12 @@ export function barchartStacked({
 	}
 	if (barGroupClass) barGroup.classList.add(barGroupClass);
 	if (labelGroupClass) textGroup.classList.add(labelGroupClass);
-	if (dataLabels && dataLabelGroupClass)
+	if (dataLabels && dataLabelGroupClass) {
 		datalabelTextGroup.classList.add(dataLabelGroupClass);
-	if (imageLabelContainerClass)
+	}
+	if (imageLabelContainerClass) {
 		imageLabelGroup.classList.add(imageLabelContainerClass);
+	}
 
 	barGroup.classList.add("tmc-bargroup");
 	textGroup.classList.add(ClassNameDefaults.labelGroupClass);
@@ -188,9 +193,19 @@ export function barchartStacked({
 		if (isGradient && gradientId) {
 			if (gradientMode === "continuous") color = "transparent";
 			else color = `url('#${gradientId}')`;
-		} else if (colors && colors.length > 0) {
-			color = colors;
-			// color = colors[asNumerical.indexOf(dat) % colors.length];
+		} else if (fillColors && fillColors.length > 0) {
+			color = fillColors[i % fillColors.length];
+			// color = fillColors[i % fillColors.length];
+		}
+		
+		let stroke: string | undefined;
+		if (strokeColors && strokeColors.length > 0) {
+			stroke = strokeColors[i % strokeColors.length];
+		}
+
+		let strokeWidth: number | undefined;
+		if (strokeWidths && strokeWidths.length > 0) {
+			strokeWidth = strokeWidths[i % strokeWidths.length];
 		}
 
 		const labelColor = labelColors
@@ -223,6 +238,9 @@ export function barchartStacked({
 			const seg = createSVGElement("rect");
 			if (typeof color === "string") seg.setAttribute("fill", color);
 			else seg.setAttribute("fill", color[si % color.length]);
+			
+			if(stroke) seg.setAttribute("stroke", stroke);
+			if(strokeWidth) seg.setAttribute("stroke-width", String(strokeWidth));
 
 			const topOrBot = placement === "top" || placement === "bottom";
 			if (topOrBot) {
@@ -336,9 +354,9 @@ export function barchartStacked({
 	}
 
 	parent.appendChild(barGroup);
-	if (imageLabels && imageLabels.length > 0)
+	if (imageLabels && imageLabels.length > 0) {
 		parent.appendChild(imageLabelGroup);
-	else if (labels && labels.length > 0) parent.appendChild(textGroup);
+	} else if (labels && labels.length > 0) parent.appendChild(textGroup);
 	if (dataLabels) parent.appendChild(datalabelTextGroup);
 
 	if (parentClass) parent.classList.add(parentClass);

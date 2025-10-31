@@ -4,7 +4,7 @@ This is kind of a mish-mash of my thoughts process and progress on things, mainl
 
 Since this is more of a passion project I thought it'd be fun to have here where anyone could see.
 
-The little **update#** are usually points in which I had stopped writing prior, but came back not to long after.
+The little **update** are usually points in which I had stopped writing prior, but came back not to long after.
 
 # 7/18/2025
 
@@ -996,3 +996,36 @@ Anyway I think I'm done rambling for now. So that's the next order thing to do, 
 - [ ] Standardize styling choices
 - [ ] Document project structure
 - [ ] Improve performance significantly!
+
+# 10/29/2025
+
+So I'm back with more naming thoughts.
+
+I renamed `"colors"` for barcharts to `"fillColors"`, and I added both `"borderColors"` & `"borderWidths"`... But then I realized, it should be 'stroke.' So I'm going to change those to `"strokeColors"` & `"strokeWidths"` for accuracy. I think most people might think to look for "border" over "stroke" so I'm considering adding both, and using whichever is present but that's additional logic for something small.
+
+I think a better solution is robust documentation, maybe with a visual guide pointing out what each part of a barchart is reffered to in the params. Oh I'm also going to add a way to customize whether corners are rounded, I think that'd be linecaps maybe or some sort of corner radius.
+
+I also ran into one other parameter that I think needs updating, which leads me to another slightly bigger conversation.
+
+I'm talking about the `"max"` parameter... In terms of this library "max" refers to the max numerical value to show visually.
+
+Currently the max is auto-set to the highest value in the given dataset rounded up to the nearest tenth. The reason for this being that for the most part, bar charts typically don't have bars that hit the max value shown in the chart. Of course sometimes this *is* desired behavior and I've allowed for that via the `"max"` parameter.
+
+Changing this to `"maxValue"` is simple and something I'll do.
+
+But then I also thought about other basic chart features, like a grid, with scales & step amount. Now I want to keep config as simple as possibe, because I stand by the notion that even a simple chart of only bars, shows something. Labels also add greatly to information conveyed. And now I'm thinking about how much showing scales adds to a chart.
+
+On one hand I think it does add to information conveyed, but it also steps into potentially "extra" territory. Hmm I need to think about this more.
+
+Then there's other features, like axis titles, hover functionality, and more. I think an axis title would be easy to add, just manually wherever you actually place the chart with the power of flex or grid positioning, but this could be 'nice to have.' 
+
+The thing is though, that then, every chart after this would need some form of a title. And adding this to the charts is definitely non-trivial. I think I'd go about it by nesting the SVG of the bars within another. But I'd have to be careful of how that affects things like the viewbox. Time to do some testing & thinking!
+
+# 10/30/2025
+
+Ok I've decided. I think axis titles would be helpful, but I think I'm in favor of instead providing a function to generate a corresponding legend.
+- Better responsiveness
+- Better bundling as it can be fully separate
+- Would work for any chart as it would be based on colors & corresponding user-supplied titles
+
+A legend, paired with already robust datalabelling capabilities would be sufficient to not lose information. Maybe later I can add in a way of creating axis titles, but that'd only even work for bar / line and other grid-based charts.

@@ -62,38 +62,38 @@ Deno.test(function miscTests() {
 	const t6 = barchart({
 		data: [50, 100, 30],
 		dataLabels: "percentage", // [!code highlight]
-    labels: ["A", "B", "C"],
+		labels: ["A", "B", "C"],
 	});
 	assertEquals(typeof t6.outerHTML, "string");
 	pairs.push([t6]);
 
-  const t7 = barchart({
-  data: [50, 100, 30],
-  imageLabels: [
-    {
-      href: '/out/test.jpg',
-      alt: 'Skull',
+	const t7 = barchart({
+		data: [50, 100, 30],
+		imageLabels: [
+			{
+				href: "/out/test.jpg",
+				alt: "Skull",
 				height: 25,
 				width: 25,
-    },
-    {
-      href: '/out/test.jpg',
-      alt: 'Skull',
+			},
+			{
+				href: "/out/test.jpg",
+				alt: "Skull",
 				height: 25,
 				width: 25,
-    },
-    {
-      href: '/out/test.jpg',
-      alt: 'Skull',
+			},
+			{
+				href: "/out/test.jpg",
+				alt: "Skull",
 				height: 25,
 				width: 25,
-    },
-  ],
-});
+			},
+		],
+	});
 
-  assertEquals(typeof t7.outerHTML, "string");
-  pairs.push([t7]);
-  const t8 = linechart({
+	assertEquals(typeof t7.outerHTML, "string");
+	pairs.push([t7]);
+	const t8 = linechart({
 		data: [
 			[50, 50, 50, 40],
 			[80, 20, 10, 105],
@@ -126,8 +126,8 @@ Deno.test(function miscTests() {
 		dataLabels: "percentage",
 		parentClass: "test-parent",
 	});
-  assertEquals(typeof t8.outerHTML, "string");
-  pairs.push([t8]);
+	assertEquals(typeof t8.outerHTML, "string");
+	pairs.push([t8]);
 
 	// const t3 = barchart({
 	//   data: [50, 100, 30, 10],

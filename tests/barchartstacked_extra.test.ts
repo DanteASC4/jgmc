@@ -42,7 +42,7 @@ Deno.test(function barchartStackedExtraTests() {
 			[100, 15, 30],
 			[100, 50, 50],
 		],
-		colors: ["#ff00ff", "#00ffff", "#dd0547"],
+		fillColors: ["#ff00ff", "#00ffff", "#dd0547"],
 	});
 	assertEquals(tbcs3.getAttribute("width"), "300");
 	assertEquals(tbcs3.getAttribute("height"), "300");

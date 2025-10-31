@@ -113,16 +113,22 @@ export const createBar = (
 	barY: number,
 	trueBarWidth: number,
 	trueBarHeight: number,
-	color: string,
+	fill: string,
+	stroke?: string,
+	strokeWidth?: number,
 	// barClass: Pick<BarChartNumericalOpts, "barClass">,
 ) => {
 	const bar = createSVGElement("rect");
 
-	bar.setAttribute("fill", color);
+	bar.setAttribute("fill", fill);
 	bar.setAttribute("x", `${barX}`);
 	bar.setAttribute("y", `${barY}`);
 	bar.setAttribute("width", `${trueBarWidth}`);
 	bar.setAttribute("height", `${trueBarHeight}`);
+
+	if (strokeWidth) bar.setAttribute("stroke-width", `${strokeWidth}`);
+	if (stroke) bar.setAttribute("stroke", stroke);
+
 	// bar.setAttribute("title", `Bar value of ${dataPoint}`);
 	// if (barClass) bar.classList.add(barClass);
 

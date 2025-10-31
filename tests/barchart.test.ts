@@ -194,7 +194,7 @@ Deno.test(function docsExamplesSet() {
 	const tbc5 = barchart({
 		data: [100, 50, 100],
 		placement: "top",
-		colors: ["#ff00ff", "#00ffff"],
+		fillColors: ["#ff00ff", "#00ffff"],
 	});
 	assertEquals(tbc5.getAttribute("width"), "300");
 	assertEquals(tbc5.getAttribute("height"), "300");

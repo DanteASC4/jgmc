@@ -150,7 +150,7 @@ Deno.test(function barchartStackedTests() {
 		labelGroupClass: "mylabelgroup",
 		groupClass: "mygroup",
 		parentClass: "myparent",
-		colors: ["#ff00ff", "#00ffff"],
+		fillColors: ["#ff00ff", "#00ffff"],
 	});
 	assertEquals(tbcs9.getAttribute("width"), "300");
 	assertEquals(tbcs9.getAttribute("height"), "300");

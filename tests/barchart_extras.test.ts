@@ -44,7 +44,7 @@ Deno.test(function barChartsColored() {
 	const tbc1 = barchart({
 		data: [100, 50, 100],
 		placement: "top",
-		colors: ["#ff00ff", "#00ffff"],
+		fillColors: ["#ff00ff", "#00ffff"],
 	});
 
 	assertEquals(tbc1.getAttribute("width"), "300");
