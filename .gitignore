@@ -5,3 +5,4 @@ tests/**/*.html
 e2e/gallery/**/*.html
 .vscode/
 .zed/
+*.*profile*

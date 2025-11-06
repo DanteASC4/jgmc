@@ -197,7 +197,7 @@ export function barchartStacked({
 			color = fillColors[i % fillColors.length];
 			// color = fillColors[i % fillColors.length];
 		}
-		
+
 		let stroke: string | undefined;
 		if (strokeColors && strokeColors.length > 0) {
 			stroke = strokeColors[i % strokeColors.length];
@@ -238,9 +238,9 @@ export function barchartStacked({
 			const seg = createSVGElement("rect");
 			if (typeof color === "string") seg.setAttribute("fill", color);
 			else seg.setAttribute("fill", color[si % color.length]);
-			
-			if(stroke) seg.setAttribute("stroke", stroke);
-			if(strokeWidth) seg.setAttribute("stroke-width", String(strokeWidth));
+
+			if (stroke) seg.setAttribute("stroke", stroke);
+			if (strokeWidth) seg.setAttribute("stroke-width", String(strokeWidth));
 
 			const topOrBot = placement === "top" || placement === "bottom";
 			if (topOrBot) {

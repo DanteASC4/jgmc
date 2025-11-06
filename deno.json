@@ -8,13 +8,17 @@
     "dev": "deno test --allow-write --allow-read --allow-env tests",
     "cov": "deno test tests/ --allow-write --allow-read --coverage=coverage",
     "covdev": {
-      "command":"watchexec --restart --exts ts -- deno task cov",
+      "command": "watchexec --restart --exts ts -- deno task cov",
       "description": "Uses watchexec to restart coverage testing on change"
     },
     "format": "deno run -A npm:@biomejs/biome format --write",
     "lint": "deno run -A npm:@biomejs/biome lint --write",
     "check": "deno run -A npm:@biomejs/biome check --write",
     "checkf": "deno run -A npm:@biomejs/biome check --write --unsafe",
+    "bench1k": {
+      "command": "deno bench tests/speed/1k_random_allcharts.bench.ts",
+      "description": "Runs benchmark for creating 1k charts with random small datasets for all chart types"
+    },
     "examplebuild": {
       "command": "BUILD=true deno run -A scripts/build_npm.ts 0.0.1",
       "description": "Example command to build the npm package with a specific version"

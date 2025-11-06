@@ -993,6 +993,7 @@ Anyway I think I'm done rambling for now. So that's the next order thing to do, 
 
 - [ ] Revamp some parameter naming
   - Important, but this is going to be really annoying
+  - [x] Did it for coloring, need to fix naming for classes!
 - [ ] Standardize styling choices
 - [ ] Document project structure
 - [ ] Improve performance significantly!
@@ -1029,3 +1030,363 @@ Ok I've decided. I think axis titles would be helpful, but I think I'm in favor 
 - Would work for any chart as it would be based on colors & corresponding user-supplied titles
 
 A legend, paired with already robust datalabelling capabilities would be sufficient to not lose information. Maybe later I can add in a way of creating axis titles, but that'd only even work for bar / line and other grid-based charts.
+
+# 11/5/2025
+
+So I've gone and done some parameter name updating, and added a couple parameters for styling some of the basic elements of charts (stroke width & color).
+
+Now I'm working on improving performance, as this felt like the natural next step and is something I really want to have in top shape.
+
+That being said I've already arrived at some really confusing conclusions... Let me walk you through things.
+
+## Tidying Up
+
+In preparing to properly test things I decided I'd clean up the commands for running benchmarks. So I did a small bit of tidying there, `deno.json` now has a named benchmark command with a description & the old singular `speed.bench.ts` file has been moved into it's own `'speed'` folder as I'll be doing some more benchmarking I also renamed the file to be less generic, instead of `speed.bench.ts` it's now `1k_random_allcharts.bench.ts` which at a glance tells you what's being benchmarked.
+
+As I was doing that I took a look at things, and noticed a potential glaring issue with how I was doing things!!!
+
+Take a look at see if you can spot it:
+
+```ts
+Deno.bench(function test1kRandomBarCharts() {
+  for (let i = 0; i < 1_000; i++) {
+    const rd = randomDataArray();
+    barchart({
+      data: rd,
+    });
+  }
+});
+```
+.
+.
+.
+.
+.
+
+I put the random dataset creation *in* the benchmark... Oops! While this probably doesn't have that huge an impact on overall performance, it definitely could & shouldn't be part of what's being benchmarked.
+
+So I moved it outside & instead created all the random datasets at the top outside of the benchmarks. This shaved off about an average of `~12-18ms` for each type of chart benchmarked... Except the first, that seemed to actually be `3ms` slower??? I checked twice and again seemed about `3ms` slower than when the randomdatasets were created within the benchmark.
+
+This leads me to believe it's impact was negligible, which makes sense as the random datasets are pretty small. Each array created has `2-5` numbers, with a value ranging from `10-300`.
+
+Ok onto the next idea!
+
+## Profiling
+
+This I didn't spend a ton of time on, as I feel like figuring out where the performance bottleneck lies wouldn't be that hard to narrow down given how things are broken up & I have some ideas about where perf could be improved.
+
+So I ran the benchmark with the `--v8-flags=--prof` which generates an "isolate" file which contains loads of info about what was run, including hopefully granular timing of things.
+
+But apparently deno itself doesn't have a built in way to process these outputs, but I do have `node` installed which can do that.
+
+Which half worked, but I also got like 10k lines of "unrecognized code state" which I guess means it doesn't work with the deno output.
+
+Then I tried using devtools method of inspecting it, which I got hooked up in chrome, but then realized I'd need breakpoints prior to running (if I'm understanding things correctly) which is fine, but I honestly didn't feel like figuring out how to do as lately I've been using Zed & NVIM, not vsc.
+
+And while I'm sure there's a way to get things working more normally here, I'm not in the mood to do loads reading about debugger setup instructions for a deno process & figuring out how to hook things up.
+
+I'll probably revisit this, but I wanted to break things down to narrow performance anyway so I moved on at this point.
+
+## Getting Granular
+
+Ok so I made the `speed` folder to allow me to setup additional benchmarking. I was thinking of figuring out the big O of the `barchart` function to start, but I figured some individual benchmarks would be helpful to see beforehand. 
+
+I went about setting up a series of `Deno.bench` tests, with the length of datasets increasing, first the datasets would be only have 3 values, then 5, then 10, 20, 50, and finally 100.
+
+I figured the performance would be linearly worse here, because in the `"1k random"` tests, the iters per second for datasets with 3-5 elements wasn't great, here's an output of that run.
+
+**1k random output**
+
+| benchmark                      | time/iter (avg) |        iter/s |      (min … max)      |      p75 |      p99 |     p995 |
+| ------------------------------ | --------------- | ------------- | --------------------- | -------- | -------- | -------- |
+| test1kRandomBarCharts          |         82.5 ms |          12.1 | ( 55.2 ms … 302.4 ms) |  79.7 ms | 302.4 ms | 302.4 ms |
+| test1kRandomStackedBarCharts   |        212.9 ms |           4.7 | (146.3 ms … 502.5 ms) | 207.0 ms | 502.5 ms | 502.5 ms |
+| test1kRandomSingleLineCharts   |         66.4 ms |          15.1 | ( 25.0 ms … 473.5 ms) |  43.7 ms | 473.5 ms | 473.5 ms |
+| test1kRandomMultiLineCharts    |         40.0 ms |          25.0 | ( 25.2 ms …  44.3 ms) |  42.4 ms |  44.3 ms |  44.3 ms |
+
+It seemed to be pretty consistently `~12` iters a second. So I figured increasing the dataset length would result in increasingly worse performance.
+
+At lengths of 3-5 it was 12 iter/s, so increasing the length should result in worse iter/s right? Well upon testing that theory, I was getting `x100` better performance across the board!!!! (Note: not only was this with greatly increased dataset size, but the values within the dataset also had a higher max, here the values range from 0 to 1000)
+
+Here's the output of the first run.
+
+**increasing dataset len, 10 per size output, value range of 0-1000**
+
+| benchmark             | time/iter (avg) |        iter/s |      (min … max)      |      p75 |      p99 |     p995 |
+| --------------------- | --------------- | ------------- | --------------------- | -------- | -------- | -------- |
+| size3RandDatasets     |        658.9 µs |         1,518 | (280.3 µs …  51.5 ms) | 403.1 µs |  11.9 ms |  16.4 ms |
+| size5RandDatasets     |          1.2 ms |         862.9 | (361.8 µs … 227.9 ms) | 469.2 µs |  16.9 ms |  18.8 ms |
+| size10RandDatasets    |          1.3 ms |         759.3 | (597.4 µs …  97.8 ms) | 711.5 µs |  17.3 ms |  41.4 ms |
+| size20RandDatasets    |          3.8 ms |         262.6 | (  1.1 ms … 294.9 ms) |   1.2 ms |  17.0 ms | 294.9 ms |
+| size50RandDatasets    |          4.9 ms |         204.2 | (  2.4 ms …  45.1 ms) |   2.9 ms |  43.5 ms |  45.1 ms |
+| size100RandDatasets   |          9.2 ms |         108.9 | (  4.7 ms …  74.0 ms) |   5.3 ms |  74.0 ms |  74.0 ms |
+
+And I get this consistently!
+
+But I think it's because of the *amount* of times I'm testing it, I'm only testing it **10** times per size, whereas in the `1k` it's tested **1k** times with the datasets of lengths 3-5.
+
+As I'm writing this, I've actually just now got an idea at what could potentially be the issue based on the above output... I'm going to test that theory and see if I'm right!
+
+**Update**
+
+Ok I bumped the amount of tests per size up to **1k** and confirmed my suspicion! The performance across the board becomes `100x` worse when tested **1k** times, especially when given huge datasets:
+
+| benchmark             | time/iter (avg) |        iter/s |      (min … max)      |      p75 |      p99 |     p995 |
+| --------------------- | --------------- | ------------- | --------------------- | -------- | -------- | -------- |
+| size3RandDatasets     |         74.5 ms |          13.4 | ( 48.9 ms … 340.2 ms) |  71.6 ms | 340.2 ms | 340.2 ms |
+| size5RandDatasets     |        111.7 ms |           8.9 | ( 58.5 ms … 447.0 ms) | 110.2 ms | 447.0 ms | 447.0 ms |
+| size10RandDatasets    |        170.2 ms |           5.9 | (102.8 ms … 572.6 ms) | 169.5 ms | 572.6 ms | 572.6 ms |
+| size20RandDatasets    |        320.1 ms |           3.1 | (173.1 ms … 824.7 ms) | 382.7 ms | 824.7 ms | 824.7 ms |
+| size50RandDatasets    |        668.7 ms |           1.5 | (500.8 ms … 996.0 ms) | 777.2 ms | 996.0 ms | 996.0 ms |
+| size100RandDatasets   |           1.3 s |           0.8 | (   1.3 s …    1.4 s) |    1.4 s |    1.4 s |    1.4 s |
+
+Realistically, a barchart with 50, or 100 bars would be rare and waiting at most a second *wouldn't* be the end of the world. But for what I'm building that shouldn't be the case and isn't acceptable.
+
+But there's something weird going on... Let's take a look at the `size100RandDatasets` from both runs next to each other:
+
+| benchmark             | time/iter (avg) |        iter/s |      (min … max)      |      p75 |      p99 |     p995 |
+| --------------------- | --------------- | ------------- | --------------------- | -------- | -------- | -------- |
+| size100RandDatasets   |          9.2 ms |         108.9 | (  4.7 ms …  74.0 ms) |   5.3 ms |  74.0 ms |  74.0 ms |
+| size100RandDatasets   |           1.3 s |           0.8 | (   1.3 s …    1.4 s) |    1.4 s |    1.4 s |    1.4 s |
+
+Why is it so much worse **just from being tested more???**
+
+Both runs have datasets with `100` values, yet there's an almost `100x` difference in performance.
+
+Now take a look at this output from the initial **faster** run where I only gave it **10** random datasets:
+
+| benchmark             | time/iter (avg) |        iter/s |      (min … max)      |      p75 |      p99 |     p995 |
+| --------------------- | --------------- | ------------- | --------------------- | -------- | -------- | -------- |
+| size5RandDatasets     |          1.2 ms |         862.9 | (361.8 µs … 227.9 ms) | 469.2 µs |  16.9 ms |  18.8 ms |
+
+This *one* test is what gave me my idea. Do you see the issue here?
+
+Look at that min vs max... The min `361.8 µs` (or `.3ms`) is excellent. But look at the max! `227.9ms` is about `600x` worse, that points to some sort of **edge case / outlier being the bottleneck!** Unless I'm thinking about things entirely wrong which *is* possible.
+
+So I've got to setup some even more granular tests, with logging out ouputs and per-run timing.
+
+Funnily enough this is a perfect use-case for scatter plots which I don't have implemented, but now that I'm thinking would be similar to a linechart & probably worth adding later.
+
+Anyway time to do some more testing & see if I'm right! I'll be back after some more investigating!
+
+**Update**
+
+I'm back after some more analysis and I'm even more confused. So to narrow the issues, I devised the following methodology. I'd do a few tests, where instead of using the `Deno.bench` API I'll just time it using `performance.now`.
+
+It looks something like this:
+```ts
+const size3RandomDataArrs: number[][] = [];
+
+const vMin = 0;
+const vMax = 1000;
+
+for (let i = 0; i < 1000; i++) {
+  size3RandomDataArrs.push(randomDataArray(3, 3, vMin, vMax));
+}
+
+const size3Timings: number[] = []
+for(const dataset of size3RandomDataArrs) {
+  const start = performance.now();
+  barchart({
+    data: dataset
+  });
+  const end = performance.now();
+  const time = end - start;
+  size3Timings.push(time);
+  console.log('Dataset Size: 3 run')
+  console.log(dataset);
+  console.log(`Time taken: ${formatTime(time)}`);
+}
+```
+
+Build **10** random datasets with 3 random values, with the same possible value range (0-1000), timestamp before & after to get execution time.
+And the results led me to believe I was onto  something, as every time I ran the output, *without fail* the results looked something like:
+```
+Dataset Size: 3 run
+  [ 346, 287, 674 ]
+  Time taken: 2.53ms
+Dataset Size: 3 run
+  [ 332, 887, 374 ]
+  Time taken: 342.10µs
+Dataset Size: 3 run
+  [ 854, 853, 742 ]
+  Time taken: 251.50µs
+Dataset Size: 3 run
+  [ 760, 965, 731 ]
+  Time taken: 162.60µs
+Dataset Size: 3 run
+  [ 739, 400, 84 ]
+  Time taken: 119.80µs
+Dataset Size: 3 run
+  [ 481, 43, 995 ]
+  Time taken: 118.50µs
+Dataset Size: 3 run
+  [ 967, 870, 848 ]
+  Time taken: 107.30µs
+Dataset Size: 3 run
+  [ 695, 527, 20 ]
+  Time taken: 189.70µs
+Dataset Size: 3 run
+  [ 3, 996, 917 ]
+  Time taken: 126.90µs
+Dataset Size: 3 run
+  [ 481, 367, 345 ]
+  Time taken: 321.20µs
+```
+
+The first one was **always** give or take about `2ms`. The rest always completed within microseconds. I ran it like 10 times and this was consistent.
+
+Ok, so there's some sort of 'cold start' kind of first run thing with Deno maybe (which could have potentially large implications??). I guess I can investigate that.
+
+But before doing so, I thought about the other case, when I tried with a thousand values. Now at this point I can't just read the console, I need a chart! So I setup my basic test to output the values altogether after all 1000 were tested, and pasted them into google sheets to look at in a scatter plot.
+
+And the chart makes things *even more confusing.* 
+
+![](./extras/runtime_weirdness.png.png)
+
+There's a bunch of outliers!!
+
+I counted and that run has 9 values greater than `1` (aka takes more than `1ms`). That's about 1%.
+
+So about 1% of the time, performance is like over `100x` worse.
+
+Now I'm left with trying to figure out "why".
+
+Funny to think about how I'm going crazy trying to figure out what's wrong here, and the "wrong" in this case is that 1% of the time execution takes at most "8 thousandths" of a second.
+
+But I want to know why.
+
+# 11/6/2025
+
+So I'm back. I went & attempted the profiling method of debugging, which yesterday I got a successful run captured.
+
+Turns out you need to add breakpoints to have it pause execution, otherwise it finishes in like `10ms` and you can't inspect anything. Cool, but it was late so I figured I'd dive deeper into it today.
+
+I try the exact same thing, and the chrome devtools is telling me "failed to record performance." Don't you just love when you repeat something, with no difference, and something inexplicably breaks? Because I don't.
+
+I also had the thought that perhaps the one library I'm using is to blame (linkedom) but that's a cop out conclusion really.
+
+So I'm gonna need to figure out something.
+
+**Update**
+
+VSCode debugger saved the day! TIL, the built-in debugger can take performance recordings & with an extension display results as a flamegraph just like devtools.
+
+That being said, I think I've found the culprit. And it actually does look to be stemming from the `linkedom` library. Now before pointing fingers, I need to do more digging, because it could also be *how* I'm using it that causes this issue.
+
+But here's some screenshots of the flamegraph output for a run in which a call to `barchart` took over `5ms`.
+
+![](./extras/exhibitA.webp) ![](./extras/exhibitB.webp) ![](./extras/exhibitC.webp) ![](./extras/exhibitD.webp) 
+
+So you can see in the first 3 screenshots, stuff from the `linkedom` library *appear* to have unusually long "Self time" durations.
+In the last screenshot, you can see the `createBar` function has `0` (which means less than 1ms).
+
+That being said now I need to narrow it down further as that may point to where there's a timing issue, but not *what's* causing it.
+
+Here's the full flamegraph for that `barchart` run.
+
+![](./extras/fullRunFG.webp)
+
+*Note:* The reason the markers at the top are up to `80ms` I believe is because this snapshot was captured as part of `1000` random tests. Either that or it's incorrectly displaying total time because most of it is sub-milliseconds.
+
+I hope I'm interpreting these results right & not missing something obvious. Anyway time to do some dissecting, and hopefully improve that flamegraph.
+
+
+**Update**
+
+Of course upon digging into things I'm met with *instant confusion* I tried visint the source of the above `DOMEventTarget` call that showed as `4.56ms` above, and I see this:
+
+![](./extras/confusion.webp)
+
+almost ***20ms*** self time??? Funny though because actually as I was writing this, I think this is once again due to the "overall timing." The flame graph is only **one** of the **1k** random tests, so this timing discrepency is likely acctually accumulated time.
+
+Anyway back to digging into things.
+
+**Update**
+
+So upon doing some more learning about & analyzing of the flamegraph I traced the issue back to my usage of the library. I was doing things dumbly.
+
+I did also misinterpret the flamegraph partially, it's not the DOMEventTarget bit specifically but the bigger part above that, the `parseFromString` bit.
+
+This can be traced back to me dumbly creating the documents on-demand multiple times:
+```ts
+export const createSVGElement = (ele: string) => {
+	if (typeof document !== "undefined" && document instanceof Document) {
+		return document.createElementNS("http://www.w3.org/2000/svg", ele);
+	}
+	else {
+		const { document } = parseHTML(
+			`<!doctype html><html><head></head><body></body></html>`,
+		);
+		return document.createElementNS("http://www.w3.org/2000/svg", ele);
+	}
+};
+
+export const createElement = (tag: string) => {
+	if (typeof document !== "undefined" && document instanceof Document) {
+		return document.createElement(tag);
+	}
+ 	else {
+		const { document } = parseHTML(
+			`<!doctype html><html><head></head><body></body></html>`,
+		);
+		return document.createElement(tag);
+	} 
+};
+```
+
+I'm calling `parseHTML` when I can just store the result of one document creation & use that.
+
+The reason I didn't do that from the get go was because of two things really:
+1. I wasn't sure if re-using the same document was optimal, or would pollute the space somehow
+2. This is in the realm of only a few thousandths of a second, and that's just not something I could notice LOL
+
+So instead of creating a document on-demand when the actual document isn't available, I can just provide a fallback doc that can be used by both when needed!
+
+```ts
+const fallbackDoc = parseHTML(`<!doctype html><html><head></head><body></body></html>`).document;
+
+export const createSVGElement = (ele: string) => {
+	if (typeof document !== "undefined" && document instanceof Document) {
+		return document.createElementNS("http://www.w3.org/2000/svg", ele);
+	}
+	return fallbackDoc.createElementNS("http://www.w3.org/2000/svg",ele);
+};
+
+export const createElement = (tag: string) => {
+	if (typeof document !== "undefined" && document instanceof Document) {
+		return document.createElement(tag);
+	}
+	return fallbackDoc.createElement(tag);
+};
+```
+
+And the benchmark results from before:
+
+| benchmark             | time/iter (avg) |        iter/s |      (min … max)      |      p75 |      p99 |     p995 |
+| --------------------- | --------------- | ------------- | --------------------- | -------- | -------- | -------- |
+| size3RandDatasets     |         10.6 ms |          94.0 | (  5.6 ms …  23.0 ms) |  17.6 ms |  23.0 ms |  23.0 ms |
+| size5RandDatasets     |         13.7 ms |          72.8 | (  7.3 ms …  24.2 ms) |  20.3 ms |  24.2 ms |  24.2 ms |
+| size10RandDatasets    |         21.3 ms |          46.9 | ( 12.1 ms …  30.8 ms) |  26.5 ms |  30.8 ms |  30.8 ms |
+| size20RandDatasets    |         48.7 ms |          20.5 | ( 34.7 ms …  91.4 ms) |  57.9 ms |  91.4 ms |  91.4 ms |
+| size50RandDatasets    |        111.7 ms |           9.0 | ( 86.8 ms … 197.6 ms) | 112.5 ms | 197.6 ms | 197.6 ms |
+| size100RandDatasets   |        195.8 ms |           5.1 | (176.7 ms … 244.9 ms) | 200.4 ms | 244.9 ms | 244.9 ms |
+
+
+Much better!!! Those `iter/s` and `min/max's` much much better! And this is with 1k random tests, lemme see how it looks with only `10` per size since that was super fast already.
+
+Wow, behold the power of caching!
+
+| benchmark             | time/iter (avg) |        iter/s |      (min … max)      |      p75 |      p99 |     p995 |
+| --------------------- | --------------- | ------------- | --------------------- | -------- | -------- | -------- |
+| size3RandDatasets     |        108.2 µs |         9,239 | ( 52.8 µs …  16.4 ms) |  68.9 µs | 163.2 µs |   1.2 ms |
+| size5RandDatasets     |        130.4 µs |         7,669 | ( 68.6 µs …  18.2 ms) |  82.2 µs | 137.9 µs | 294.4 µs |
+| size10RandDatasets    |        214.5 µs |         4,662 | (110.3 µs …  14.5 ms) | 137.1 µs | 216.6 µs |  12.6 ms |
+| size20RandDatasets    |        389.3 µs |         2,569 | (192.9 µs …  14.9 ms) | 248.7 µs |  13.2 ms |  13.6 ms |
+| size50RandDatasets    |        857.8 µs |         1,166 | (426.8 µs …  15.4 ms) | 537.4 µs |  14.7 ms |  14.9 ms |
+| size100RandDatasets   |          1.7 ms |         603.0 | (841.6 µs …  15.6 ms) |   1.1 ms |  15.5 ms |  15.6 ms |
+
+Ok so it's clear that things are much faster across the board, since the issue was something used by **all** chart-creating functions.
+
+
+But I'm not done. I'm sure I can improve the speed even more. This time by examining my logic & implementation. Time do more digging!

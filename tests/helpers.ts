@@ -116,3 +116,18 @@ export const getTexts = (svg: SVGElement) => {
 	if (!svg) return [];
 	return Array.from(svg.querySelectorAll("text")) as SVGTextElement[];
 };
+
+// Takes "ms" and returns the number in ms, us, or ns depending on the value
+export function formatTime(ms: number): string {
+	if (ms >= 1) {
+		return `${ms.toFixed(2)}ms`;
+	}
+
+	const microseconds = ms * 1000;
+	if (microseconds >= 1) {
+		return `${microseconds.toFixed(2)}µs`;
+	}
+
+	const nanoseconds = microseconds * 1000;
+	return `${nanoseconds.toFixed(2)}ns`;
+}
