@@ -993,8 +993,8 @@ Anyway I think I'm done rambling for now. So that's the next order thing to do, 
 
 - [ ] Revamp some parameter naming
   - Important, but this is going to be really annoying
-  - [x] Did it for coloring, need to fix naming for classes!
-- [ ] Standardize styling choices
+  - Did it for coloring, need to fix naming for classes!
+- [x] Standardize styling choices
 - [ ] Document project structure
 - [ ] Improve performance significantly!
 
@@ -1390,3 +1390,36 @@ Ok so it's clear that things are much faster across the board, since the issue w
 
 
 But I'm not done. I'm sure I can improve the speed even more. This time by examining my logic & implementation. Time do more digging!
+
+# 11/7/2025
+
+Ok so nevermind I guess! 
+
+The first thing I wanted to do to continue improving performance was potentially determine the Big O of things, and I figured a good way of doing that would be basically an even more granular version of the different "size" tests I did prior.
+
+Before I chose the sizes kind of arbitrarily, 3, 5, 10, 20, 50, and 100.
+
+This time I would do 50 tests of every size from 1 to 100, and simply output the average execution time per each size. This I hoped would be an albeit naive way of giving a rough estimate of where on the time complexity chart things would land. If it increased drastically from size to size it's probably an exponential level of complexity.
+
+But turns out this test shows that even for size 100 it's still extremely fast in most cases. Here's the output of that test for sizes 90-100 (of testing all 1-100 sizes)
+| dataset size | average execution time |
+| -----------  | ---------------------- |
+| Size: 90     | Average Time: 106.19µs |
+| Size: 91     | Average Time: 119.58µs |
+| Size: 92     | Average Time: 115.47µs |
+| Size: 93     | Average Time: 484.34µs |
+| Size: 94     | Average Time: 95.57µs  |
+| Size: 95     | Average Time: 111.50µs |
+| Size: 96     | Average Time: 133.62µs |
+| Size: 97     | Average Time: 494.23µs |
+| Size: 98     | Average Time: 92.88µs  |
+| Size: 99     | Average Time: 106.84µs |
+| Size: 100    | Average Time: 120.16µs |
+
+Seeing how for 50 tests at size 100 the average time taken was 120 microseconds, I think performance is fine for now lol. I'm sure I'll continue revisiting performance, but if I don't stop now I don't really see the bottom of this rabbit hole, though it's definitely one I enjoy being in there are more meaningful improvements to be made!
+
+That means revisiting that "foundation todo list."
+
+So I'm going to mark the "styling" one as complete, as I've settled on incorporating styling options for fundamental aspects of chart elements.
+
+Next up is the class bit which I'm not really looking forward to lol.
