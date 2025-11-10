@@ -19,7 +19,7 @@ export const createBarAndText = (
 	{
 		barClass,
 		labelClass,
-	}: Pick<BarChartNumericalOpts, "groupClass" | "barClass" | "labelClass">,
+	}: {barClass?: string, labelClass?: string},
 ) => {
 	// const group = createSVGElement("g");
 

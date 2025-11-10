@@ -144,13 +144,15 @@ Deno.test(function barchartStackedTests() {
 		data: rsd9.dataArray,
 		labels: new Array(rsd9.dataArray.length).fill(randShortString()),
 		placement: "top",
-		barClass: "mybars",
-		barGroupClass: "mybargroup",
-		labelClass: "mylabels",
-		labelGroupClass: "mylabelgroup",
-		groupClass: "mygroup",
-		parentClass: "myparent",
 		fillColors: ["#ff00ff", "#00ffff"],
+		classes: {
+			barClass: "mybars",
+			barGroupClass: "mybargroup",
+			labelClass: "mylabels",
+			labelGroupClass: "mylabelgroup",
+			groupClass: "mygroup",
+			parentClass: "myparent",
+		},
 	});
 	assertEquals(tbcs9.getAttribute("width"), "300");
 	assertEquals(tbcs9.getAttribute("height"), "300");

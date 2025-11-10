@@ -1,8 +1,8 @@
 import { parseHTML } from "linkedom";
 
 const fallbackDoc = parseHTML(
-			`<!doctype html><html><head></head><body></body></html>`,
-	).document;
+	`<!doctype html><html><head></head><body></body></html>`,
+).document;
 
 // Allows for seamless client or ssr usage. Might split or just default to linkedom later though.
 export const createSVGElement = (ele: string) => {
@@ -10,7 +10,7 @@ export const createSVGElement = (ele: string) => {
 	if (typeof document !== "undefined" && document instanceof Document) {
 		return document.createElementNS("http://www.w3.org/2000/svg", ele);
 	}
-	return fallbackDoc.createElementNS("http://www.w3.org/2000/svg",ele);
+	return fallbackDoc.createElementNS("http://www.w3.org/2000/svg", ele);
 	// else {
 	// 	const { document } = parseHTML(
 	// 		`<!doctype html><html><head></head><body></body></html>`,
@@ -26,7 +26,7 @@ export const createElement = (tag: string) => {
 		return document.createElement(tag);
 	}
 	return fallbackDoc.createElement(tag);
-/* 	else {
+	/* 	else {
 		const { document } = parseHTML(
 			`<!doctype html><html><head></head><body></body></html>`,
 		);

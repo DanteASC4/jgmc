@@ -68,7 +68,6 @@ Deno.test(function barchartStackedExtraTests() {
 		gradientColors: ["#ff00ff", "#00ffff", "#dd0547"],
 		gradientDirection: "top-to-bottom",
 		gradientMode: "continuous",
-		barClass: "mybars",
 	});
 	assertEquals(tbcs5.getAttribute("width"), "300");
 	assertEquals(tbcs5.getAttribute("height"), "300");

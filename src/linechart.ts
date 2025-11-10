@@ -31,21 +31,22 @@ export function linechart({
 	fullWidthLine = false,
 	cap = ["round"],
 	thickness,
-	lineClass,
-	lineGroupClass,
-	parentClass,
-	labelClass,
-	labelGroupClass,
-	dataLabelClass,
-	dataLabelGroupClass,
-	imageLabelClass,
-	imageLabelSubGroupClass,
-	imageLabelContainerClass,
-	imageLabelTextClass,
+	// lineClass,
+	// lineGroupClass,
+	// parentClass,
+	// labelClass,
+	// labelGroupClass,
+	// dataLabelClass,
+	// dataLabelGroupClass,
+	// imageLabelClass,
+	// imageLabelSubGroupClass,
+	// imageLabelContainerClass,
+	// imageLabelTextClass,
 	colors,
 	gradientColors,
 	gradientMode,
 	gradientDirection,
+	classes
 }: LineChartOptions) {
 	// Arrays, arrays everywhere!
 	if (data.every((item) => typeof item === "number")) data = [data];
@@ -108,11 +109,11 @@ export function linechart({
 	datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
 	imageLabelGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
 
-	if (labelGroupClass) labelGroup.classList.add(labelGroupClass);
-	if (dataLabels && dataLabelGroupClass)
-		datalabelTextGroup.classList.add(dataLabelGroupClass);
-	if (imageLabelContainerClass)
-		imageLabelGroup.classList.add(imageLabelContainerClass);
+	if (classes?.labelGroupClass) labelGroup.classList.add(classes.labelGroupClass);
+	if (dataLabels && classes?.dataLabelGroupClass)
+		datalabelTextGroup.classList.add(classes.dataLabelGroupClass);
+	if (classes?.imageLabelContainerClass)
+		imageLabelGroup.classList.add(classes.imageLabelContainerClass);
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
@@ -183,9 +184,9 @@ export function linechart({
 				adjustedY,
 				labelColor,
 				subgrouping,
-				imageLabelTextClass,
-				imageLabelClass,
-				imageLabelSubGroupClass,
+				classes?.imageLabelTextClass,
+				classes?.imageLabelClass,
+				classes?.imageLabelSubGroupClass,
 				imageLabel.width,
 				imageLabel.height,
 			);
@@ -199,7 +200,7 @@ export function linechart({
 				lastCoord[1] - labelOffset,
 				labelColor,
 			);
-			if (labelClass) text.classList.add(labelClass);
+			if (classes?.labelClass) text.classList.add(classes.labelClass);
 			labelGroup.appendChild(text);
 		}
 
@@ -209,9 +210,9 @@ export function linechart({
 				lineData.map(String),
 				labelColor,
 				vHeight,
-				dataLabelClass,
+				classes?.dataLabelClass,
 			);
-			if (dataLabelClass) lineLabelGroup.classList.add(dataLabelClass);
+			if (classes?.dataLabelClass) lineLabelGroup.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(lineLabelGroup);
 		} else if (dataLabels === "percentage") {
 			const percentages = lineData.map((datap) => {
@@ -223,19 +224,19 @@ export function linechart({
 				percentages,
 				labelColor,
 				vHeight,
-				dataLabelClass,
+				classes?.dataLabelClass,
 			);
-			if (dataLabelClass) lineLabelGroup.classList.add(dataLabelClass);
+			if (classes?.dataLabelClass) lineLabelGroup.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(lineLabelGroup);
 		}
 
-		if (lineClass) line.classList.add(lineClass);
+		if (classes?.lineClass) line.classList.add(classes.lineClass);
 		lineGroup.appendChild(line);
 		lines.push(line);
 	}
 
-	if (parentClass) parent.classList.add(parentClass);
-	if (lineGroupClass) lineGroup.classList.add(lineGroupClass);
+	if (classes?.parentClass) parent.classList.add(classes.parentClass);
+	if (classes?.lineGroupClass) lineGroup.classList.add(classes.lineGroupClass);
 
 	if (
 		isGradient &&
