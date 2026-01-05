@@ -1423,3 +1423,19 @@ That means revisiting that "foundation todo list."
 So I'm going to mark the "styling" one as complete, as I've settled on incorporating styling options for fundamental aspects of chart elements.
 
 Next up is the class bit which I'm not really looking forward to lol.
+
+# 11/10/2025
+
+I did the class bit it wasn't all too bad.
+
+That being said it's time to move onto the next foundation todo item. I'm going to bring that back down, and I've decided to change the "document project structure" bit to instead "Do the README.md"!
+
+I also am marking the performance one for now.
+
+- [x] Revamp some parameter naming
+- [x] Standardize styling choices
+- [ ] Project README.md
+    - Document structure
+- [x] Improve performance significantly!
+    - Done for now!
+

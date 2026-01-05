@@ -151,7 +151,21 @@ Deno.test(function miscTests() {
   assertEquals(typeof t7.outerHTML, "string");
   pairs.push([t7]);
 
-  // pairs.push([t0]);
+  const t8 = barchart({
+    data: [
+      1000,
+    ],
+    width: 1000,
+    height: 100,
+    placement: "left",
+    gradientColors: [
+      "oklch(0.7017 0.3225 328.36)",
+      "oklch(0.9054 0.15455 194.769)",
+    ],
+    gradientDirection: "left-to-right",
+  });
+  assertEquals(typeof t8.outerHTML, "string");
+  pairs.push([t8]);
 });
 
 afterAll(() => {
