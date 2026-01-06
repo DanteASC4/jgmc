@@ -20,6 +20,14 @@ await build({
 		bugs: {
 			url: "https://github.com/danteasc4/toomanycharts/issues",
 		},
+		keywords: [
+			"charts",
+			"graphs",
+			"svg",
+			"data-visualization",
+			"ssr",
+			"lightweight",
+		]
 	},
 	compilerOptions: {
 		lib: ["ESNext", "DOM"],
