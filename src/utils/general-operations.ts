@@ -31,3 +31,7 @@ export const lgDistTest = (colorsAmt: number) => {
 
 	return result;
 };
+
+export const roundToHalf = (num: number) => {
+	return Math.round(num * 2) / 2;
+};

@@ -1434,8 +1434,323 @@ I also am marking the performance one for now.
 
 - [x] Revamp some parameter naming
 - [x] Standardize styling choices
-- [ ] Project README.md
+- [x] Project README.md
     - Document structure
 - [x] Improve performance significantly!
     - Done for now!
 
+# 1/6/2026
+
+Wow! It's been a while, quite a while actually!
+
+It's funny, the same day as my last update I spent a while updating the README but never pushed it. I got busy with other things. But I've not forgotten about this lib!
+
+In fact, I've been toying with what exactly I want to do next.
+
+And that is tackle the terminal / CLI / ASCII!
+
+It doesn't make the most sense, but it gets me excited. In the roadmap I described it as something that excites me but also seems challenging. But I love a good learning experience & I live in the terminal. This entire file and a lot of code for the library has been written in nvim!
+
+That being said I think having ASCII output as an option would fill a fairly unique niche, and just sounds like a fun thing to jump on. So that's next now that I've finished loads of cleanup.
+
+I have a few ideas for things that I'm going to jot here before I forget. 
+- Phase 1: ASCII
+    - New chart functions:
+        - `asciiBarchart`
+        - `asciiBarchartStacked`
+        - `asciiPieChart`
+        - `asciiLineChart`
+    - Options:
+        - Chart size (in chars)
+            - Maybe specify a minimum
+        - Placement
+        - Colors
+            - Applies to
+                - Bars 
+                - Title
+                - Axis titles?
+            - Need to research how to detect truecolor support
+            - There's also the "highlight/background" color
+        - Character choice
+        - Labels not realistic
+        - Datalabels would be doable I think depending on how I can place characters on top of other chars. (super/subscript?)
+            - Can truncate large vals
+    - Maybe:
+        - Animated option!
+        - I'm pretty sure gradients in the terminal are a thing and that'd be really cool to have if possible.
+        - A border box option?
+- Phase 2: Sixel
+    - I wonder if I can cheat this & transform a SVG to a sixel image directly
+    - Research needed!
+
+This might seem like a lot but options will be more limited & it should be more straightforward to build out something made of ASCII so I'm being ambitious here.
+
+I know there are plenty of great TUI libs out there, but I'm going to implement things by hand. It should end up more lightweight, and serve as a great way to learn.
+
+Gonna start off by just winging it & doing it how I think it's done, then maybe research best practices & more terminal things.
+
+Time to find some unicode!
+
+**Update**
+
+So it's going well! I made some good progress on the bar chart already. But there's an issue. Here's an example with the good old `[50, 100, 30]` dataset:
+
+```
+▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+   ███   ███   ███
+   ███   ███   ███
+   ███   ███   ███
+   ███   ███
+   ███   ███
+         ███
+         ███
+         ███
+         ███
+         ███
+
+```
+
+At a glance, this looks pretty good right!? No!!!!
+
+The spacing makes the bars fit unevenly within the width. It becomes a bit more obvious if we focus on the first couple rows & use a different character for spaces.
+
+```
+▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+###███###███###███###
+
+```
+
+The spacing extends past the lines that the bars protrude from. Adding or removing a space in the gaps doesn't fix it.
+
+```
+▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+##███##███##███##
+
+▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+###███##███##███###
+
+```
+
+This is supposed to be 20 characters long (and 10 high but that doesn't matter here), and spaced evenly. But since (from what I know currently) it's not possible to place things "absolute" with non-whole number spacing.
+
+20 characters is 20 characters, I can't have the 3rd and a half character be different than the 4th. That's not a thing as far as I'm aware.
+
+And 20 is not evenly divisble by 3. So spacing 3 things evenly is impossible.
+
+Soo next step is to research half-spaces or restrict parameters to calculate things automatically - would need to think that through a bit more but if we know the user wants 3 bars with a width of 3, we can calculate the perfect width easily, maybe then gap could be used to control width which doesn't sound terrible.
+
+**Update**
+
+A quick google search and yeah there's a small-width character. Thanks unicode.
+
+Normal space: ` `
+Thin space:   ` `
+
+Except as I'm writing this I'm realizing monospace fonts render it as full-width I think that's what's happening. Ok weird half-space hack not working! Back to the drawing board.
+
+Yeah more testing all the spaces show up the same width when console logged. I wonder if the same is true for anyone reading this. For me, all the following letter `"a"`'s are evenly spaced in the output when the unicode spaces should be less than a normal space.
+
+```ts
+console.log("a a");
+console.log("a\u2009a");
+console.log("a\u200Aa");
+console.log("a\u2000a");
+console.log("a\u202Fa");
+console.log("a\u2007a");
+console.log("a\u2002a");
+console.log("a\u2003a");
+console.log("a\u2008a");
+```
+
+
+**Update**
+Alright yeah so there's no cheating the spacing in the world of monospace fonts! And as such, the next option is not allowing a "height" or "width" parameter.
+
+Instead users will supply a "gap" & "bar width" which will be used to determine bounds. The height will be auto calculated based on the highest datapoint or number of datapoints.
+
+# 1/7/2026
+
+Ok!!!!
+
+So I got it working. And I can actually allow users to supply a desired width & height, but based on the placement I'll ignore the value of the surface the bars the bars are placed on.
+
+This means for example if you supply a `width` & `height` but are placing bars on the bottom the `width` will be auto-calculated.
+
+I think there are also situations where the supplied height for example wouldn't be enough to show much so maybe I can add a warning or something by detecting small values. Maybe.
+
+Anyway it was fun to think through how to render text based charts! So far I've got the following done:
+- Customizable options:
+    - placement half-way there
+        - did top & bottom, now need to figure out left and right
+    - width
+    - height
+    - gap (can be 0 which looks nice)
+    - bar width
+- Basic axis
+
+Here's some examples:
+
+```
+70
+▕
+▕                         ███
+▕                         ███
+▕                     ███ ███
+▕                     ███ ███
+▕                 ███ ███ ███
+▕                 ███ ███ ███
+▕                 ███ ███ ███
+▕             ███ ███ ███ ███
+▕             ███ ███ ███ ███
+▕         ███ ███ ███ ███ ███
+▕         ███ ███ ███ ███ ███
+▕         ███ ███ ███ ███ ███
+▕     ███ ███ ███ ███ ███ ███
+▕     ███ ███ ███ ███ ███ ███
+▕ ███ ███ ███ ███ ███ ███ ███
+▕ ███ ███ ███ ███ ███ ███ ███
+0▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+
+---
+
+0▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███
+▕   ███   ███
+▕   ███   ███
+▕   ███   ███
+▕   ███   ███
+▕   ███   ███
+▕
+50
+
+---
+
+0▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███   ███
+▕   ███   ███
+▕   ███   ███
+▕   ███   ███
+▕         ███
+▕         ███
+▕         ███
+▕         ███
+▕         ███
+▕         ███
+▕         ███
+▕         ███
+▕
+100
+```
+
+Still plenty more to do but I'm quite happy with day one progress.
+
+I'm also thinking that data labels are going to be key here. 
+
+For instance, take the following paramets:
+```ts
+asciiBarchart({ data: [50, 100, 30], barWidth: 10, placement: "bottom" })
+```
+
+You will get:
+```
+100
+▕
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕   ██████████   ██████████
+▕   ██████████   ██████████
+▕   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+0▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+```
+
+Which looks good but there's plenty of space to add some data labels, which I think would greatly enhance info conveyed.
+
+```
+100
+▕                   100
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕       50       ██████████
+▕   ██████████   ██████████
+▕   ██████████   ██████████
+▕   ██████████   ██████████       30
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+0▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+```
+
+So I think it's safe to say that datalabels are essential here & because we don't need to be worried about font size as it's all uniform in the terminal it can be automatic!
+
+I can also truncate things by checking if the value as a string would go beyond the bar width. E.g. for a `barWidth` of `5` there's `3` characters that can fit in the center. 
+
+But should I left align them to get 5 characters? Hmmm... Lemme see how that looks.
+
+```
+100
+▕                100
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕                ██████████
+▕   50           ██████████
+▕   ██████████   ██████████
+▕   ██████████   ██████████
+▕   ██████████   ██████████   30
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+▕   ██████████   ██████████   ██████████
+0▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+```
+
+You know, that's not terrible - but it looks unintentional.
+
+I think what I'll do is have a `datalabelFormatter` function, which is given: the value itself, and the `barWidth`, by default I'll have it place things in the center but allow users to supply their own formatter if they want to use the max width. I think that's a good way of doing it.
+
+I can even provide some alternate formatters in the docs!
+
+That being said the following is left to implement for `asciiBarchart`:
+- Colors
+- Title (text across from placement)
+- Character choice (added but untested)
+- Datalabels
+- Left/Right placement
+
+But yeah so far so good! I'm sure there will be ways to improve how I'm doing things but I'll look into proper ways & optimizations later. For now figuring things out & learning is fun.

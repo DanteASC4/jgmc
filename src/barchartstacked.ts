@@ -5,7 +5,7 @@ import {
 } from "./creating/gradients.ts";
 import { createImageLabel, createLabel } from "./creating/labels.ts";
 import { calcBarCoords, calcBarDims } from "./math/barchart.ts";
-import { autoBarWidth, calcDataLabelCoords } from "./math/barcharts_common.ts";
+import { autoBarWidth, calcDataLabelCoords } from "./math/barcharts-common.ts";
 import { autoGap } from "./math/common.ts";
 import { calcLabelCoords } from "./math/labels.ts";
 import type { BarChartStackedOpts } from "./types.ts";

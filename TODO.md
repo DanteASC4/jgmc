@@ -1,49 +1,6 @@
-# Things ToDo
+# Running misc ToDos
 
-- Pre-0.1.0 Todos
-  - [x] Numerical Bar Charts Implemented
-    - [x] Placement
-    - [x] Sizing
-    - [x] Spacing
-    - [x] Labels
-    - [x] Colors
-  - [x] Basic docs site
-  - [ ] README sections filled out!
-    - [x] Logo (made of chart outputs) + secret (not the tagline)
-    - [ ] Those neat little badges you see everywhere
-    - [ ] Table of contents (should link to docs)
-    - [ ] License (mit)
-    - [ ] Contributing?
-    - [ ] keywords
-- Pre-0.2.0 Todos
-  - [x] Stacked Bar Charts Implementation
-    - [x] Placement
-    - [x] Sizing
-    - [x] Spacing
-    - [x] Labels
-    - [x] Colors
-        - [x] Alternating
-        - [x] Gradients
-- Ongoing / Misc
-  - [ ] Re-require labels for accessibility & instead add a `showLabels` that skips adding text elements if false
-  - [x] Add a `labelColors` option for coloring labels separately
-  - [ ] Setup some tests for additional frameworks
-    - [ ] React
-    - [ ] Vanilla
-    - [ ] Solid
-    - [ ] Vue?
-    - [ ] ???
-- Ideas
-  - Histogram
-  - Image labels
-  - Pie/Donut/Torus chart
-  - ~~ssr~~
-    - Added!
-- Future Things
-- Make it modular?
-  - @toomanycharts/barchart
-  - @toomanycharts/histogram
-  - @toomanycharts/line
-  - Etc...
-- Smaller things to fix
-  - Remove extra space or whole title when label is empty?
+This will now be a smaller list of things that aren't critical but should be done eventually:
+
+- [ ] Move defaults into their own chart file
+  - Better bundling as every chart will no longer unnecessarily load the defaults of other charts

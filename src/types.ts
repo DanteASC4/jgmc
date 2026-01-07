@@ -46,6 +46,8 @@ type LineCaps = "round" | "butt" | "square";
  */
 type LineTypes = "straight" | "smooth";
 
+export type AsciiBarCharacter = "solid" | "light" | "medium" | "dark" | (string & {});
+
 //     ▄████████  ▄█          ▄████████    ▄████████    ▄████████    ▄████████    ▄████████
 //    ███    ███ ███         ███    ███   ███    ███   ███    ███   ███    ███   ███    ███
 //    ███    █▀  ███         ███    ███   ███    █▀    ███    █▀    ███    █▀    ███    █▀
@@ -396,6 +398,18 @@ export type LineChartOptionsBase =
     classes: { [K in keyof (LineChartClasses & LabelClasses)]?: string };
   };
 
+export type AsciiBarChartOptionsBase = {
+  /**
+   * Defaults to `"bottom"` if not supplied
+   */
+  placement: "top" | "right" | "bottom" | "left";
+  barCharacter: AsciiBarCharacter;
+  barWidth: number;
+  gap: number;
+  height: number;
+  width: number;
+};
+
 export type BarChartNumericalOpts = Prettify<
   Optional<BarChartOptionsBase> & {
     /**
@@ -425,5 +439,14 @@ export type LineChartOptions = Prettify<
      */
     readonly data: number[][] | number[];
     // readonly labels?: string[][] | string[]; // Pretty sure this is a mistake since now have the `Labels` type (inb4 errors)
+  }
+>;
+
+export type AsciiBarChartOptions = Prettify<
+  Optional<AsciiBarChartOptionsBase> & {
+    /**
+     * A single array of numbers, each number representing a bar.
+     */
+    readonly data: number[];
   }
 >;
