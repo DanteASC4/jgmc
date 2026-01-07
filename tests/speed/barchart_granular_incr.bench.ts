@@ -1,6 +1,6 @@
+import { bold, magenta } from "@std/fmt/colors";
 import { barchart } from "../../src/index.ts";
 import { randomDataArray } from "../helpers.ts";
-import { bold, magenta } from "@std/fmt/colors";
 
 const size3RandomDataArrs: number[][] = [];
 const size5RandomDataArrs: number[][] = [];

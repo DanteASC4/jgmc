@@ -46,7 +46,7 @@ export function linechart({
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-	classes
+	classes,
 }: LineChartOptions) {
 	// Arrays, arrays everywhere!
 	if (data.every((item) => typeof item === "number")) data = [data];
@@ -109,7 +109,8 @@ export function linechart({
 	datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
 	imageLabelGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
 
-	if (classes?.labelGroupClass) labelGroup.classList.add(classes.labelGroupClass);
+	if (classes?.labelGroupClass)
+		labelGroup.classList.add(classes.labelGroupClass);
 	if (dataLabels && classes?.dataLabelGroupClass)
 		datalabelTextGroup.classList.add(classes.dataLabelGroupClass);
 	if (classes?.imageLabelContainerClass)
@@ -212,7 +213,8 @@ export function linechart({
 				vHeight,
 				classes?.dataLabelClass,
 			);
-			if (classes?.dataLabelClass) lineLabelGroup.classList.add(classes.dataLabelClass);
+			if (classes?.dataLabelClass)
+				lineLabelGroup.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(lineLabelGroup);
 		} else if (dataLabels === "percentage") {
 			const percentages = lineData.map((datap) => {
@@ -226,7 +228,8 @@ export function linechart({
 				vHeight,
 				classes?.dataLabelClass,
 			);
-			if (classes?.dataLabelClass) lineLabelGroup.classList.add(classes.dataLabelClass);
+			if (classes?.dataLabelClass)
+				lineLabelGroup.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(lineLabelGroup);
 		}
 

@@ -1,4 +1,4 @@
-import { AsciiBarChartOptions } from "../types.ts";
+import type { AsciiBarChartOptions } from "../types.ts";
 
 export const asciiCalcBarDims = (
 	placement: AsciiBarChartOptions["placement"],

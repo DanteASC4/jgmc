@@ -50,7 +50,7 @@ export function barchartStacked({
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-	classes
+	classes,
 }: BarChartStackedOpts) {
 	const asNumerical = stackedToSummed(data);
 	let userMax = false;
@@ -164,7 +164,8 @@ export function barchartStacked({
 		textGroup.classList.add(classes.groupClass);
 	}
 	if (classes?.barGroupClass) barGroup.classList.add(classes.barGroupClass);
-	if (classes?.labelGroupClass) textGroup.classList.add(classes.labelGroupClass);
+	if (classes?.labelGroupClass)
+		textGroup.classList.add(classes.labelGroupClass);
 	if (dataLabels && classes?.dataLabelGroupClass) {
 		datalabelTextGroup.classList.add(classes.dataLabelGroupClass);
 	}
@@ -318,7 +319,8 @@ export function barchartStacked({
 				dataLabelY,
 				dataLabelColor,
 			);
-			if (classes?.dataLabelClass) dataLabel.classList.add(classes.dataLabelClass);
+			if (classes?.dataLabelClass)
+				dataLabel.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(dataLabel);
 		} else if (dataLabels === "percentage") {
 			const percentage =
@@ -336,7 +338,8 @@ export function barchartStacked({
 				dataLabelY,
 				dataLabelColor,
 			);
-			if (classes?.dataLabelClass) dataLabel.classList.add(classes.dataLabelClass);
+			if (classes?.dataLabelClass)
+				dataLabel.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(dataLabel);
 		}
 	}

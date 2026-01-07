@@ -1,8 +1,8 @@
 // deno-coverage-ignore-file
 
-import { randomIntegerBetween } from "@std/random";
 import { ensureDirSync } from "jsr:@std/fs";
 import { join, resolve } from "jsr:@std/path";
+import { randomIntegerBetween } from "@std/random";
 
 export type SaveablePairs = ([SVGElement] | [SVGElement, string])[];
 

@@ -16,10 +16,7 @@ export const createBarAndText = (
 	color: string,
 	labelColor: string,
 	{ width, height }: { width: number; height: number },
-	{
-		barClass,
-		labelClass,
-	}: {barClass?: string, labelClass?: string},
+	{ barClass, labelClass }: { barClass?: string; labelClass?: string },
 ) => {
 	// const group = createSVGElement("g");
 
