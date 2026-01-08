@@ -343,8 +343,7 @@ export type BarChartOptionsBase = {
 	 */
 	gap: number;
 	// classes: BarChartClasses & LabelClasses;
-} & // & BarChartClasses
-LinearGradientOptions &
+} & LinearGradientOptions & // & BarChartClasses
 	Labels &
 	BarChartStyleOptions &
 	ChartOptions & {

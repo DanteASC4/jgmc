@@ -1,12 +1,13 @@
 import {
+	createHorizontalBar,
 	createVerticalBar,
 	getChosenChar,
 } from "./ascii-creating/asciibarchart.ts";
 import { asciiCalcBarDims } from "./math/asciibarchart.ts";
 import { autoBarWidth } from "./math/barcharts-common.ts";
-import { asPercent, autoGap } from "./math/common.ts";
+import { asPercent } from "./math/common.ts";
 import type { AsciiBarChartOptions } from "./types.ts";
-import { autoMaxNumerical, roundToHalf } from "./utils/general-operations.ts";
+import { autoMaxNumerical } from "./utils/general-operations.ts";
 import { annotateBounds } from "./utils/misc.ts";
 
 const AsciiBarChartDefaults = {
@@ -27,7 +28,6 @@ export function asciiBarchart({
 	width = AsciiBarChartDefaults.width,
 	height = AsciiBarChartDefaults.height,
 }: AsciiBarChartOptions) {
-	// const { columns, rows } = Deno.consoleSize();
 	const chosenChar = getChosenChar(barCharacter);
 	const autoMax = autoMaxNumerical(data);
 	const dataPointsAmt = data.length;
@@ -68,6 +68,7 @@ export function asciiBarchart({
 		evenWidth,
 		gap,
 		trueGap,
+		dataPointsAmt,
 	};
 	console.table(tabular);
 
@@ -86,17 +87,21 @@ export function asciiBarchart({
 			trueDim,
 			barWidth,
 		);
-		constantBarWidth = trueBarWidth;
-		console.log(
-			"trueDim",
-			trueDim,
-			"trueBarHeight",
-			trueBarHeight,
-			"trueBarWidth",
-			trueBarWidth,
-		);
+		constantBarWidth = toporbottom ? trueBarWidth : trueBarHeight;
+		// console.log(
+		// 	"trueDim",
+		// 	trueDim,
+		// 	"trueBarHeight",
+		// 	trueBarHeight,
+		// 	"trueBarWidth",
+		// 	trueBarWidth,
+		// 	"constantBarWidth",
+		// 	constantBarWidth,
+		// );
 
-		const bar = createVerticalBar(trueBarHeight, trueBarWidth, chosenChar);
+		const bar = toporbottom
+			? createVerticalBar(trueBarHeight, trueBarWidth, chosenChar)
+			: createHorizontalBar(trueBarWidth, trueBarHeight, chosenChar);
 		// if (placement === "bottom") bar = bar.reverse();
 		// console.log(bar);
 		bars.push(bar);
@@ -118,11 +123,16 @@ export function asciiBarchart({
 
   */
 
-	if (placement === "bottom") lines += `${Math.max(...data)}\n`;
+	if (placement === "bottom") lines += `${autoMax}\n`;
 
-	if (placement === "top") {
-		lines += "0";
-		lines += "▁".repeat(trueWidth) + "\n";
+	if (placement !== "bottom") {
+		if (placement !== "right") lines += "0";
+
+		lines += `${placement==="right"?autoMax:""}${"▁".repeat(trueWidth - String(autoMax).length)}${placement === "right" ? "0" : ""}${placement==="left"?autoMax:""}\n`;
+		// if (placement === "top") lines += `${"▁".repeat(trueWidth)}\n`;
+		// // if (placement === "top") lines += `${"▔".repeat(trueWidth)}\n`;
+		// else
+		// 	lines += `${"▁".repeat(trueWidth)}${placement === "right" ? "0" : ""}\n`;
 	}
 
 	const pad = (amt: number) => {
@@ -141,7 +151,49 @@ export function asciiBarchart({
 					line += pad(gap);
 				}
 			}
-			lines += line + "\n";
+			lines += `${line}\n`;
+		}
+	}
+
+	if (placement === "left") {
+		const interval = gap + constantBarWidth;
+		const offsetGap = gap - 1;
+		const barLines = bars.flat();
+
+		for (let i = 0; i < trueHeight; i++) {
+			let line = "";
+			const check = (i % interval) - 1;
+			line += "▕";
+
+			if (check < offsetGap) {
+				line += " ".repeat(trueWidth);
+			} else {
+				const adding = barLines.shift() ?? "";
+				line += `${adding}${" ".repeat(trueWidth - adding.length)}`;
+			}
+
+			lines += `${line}\n`;
+		}
+	}
+
+	if (placement === "right") {
+		const interval = gap + constantBarWidth;
+		const offsetGap = gap - 1;
+		const barLines = bars.flat();
+
+		for (let i = 0; i < trueHeight; i++) {
+			let line = "";
+			const check = (i % interval) - 1;
+
+			if (check < offsetGap) {
+				line += " ".repeat(trueWidth);
+			} else {
+				const adding = barLines.shift() ?? "";
+				line += `${" ".repeat(trueWidth - adding.length)}${adding}`;
+			}
+			line += "▏";
+
+			lines += `${line}\n`;
 		}
 	}
 
@@ -156,19 +208,26 @@ export function asciiBarchart({
 					line += pad(gap);
 				}
 			}
-			lines += line + "\n";
+			lines += `${line}\n`;
 		}
 	}
 
 	if (placement === "bottom") {
 		lines += "0";
-		lines += "▔".repeat(trueWidth) + "\n";
+		lines += `${"▔".repeat(trueWidth)}\n`;
 	}
 
-	if (placement === "top") lines += `${Math.max(...data)}`;
+	if (placement !== "bottom") {
+		if (placement === "right")
+			lines += `${" ".repeat(trueWidth - String(autoMax).length)}`;
+		else if(placement === "top") lines += `${autoMax}`;
+	}
+	// if (placement === "top") lines += `${Math.max(...data)}`;
 
 	console.log("===");
 	console.log(lines);
+
+	// console.log(annotateBounds(lines));
 
 	return "";
 }

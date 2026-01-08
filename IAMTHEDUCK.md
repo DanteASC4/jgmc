@@ -1754,3 +1754,123 @@ That being said the following is left to implement for `asciiBarchart`:
 - Left/Right placement
 
 But yeah so far so good! I'm sure there will be ways to improve how I'm doing things but I'll look into proper ways & optimizations later. For now figuring things out & learning is fun.
+
+# 1/8/2026
+
+Ok so I've nailed a pass at all 4 placements!!!! While allowing a specified height, width, gap, and barWidth!!!! Check it out!!
+
+```
+0▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+▕   █████   █████   █████
+▕   █████   █████   █████
+▕   █████   █████   █████
+▕   █████   █████   █████
+▕   █████   █████
+▕   █████   █████
+▕   █████   █████
+▕           █████
+▕           █████
+▕           █████
+▕           █████
+▕           █████
+▕           █████
+▕           █████
+100
+
+---
+
+100▁▁▁▁▁▁▁▁▁▁▁0
+              ▏
+              ▏
+              ▏
+       ███████▏
+       ███████▏
+       ███████▏
+              ▏
+              ▏
+              ▏
+██████████████▏
+██████████████▏
+██████████████▏
+              ▏
+              ▏
+              ▏
+          ████▏
+          ████▏
+          ████▏
+              ▏
+              ▏
+              ▏
+
+---
+
+100
+▕
+▕           █████
+▕           █████
+▕           █████
+▕           █████
+▕           █████
+▕           █████
+▕           █████
+▕   █████   █████
+▕   █████   █████
+▕   █████   █████
+▕   █████   █████   █████
+▕   █████   █████   █████
+▕   █████   █████   █████
+▕   █████   █████   █████
+0▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+
+---
+
+0▁▁▁▁▁▁▁▁▁▁▁▁▁▁100
+▕
+▕
+▕
+▕███████
+▕███████
+▕███████
+▕
+▕
+▕
+▕██████████████
+▕██████████████
+▕██████████████
+▕
+▕
+▕
+▕████
+▕████
+▕████
+▕
+▕
+▕
+```
+
+Now you might be thinking "but the left/right" placements look completely different so this is wrong?!?!? No that's just due to the weird nature of unicode glyphs.
+
+Afaik that "solid" block I'm using to build the bar is the only character that properly visually 'joins' (aside from the other shades). And for whatever reason despite looking like a square it is rendered as a vertical bar, I think this is due to the nature of monospace fonts making width uniform.
+
+This character is called "Full Block" and is part of block characters. You can [see here](https://www.compart.com/en/unicode/block/U+2580) the 'left seven-eigths' and 'right seven-eigths' blocks appear wider than the 'full block' but if you console log them there's a gap. And they're drawn as rectangles with a monospaced font.
+
+So the left & right chart orientations look kind of 'unproportional' despite being correct. At least that should be the case.
+
+Anyway, I've knocked out one of the remaining options!
+- [ ] Colors
+- [ ] Title (text across from placement)
+- [ ] Character choice (added but untested)
+- [ ] Datalabels
+- [x] Left/Right placement
+
+It was a little more challenging than I expected, but not much. The main thing is that because I did it all manually from my head I will definitely need to do an optimization pass.
+
+Not that it's slow or anything but there's always room for improvement, especially after a very-first version. But that comes after I add the other options as I'm sure those'll be improvable too!
+
+I want to do `color` next, so `color` time! Time to do some research on using truecolor in the terminal.
+
+**Update**
+
+I was doing some research on coloring in the terminal and all that & before diving too deep I remembered something awesome. `Deno` has a terminal coloring module in it's standard lib!!! Deno my goat.
+
+Outside of the deno @std lib the only dependency is `linkedom` and I'd like to keep it that way! Going to push what I have and then delve into color.
