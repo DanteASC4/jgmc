@@ -90,9 +90,3 @@ export const createHorizontalBar = (
 	width: number,
 	char: string,
 ): string[] => new Array(width).fill(char.repeat(height));
-
-// export const createVerticalBar = (
-//   height: number,
-//   width: number,
-//   char: string,
-// ) => new Array(height).fill(char.repeat(width)).join("\n");

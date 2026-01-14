@@ -1874,3 +1874,15 @@ I want to do `color` next, so `color` time! Time to do some research on using tr
 I was doing some research on coloring in the terminal and all that & before diving too deep I remembered something awesome. `Deno` has a terminal coloring module in it's standard lib!!! Deno my goat.
 
 Outside of the deno @std lib the only dependency is `linkedom` and I'd like to keep it that way! Going to push what I have and then delve into color.
+
+# 1/14/2026
+
+I've added color support! It's working well. I was also thinking about adding color support for the axis lines, and axis min-max but for now I'll pass on that as it feels a bit excessive. For now. I'll probably come back to it later.
+
+I've also been thinking about axis ticks & the whole min/max thing and while it won't be soon if I'm thinking about it correctly I'm fairly confident it wouldn't actually be super hard to add, at least at a basic level. Anyway making good progress. Onto more tasks!
+
+- [x] Colors
+- [ ] Title (text across from placement)
+- [ ] Character choice (added but untested)
+- [ ] Datalabels
+- [x] Left/Right placement

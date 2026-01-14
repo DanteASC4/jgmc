@@ -1,8 +1,10 @@
+import { rgb24 } from "@std/fmt/colors";
 import {
 	createHorizontalBar,
 	createVerticalBar,
 	getChosenChar,
 } from "./ascii-creating/asciibarchart.ts";
+import { colorString } from "./ascii-creating/common.ts";
 import { asciiCalcBarDims } from "./math/asciibarchart.ts";
 import { autoBarWidth } from "./math/barcharts-common.ts";
 import { asPercent } from "./math/common.ts";
@@ -17,6 +19,7 @@ const AsciiBarChartDefaults = {
 	gap: 3,
 	width: 80,
 	height: 24,
+	color: "white",
 } as const;
 
 export function asciiBarchart({
@@ -27,6 +30,7 @@ export function asciiBarchart({
 	gap = AsciiBarChartDefaults.gap,
 	width = AsciiBarChartDefaults.width,
 	height = AsciiBarChartDefaults.height,
+	colors = [AsciiBarChartDefaults.color],
 }: AsciiBarChartOptions) {
 	const chosenChar = getChosenChar(barCharacter);
 	const autoMax = autoMaxNumerical(data);
@@ -114,21 +118,14 @@ export function asciiBarchart({
 
 	let lines = "";
 
-	/*
-
-01234567890123456789
-▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-   ███   ███   ███aaa
-
-
-  */
-
 	if (placement === "bottom") lines += `${autoMax}\n`;
 
 	if (placement !== "bottom") {
 		if (placement !== "right") lines += "0";
 
-		lines += `${placement==="right"?autoMax:""}${"▁".repeat(trueWidth - String(autoMax).length)}${placement === "right" ? "0" : ""}${placement==="left"?autoMax:""}\n`;
+		lines += `${placement === "right" ? autoMax : ""}${"▁".repeat(
+			placement === "top" ? trueWidth : trueWidth - String(autoMax).length,
+		)}${placement === "right" ? "0" : ""}${placement === "left" ? autoMax : ""}\n`;
 		// if (placement === "top") lines += `${"▁".repeat(trueWidth)}\n`;
 		// // if (placement === "top") lines += `${"▔".repeat(trueWidth)}\n`;
 		// else
@@ -145,8 +142,13 @@ export function asciiBarchart({
 		for (let i = 0; i < trueHeight; i++) {
 			let line = "";
 			for (let j = 0; j < dataPointsAmt; j++) {
+				const barColor = colors[j % colors.length];
 				if (j === 0) line += "▕";
-				line += " ".repeat(gap) + (bars[j][i] ?? " ".repeat(constantBarWidth));
+				line += " ".repeat(gap);
+				// line += (bars[j][i] ?? " ".repeat(constantBarWidth));
+				line += bars[j][i]
+					? colorString(bars[j][i], barColor)
+					: " ".repeat(constantBarWidth);
 				if (j === dataPointsAmt - 1) {
 					line += pad(gap);
 				}
@@ -220,11 +222,13 @@ export function asciiBarchart({
 	if (placement !== "bottom") {
 		if (placement === "right")
 			lines += `${" ".repeat(trueWidth - String(autoMax).length)}`;
-		else if(placement === "top") lines += `${autoMax}`;
+		else if (placement === "top") lines += `${autoMax}`;
 	}
 	// if (placement === "top") lines += `${Math.max(...data)}`;
 
 	console.log("===");
+	// console.log(lines);
+	// console.log(rgb24(lines, { r: 225, g: 5, b: 71 }));
 	console.log(lines);
 
 	// console.log(annotateBounds(lines));

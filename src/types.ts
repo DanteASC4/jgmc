@@ -52,6 +52,22 @@ export type AsciiBarCharacter =
 	| "dark"
 	| (string & {});
 
+type AsciiBasicColors =
+	| "black"
+	| "red"
+	| "green"
+	| "yellow"
+	| "blue"
+	| "magenta"
+	| "cyan"
+	| "white"
+	| "gray";
+
+type HexString = `#${string}`;
+type RGBObj = { r: number; g: number; b: number };
+
+export type AsciiColors = (AsciiBasicColors | HexString | RGBObj)[];
+
 //     ▄████████  ▄█          ▄████████    ▄████████    ▄████████    ▄████████    ▄████████
 //    ███    ███ ███         ███    ███   ███    ███   ███    ███   ███    ███   ███    ███
 //    ███    █▀  ███         ███    ███   ███    █▀    ███    █▀    ███    █▀    ███    █▀
@@ -405,6 +421,7 @@ export type AsciiBarChartOptionsBase = {
 	gap: number;
 	height: number;
 	width: number;
+	colors: AsciiColors;
 };
 
 export type BarChartNumericalOpts = Prettify<
