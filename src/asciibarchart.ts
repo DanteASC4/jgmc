@@ -4,7 +4,7 @@ import {
 	createVerticalBar,
 	getChosenChar,
 } from "./ascii-creating/asciibarchart.ts";
-import { colorString } from "./ascii-creating/common.ts";
+import { colorString, truncateString } from "./ascii-creating/common.ts";
 import { asciiCalcBarDims } from "./math/asciibarchart.ts";
 import { autoBarWidth } from "./math/barcharts-common.ts";
 import { asPercent } from "./math/common.ts";
@@ -31,6 +31,7 @@ export function asciiBarchart({
 	width = AsciiBarChartDefaults.width,
 	height = AsciiBarChartDefaults.height,
 	colors = [AsciiBarChartDefaults.color],
+	title,
 }: AsciiBarChartOptions) {
 	const chosenChar = getChosenChar(barCharacter);
 	const autoMax = autoMaxNumerical(data);
@@ -116,9 +117,24 @@ export function asciiBarchart({
 		// console.log("");
 	}
 
+	/*
+	0123456789
+	...abc...
+	*/
+
 	let lines = "";
 
-	if (placement === "bottom") lines += `${autoMax}\n`;
+	if (title && title !== "") {
+	
+		const numSpacesLeft = Math.ceil((trueWidth - title.length) / 2);
+		if (title) {
+			lines += `${" ".repeat(numSpacesLeft)}${truncateString(title, trueWidth - (numSpacesLeft + title.length))}\n`;
+		}
+	}
+
+	if (placement === "bottom") {
+		lines += `${autoMax}\n`;
+	}
 
 	if (placement !== "bottom") {
 		if (placement !== "right") lines += "0";
@@ -126,6 +142,7 @@ export function asciiBarchart({
 		lines += `${placement === "right" ? autoMax : ""}${"▁".repeat(
 			placement === "top" ? trueWidth : trueWidth - String(autoMax).length,
 		)}${placement === "right" ? "0" : ""}${placement === "left" ? autoMax : ""}\n`;
+
 		// if (placement === "top") lines += `${"▁".repeat(trueWidth)}\n`;
 		// // if (placement === "top") lines += `${"▔".repeat(trueWidth)}\n`;
 		// else

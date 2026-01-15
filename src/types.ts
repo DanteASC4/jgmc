@@ -411,6 +411,7 @@ export type LineChartOptionsBase = {
 		classes: { [K in keyof (LineChartClasses & LabelClasses)]?: string };
 	};
 
+// This will get cleaned up later
 export type AsciiBarChartOptionsBase = {
 	/**
 	 * Defaults to `"bottom"` if not supplied
@@ -422,6 +423,7 @@ export type AsciiBarChartOptionsBase = {
 	height: number;
 	width: number;
 	colors: AsciiColors;
+	title: string;
 };
 
 export type BarChartNumericalOpts = Prettify<

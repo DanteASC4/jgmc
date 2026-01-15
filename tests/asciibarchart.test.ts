@@ -15,13 +15,14 @@ Deno.test(function asciiBarChartTests() {
 		colors: ["#ff00ff", "#00ffff"],
 	});
 	// console.log(tbc0a);
-	const tbc0b = asciiBarchart({
-		data: [50, 100, 30],
-		barWidth: 5,
-		placement: "bottom",
-		height: 20,
-		width: 20,
-	});
+	// const tbc0b = asciiBarchart({
+	// 	data: [50, 100, 30],
+	// 	barWidth: 5,
+	// 	placement: "bottom",
+	// 	height: 20,
+	// 	width: 20,
+	// 	title: "My Chart",
+	// });
 	// console.log(tbc0b);
 	// const tbc0c = asciiBarchart({
 	// 	data: [50, 100, 30],

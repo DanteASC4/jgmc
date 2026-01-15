@@ -1886,3 +1886,13 @@ I've also been thinking about axis ticks & the whole min/max thing and while it 
 - [ ] Character choice (added but untested)
 - [ ] Datalabels
 - [x] Left/Right placement
+
+# 1/15/2026
+
+I realized partway through that the title of a chart should not be opposite from bars, I was thinking in terms of shapes lol. It belongs at the top regardless of bar placement, as it denotes the chart you're about to see as opposed to being another datapoint.
+
+- [x] Colors
+- [x] Title ~~(text across from placement)~~
+- [ ] Character choice (added but untested)
+- [ ] Datalabels
+- [x] Left/Right placement
