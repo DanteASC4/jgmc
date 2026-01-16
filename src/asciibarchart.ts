@@ -145,7 +145,7 @@ export function asciiBarchart({
 	  50
 	*/
 
-	console.log("constantBarWidth", constantBarWidth);
+	const visibilityChars = ["@", ".", "#", "$", "o"];
 
 	let lines = "";
 
@@ -164,7 +164,7 @@ export function asciiBarchart({
 		if (placement !== "right") lines += "0";
 
 		lines += `${placement === "right" ? autoMax : ""}${"▁".repeat(
-			placement === "top" ? trueWidth : trueWidth - String(autoMax).length,
+			(placement === "top" ? trueWidth : trueWidth - String(autoMax).length) + 1,
 		)}${placement === "right" ? "0" : ""}${placement === "left" ? autoMax : ""}\n`;
 
 		// if (placement === "top") lines += `${"▁".repeat(trueWidth)}\n`;
@@ -207,8 +207,8 @@ export function asciiBarchart({
 					line += colorString(bars[j][i], barColor);
 				} else {
 					if (bars[j].length === i && dataLabels) {
-					  const dataLabelColor = dataLabelColors[j % dataLabelColors.length];
-						const dl =  truncateString(barDatalabels[j], constantBarWidth);
+						const dataLabelColor = dataLabelColors[j % dataLabelColors.length];
+						const dl = truncateString(barDatalabels[j], constantBarWidth);
 						const numSpacesLeft = Math.floor(
 							(constantBarWidth - dl.length) / 2,
 						);
@@ -244,7 +244,7 @@ export function asciiBarchart({
 				line += " ".repeat(trueWidth);
 			} else {
 				const adding = barLines.shift() ?? "";
-				line += `${adding}${" ".repeat(trueWidth - adding.length)}`;
+				line += `${adding}${visibilityChars[i % visibilityChars.length].repeat(trueWidth - adding.length + 1)}`;
 			}
 
 			lines += `${line}\n`;

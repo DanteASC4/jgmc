@@ -9,7 +9,7 @@ Deno.test(function asciiBarChartTests() {
 	const tbc0a = asciiBarchart({
 		data: [50, 100, 30],
 		barWidth: 5,
-		placement: "top",
+		placement: "left",
 		height: 20,
 		width: 20,
 		colors: ["#ff00ff", "#00ffff"],
