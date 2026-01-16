@@ -1,3 +1,4 @@
+import { asPercent } from "../math/common.ts";
 import type { AsciiBarCharacter } from "../types.ts";
 
 export const getChosenChar = (incoming: AsciiBarCharacter): string => {
@@ -90,3 +91,11 @@ export const createHorizontalBar = (
 	width: number,
 	char: string,
 ): string[] => new Array(width).fill(char.repeat(height));
+
+export const literalDataLabel = (v: number, _i: number) => `${v}`;
+
+export const percentageDataLabel = (
+	v: number,
+	_i: number,
+	grandTotal: number,
+) => `${asPercent(v, grandTotal)}%`;

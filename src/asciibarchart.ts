@@ -1,8 +1,10 @@
-import { rgb24 } from "@std/fmt/colors";
+import { bold } from "@std/fmt/colors";
 import {
 	createHorizontalBar,
 	createVerticalBar,
 	getChosenChar,
+	literalDataLabel,
+	percentageDataLabel,
 } from "./ascii-creating/asciibarchart.ts";
 import { colorString, truncateString } from "./ascii-creating/common.ts";
 import { asciiCalcBarDims } from "./math/asciibarchart.ts";
@@ -20,6 +22,8 @@ const AsciiBarChartDefaults = {
 	width: 80,
 	height: 24,
 	color: "white",
+	dataLabels: "literal",
+	dataLabelColors: "white",
 } as const;
 
 export function asciiBarchart({
@@ -32,6 +36,8 @@ export function asciiBarchart({
 	height = AsciiBarChartDefaults.height,
 	colors = [AsciiBarChartDefaults.color],
 	title,
+	dataLabels = AsciiBarChartDefaults.dataLabels,
+	dataLabelColors = [AsciiBarChartDefaults.dataLabelColors],
 }: AsciiBarChartOptions) {
 	const chosenChar = getChosenChar(barCharacter);
 	const autoMax = autoMaxNumerical(data);
@@ -62,6 +68,20 @@ export function asciiBarchart({
 
 	const adjacentSurface =
 		placement === "top" || placement === "bottom" ? trueHeight : trueWidth;
+
+	let barDatalabels: string[] = [];
+
+	if (dataLabels) {
+		if (dataLabels === "literal") {
+			barDatalabels = data.map(literalDataLabel);
+		} else if (dataLabels === "percentage") {
+			const grandTotal = data.slice().reduce((acc, curr) => acc + curr, 0);
+			barDatalabels = data.map((n, i) => percentageDataLabel(n, i, grandTotal));
+		} else if (typeof dataLabels === "function") {
+			// STUB - going to need to revisit this eventually as I don't think this works how I was imaginging it would in terms of allowing additional parameters from users.
+			barDatalabels = data.map(dataLabels);
+		}
+	}
 
 	const tabular = {
 		height,
@@ -120,15 +140,19 @@ export function asciiBarchart({
 	/*
 	0123456789
 	...abc...
+
+	#####
+	  50
 	*/
+
+	console.log("constantBarWidth", constantBarWidth);
 
 	let lines = "";
 
 	if (title && title !== "") {
-	
 		const numSpacesLeft = Math.ceil((trueWidth - title.length) / 2);
 		if (title) {
-			lines += `${" ".repeat(numSpacesLeft)}${truncateString(title, trueWidth - (numSpacesLeft + title.length))}\n`;
+			lines += `${" ".repeat(numSpacesLeft)}${bold(truncateString(title, trueWidth - (numSpacesLeft + title.length)))}\n`;
 		}
 	}
 
@@ -155,17 +179,49 @@ export function asciiBarchart({
 		return base;
 	};
 
+	console.log(data);
+	console.log(barDatalabels);
+
 	if (placement === "top") {
-		for (let i = 0; i < trueHeight; i++) {
+		for (let i = 0; i < trueHeight + 1; i++) {
 			let line = "";
 			for (let j = 0; j < dataPointsAmt; j++) {
 				const barColor = colors[j % colors.length];
 				if (j === 0) line += "▕";
+
+				// if (bars[j].length === i) {
+				// 	const dl = barDatalabels[j];
+				// 	const numSpacesLeft = Math.ceil((barWidth - dl.length) / 2);
+
+				// 	console.log("nsl", numSpacesLeft);
+				// 	const lbl = " ".repeat(numSpacesLeft) + dl;
+				// 	line += "#".repeat(numSpacesLeft) + dl;
+				// } else {
+				// 	console.log(i, j, "spaces:", gap);
+				// 	line += "-".repeat(gap);
+				// }
 				line += " ".repeat(gap);
+
 				// line += (bars[j][i] ?? " ".repeat(constantBarWidth));
-				line += bars[j][i]
-					? colorString(bars[j][i], barColor)
-					: " ".repeat(constantBarWidth);
+				if (bars[j][i]) {
+					line += colorString(bars[j][i], barColor);
+				} else {
+					if (bars[j].length === i && dataLabels) {
+					  const dataLabelColor = dataLabelColors[j % dataLabelColors.length];
+						const dl =  truncateString(barDatalabels[j], constantBarWidth);
+						const numSpacesLeft = Math.floor(
+							(constantBarWidth - dl.length) / 2,
+						);
+						const numSpacesRight =
+							constantBarWidth - (dl.length + numSpacesLeft);
+
+						line += `${" ".repeat(numSpacesLeft)}${colorString(dl, dataLabelColor)}${" ".repeat(numSpacesRight)}`;
+					} else line += " ".repeat(constantBarWidth);
+				}
+				// line += bars[j][i]
+				// 	? colorString(bars[j][i], barColor)
+				// 	: " ".repeat(constantBarWidth);
+
 				if (j === dataPointsAmt - 1) {
 					line += pad(gap);
 				}
@@ -247,6 +303,7 @@ export function asciiBarchart({
 	// console.log(lines);
 	// console.log(rgb24(lines, { r: 225, g: 5, b: 71 }));
 	console.log(lines);
+	// console.log(lines.replaceAll(" ", "."));
 
 	// console.log(annotateBounds(lines));
 
