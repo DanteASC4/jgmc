@@ -12,7 +12,9 @@ import { autoBarWidth } from "./math/barcharts-common.ts";
 import { asPercent } from "./math/common.ts";
 import type { AsciiBarChartOptions } from "./types.ts";
 import { autoMaxNumerical } from "./utils/general-operations.ts";
-import { annotateBounds } from "./utils/misc.ts";
+
+// For Debugging
+const visibilityChars = ["@", ".", "#", "$", "o"];
 
 const AsciiBarChartDefaults = {
 	placement: "top",
@@ -41,10 +43,14 @@ export function asciiBarchart({
 }: AsciiBarChartOptions) {
 	const chosenChar = getChosenChar(barCharacter);
 	const autoMax = autoMaxNumerical(data);
+	const aMaxLen = String(autoMax).length;
 	const dataPointsAmt = data.length;
 	const toporbottom = placement === "top" || placement === "bottom";
 
 	const numGaps = dataPointsAmt + 1;
+
+
+	console.log('width - width * 0.3', width - width * 0.3);
 
 	const trueWidth = toporbottom
 		? numGaps * gap + dataPointsAmt * barWidth
@@ -52,6 +58,12 @@ export function asciiBarchart({
 	const trueHeight = toporbottom
 		? height - height * 0.3
 		: numGaps * gap + dataPointsAmt * barWidth;
+	// const trueWidth = toporbottom
+	// 	? numGaps * gap + dataPointsAmt * barWidth
+	// 	: width - width * 0.3;
+	// const trueHeight = toporbottom
+	// 	? height - height * 0.3
+	// 	: numGaps * gap + dataPointsAmt * barWidth;
 
 	const evenWidth =
 		placement === "top" || placement === "bottom"
@@ -145,7 +157,6 @@ export function asciiBarchart({
 	  50
 	*/
 
-	const visibilityChars = ["@", ".", "#", "$", "o"];
 
 	let lines = "";
 
@@ -163,14 +174,36 @@ export function asciiBarchart({
 	if (placement !== "bottom") {
 		if (placement !== "right") lines += "0";
 
+		// Simplified ternary
+		lines += `${placement === "right" ? autoMax : ""}${"▁".repeat(trueWidth)}${placement === "right" ? "0" : autoMax}\n`;
+
+		/*
+		// Shorter more correct version
+		if(placement === "right") {
+			lines += `${autoMax}${"▁".repeat(trueWidth)}0\n`;
+		} else if(placement === "top") {
+			lines += `${"▁".repeat(trueWidth)}\n`;
+		} else if (placement === "left") {
+			lines += `${"▁".repeat(trueWidth)}${autoMax}\n`;
+		}
+		*/
+
+		/*
+		// Original Big ternary
 		lines += `${placement === "right" ? autoMax : ""}${"▁".repeat(
-			(placement === "top" ? trueWidth : trueWidth - String(autoMax).length) + 1,
+			(placement === "top" ? trueWidth : trueWidth - String(autoMax).length) +
+				1,
 		)}${placement === "right" ? "0" : ""}${placement === "left" ? autoMax : ""}\n`;
 
-		// if (placement === "top") lines += `${"▁".repeat(trueWidth)}\n`;
-		// // if (placement === "top") lines += `${"▔".repeat(trueWidth)}\n`;
-		// else
-		// 	lines += `${"▁".repeat(trueWidth)}${placement === "right" ? "0" : ""}\n`;
+		// Top
+		lines += `${""}${"▁".repeat(trueWidth)}${""}${""}\n`;
+
+		// Right
+		lines += `${autoMax}${"▁".repeat((trueWidth - String(autoMax).length) + 1)}${"0"}${""}\n`;
+
+		// Left
+		lines += `${""}${"▁".repeat((trueWidth - String(autoMax).length) + 1)}${""}${autoMax}\n`;
+		*/
 	}
 
 	const pad = (amt: number) => {
@@ -241,10 +274,10 @@ export function asciiBarchart({
 			line += "▕";
 
 			if (check < offsetGap) {
-				line += " ".repeat(trueWidth);
+				line += " ".repeat(trueWidth + aMaxLen);
 			} else {
 				const adding = barLines.shift() ?? "";
-				line += `${adding}${visibilityChars[i % visibilityChars.length].repeat(trueWidth - adding.length + 1)}`;
+				line += `${adding}${" ".repeat(trueWidth - adding.length + aMaxLen)}`;
 			}
 
 			lines += `${line}\n`;
@@ -261,10 +294,10 @@ export function asciiBarchart({
 			const check = (i % interval) - 1;
 
 			if (check < offsetGap) {
-				line += " ".repeat(trueWidth);
+				line += " ".repeat(trueWidth+aMaxLen);
 			} else {
 				const adding = barLines.shift() ?? "";
-				line += `${" ".repeat(trueWidth - adding.length)}${adding}`;
+				line += `${" ".repeat(trueWidth - adding.length + aMaxLen)}${adding}`;
 			}
 			line += "▏";
 
@@ -293,19 +326,19 @@ export function asciiBarchart({
 	}
 
 	if (placement !== "bottom") {
-		if (placement === "right")
-			lines += `${" ".repeat(trueWidth - String(autoMax).length)}`;
-		else if (placement === "top") lines += `${autoMax}`;
+		// if (placement === "right")
+		// 	lines += `${" ".repeat(trueWidth)}`;
+		if (placement === "top") lines += `${autoMax}`;
 	}
 	// if (placement === "top") lines += `${Math.max(...data)}`;
 
 	console.log("===");
 	// console.log(lines);
 	// console.log(rgb24(lines, { r: 225, g: 5, b: 71 }));
-	console.log(lines);
+	// console.log(lines);
 	// console.log(lines.replaceAll(" ", "."));
 
 	// console.log(annotateBounds(lines));
 
-	return "";
+	return lines;
 }

@@ -1,20 +1,54 @@
 import { assertEquals } from "@std/assert";
-import {
-	createHorizontalBar,
-	createVerticalBar,
-} from "../src/ascii-creating/asciibarchart.ts";
 import { asciiBarchart } from "../src/asciibarchart.ts";
+import { annotateBounds } from "../src/utils/misc.ts";
 
 Deno.test(function asciiBarChartTests() {
+	// console.log(
+	// 	asciiBarchart({
+	// 		data: [50, 100, 30],
+	// 		barWidth: 5,
+	// 		placement: "left",
+	// 		height: 20,
+	// 		width: 20,
+	// 		colors: ["#ff00ff", "#00ffff"],
+	// 	}),
+	// 	"\n---\n",
+	// 	asciiBarchart({
+	// 		data: [50, 100, 30],
+	// 		barWidth: 5,
+	// 		placement: "top",
+	// 		height: 20,
+	// 		width: 20,
+	// 		colors: ["#ff00ff", "#00ffff"],
+	// 	}),
+	// 	"\n---\n",
+	// 	asciiBarchart({
+	// 		data: [50, 100, 30],
+	// 		barWidth: 5,
+	// 		placement: "right",
+	// 		height: 20,
+	// 		width: 20,
+	// 		colors: ["#ff00ff", "#00ffff"],
+	// 	}),
+	// 	"\n---\n",
+	// 	asciiBarchart({
+	// 		data: [50, 100, 30],
+	// 		barWidth: 5,
+	// 		placement: "bottom",
+	// 		height: 20,
+	// 		width: 20,
+	// 		colors: ["#ff00ff", "#00ffff"],
+	// 	}),
+	// );
+
 	const tbc0a = asciiBarchart({
 		data: [50, 100, 30],
 		barWidth: 5,
-		placement: "left",
+		placement: "right",
 		height: 20,
 		width: 20,
 		colors: ["#ff00ff", "#00ffff"],
 	});
-	// console.log(tbc0a);
 	// const tbc0b = asciiBarchart({
 	// 	data: [50, 100, 30],
 	// 	barWidth: 5,
@@ -23,7 +57,6 @@ Deno.test(function asciiBarChartTests() {
 	// 	width: 20,
 	// 	title: "My Chart",
 	// });
-	// console.log(tbc0b);
 	// const tbc0c = asciiBarchart({
 	// 	data: [50, 100, 30],
 	// 	barWidth: 5,
@@ -31,6 +64,11 @@ Deno.test(function asciiBarChartTests() {
 	// 	height: 20,
 	// 	width: 20,
 	// });
+	console.log(tbc0a.replaceAll(" ", "."));
+	// console.log(annotateBounds(tbc0a.replaceAll(" ", "•")));
+	// drawSideBySide([tbc0a.split("\n"), tbc0b.split("\n"), tbc0c.split("\n")]);
+
+	// console.log(tbc0b);
 	// console.log(tbc0c);
 	// const tbc0d = asciiBarchart({
 	// 	data: [50, 100, 30],

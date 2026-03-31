@@ -1896,3 +1896,11 @@ I realized partway through that the title of a chart should not be opposite from
 - [ ] Character choice (added but untested)
 - [ ] Datalabels
 - [x] Left/Right placement
+
+# 3/31/2026
+
+I'm back in the mood for making some charts. I left off on ASCII bar charts, I think I was finishing the different orientations. One thing I thought of to make things easier is some way of inspecting terminal output side by side instead of just logging things and scrolling a bunch.
+
+That being said I don't want to add a big TUI dependency or anything, so I'm gonna try to take a stab at some basic side by side positioning logic via a helper.
+
+Then according to my little task list above (thanks past me) I've gotta finalize character choice & datalabels.
