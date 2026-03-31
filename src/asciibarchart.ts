@@ -13,9 +13,6 @@ import { asPercent } from "./math/common.ts";
 import type { AsciiBarChartOptions } from "./types.ts";
 import { autoMaxNumerical } from "./utils/general-operations.ts";
 
-// For Debugging
-const visibilityChars = ["@", ".", "#", "$", "o"];
-
 const AsciiBarChartDefaults = {
 	placement: "top",
 	barCharacter: "solid",
@@ -49,34 +46,17 @@ export function asciiBarchart({
 
 	const numGaps = dataPointsAmt + 1;
 
-
-	console.log('width - width * 0.3', width - width * 0.3);
-
 	const trueWidth = toporbottom
 		? numGaps * gap + dataPointsAmt * barWidth
 		: width - width * 0.3;
 	const trueHeight = toporbottom
 		? height - height * 0.3
 		: numGaps * gap + dataPointsAmt * barWidth;
-	// const trueWidth = toporbottom
-	// 	? numGaps * gap + dataPointsAmt * barWidth
-	// 	: width - width * 0.3;
-	// const trueHeight = toporbottom
-	// 	? height - height * 0.3
-	// 	: numGaps * gap + dataPointsAmt * barWidth;
 
 	const evenWidth =
 		placement === "top" || placement === "bottom"
 			? Math.floor(autoBarWidth(trueWidth, dataPointsAmt))
 			: Math.floor(autoBarWidth(trueHeight, dataPointsAmt));
-
-	// const gap = roundToHalf(
-	//   placement === "top" || placement === "bottom"
-	//     ? (autoGap(width, dataPointsAmt))
-	//     : (autoGap(height, dataPointsAmt)),
-	// ) + 1
-
-	const trueGap = gap / 0.5;
 
 	const adjacentSurface =
 		placement === "top" || placement === "bottom" ? trueHeight : trueWidth;
@@ -95,20 +75,6 @@ export function asciiBarchart({
 		}
 	}
 
-	const tabular = {
-		height,
-		width,
-		trueHeight,
-		trueWidth,
-		autoMax,
-		adjacentSurface,
-		evenWidth,
-		gap,
-		trueGap,
-		dataPointsAmt,
-	};
-	console.table(tabular);
-
 	const bars: string[][] = [];
 	let constantBarWidth = evenWidth;
 
@@ -125,95 +91,71 @@ export function asciiBarchart({
 			barWidth,
 		);
 		constantBarWidth = toporbottom ? trueBarWidth : trueBarHeight;
-		// console.log(
-		// 	"trueDim",
-		// 	trueDim,
-		// 	"trueBarHeight",
-		// 	trueBarHeight,
-		// 	"trueBarWidth",
-		// 	trueBarWidth,
-		// 	"constantBarWidth",
-		// 	constantBarWidth,
-		// );
 
 		const bar = toporbottom
 			? createVerticalBar(trueBarHeight, trueBarWidth, chosenChar)
 			: createHorizontalBar(trueBarWidth, trueBarHeight, chosenChar);
-		// if (placement === "bottom") bar = bar.reverse();
-		// console.log(bar);
 		bars.push(bar);
-
-		// console.log(datap);
-		// console.log(trueBarHeight, trueBarWidth);
-		// console.log(createVerticalBar(trueBarHeight, trueBarWidth, chosenChar));
-		// console.log("");
 	}
-
-	/*
-	0123456789
-	...abc...
-
-	#####
-	  50
-	*/
-
 
 	let lines = "";
 
 	if (title && title !== "") {
-		const numSpacesLeft = Math.ceil((trueWidth - title.length) / 2);
-		if (title) {
-			lines += `${" ".repeat(numSpacesLeft)}${bold(truncateString(title, trueWidth - (numSpacesLeft + title.length)))}\n`;
-		}
+		const safeTitle = truncateString(title, Math.max(1, trueWidth));
+		const numSpacesLeft = Math.max(
+			0,
+			Math.ceil((trueWidth - safeTitle.length) / 2),
+		);
+		lines += `${" ".repeat(numSpacesLeft)}${bold(safeTitle)}\n`;
 	}
 
 	if (placement === "bottom") {
 		lines += `${autoMax}\n`;
 	}
 
+	// Axis line building
 	if (placement !== "bottom") {
 		if (placement !== "right") lines += "0";
 
-		// Simplified ternary
 		lines += `${placement === "right" ? autoMax : ""}${"▁".repeat(trueWidth)}${placement === "right" ? "0" : autoMax}\n`;
-
-		/*
-		// Shorter more correct version
-		if(placement === "right") {
-			lines += `${autoMax}${"▁".repeat(trueWidth)}0\n`;
-		} else if(placement === "top") {
-			lines += `${"▁".repeat(trueWidth)}\n`;
-		} else if (placement === "left") {
-			lines += `${"▁".repeat(trueWidth)}${autoMax}\n`;
-		}
-		*/
-
-		/*
-		// Original Big ternary
-		lines += `${placement === "right" ? autoMax : ""}${"▁".repeat(
-			(placement === "top" ? trueWidth : trueWidth - String(autoMax).length) +
-				1,
-		)}${placement === "right" ? "0" : ""}${placement === "left" ? autoMax : ""}\n`;
-
-		// Top
-		lines += `${""}${"▁".repeat(trueWidth)}${""}${""}\n`;
-
-		// Right
-		lines += `${autoMax}${"▁".repeat((trueWidth - String(autoMax).length) + 1)}${"0"}${""}\n`;
-
-		// Left
-		lines += `${""}${"▁".repeat((trueWidth - String(autoMax).length) + 1)}${""}${autoMax}\n`;
-		*/
 	}
 
+	// I don't remember why I made this, but I think I was trying to cheat spacing since u2009 is a half space lol. I checked if the ".5" is hit with a couple datasets but it wasn't hit, though I'm not confident it's never hit.
+	// Leaving for now
 	const pad = (amt: number) => {
 		let base = " ".repeat(amt);
 		if (String(amt).includes(".5")) base += "\u2009";
 		return base;
 	};
 
-	console.log(data);
-	console.log(barDatalabels);
+	const shouldRenderDataLabels = Boolean(
+		dataLabels && barDatalabels.length > 0,
+	);
+	const sideLabelWidth = shouldRenderDataLabels
+		? Math.max(aMaxLen, ...barDatalabels.map((label) => label.length)) + 1
+		: aMaxLen;
+	const createCenteredDataLabel = (idx: number) => {
+		const dataLabelColor = dataLabelColors[idx % dataLabelColors.length];
+		const dl = truncateString(barDatalabels[idx], constantBarWidth);
+		const numSpacesLeft = Math.floor((constantBarWidth - dl.length) / 2);
+		const numSpacesRight = constantBarWidth - (dl.length + numSpacesLeft);
+
+		return `${" ".repeat(numSpacesLeft)}${colorString(dl, dataLabelColor)}${" ".repeat(numSpacesRight)}`;
+	};
+	const createSideDataLabel = (idx: number) => {
+		const dataLabelColor = dataLabelColors[idx % dataLabelColors.length];
+		const label = barDatalabels[idx];
+		const trailingSpaces = Math.max(0, sideLabelWidth - label.length);
+
+		return `${colorString(label, dataLabelColor)}${" ".repeat(trailingSpaces)}`;
+	};
+	const createSideDataLabelBeforeBar = (idx: number) => {
+		const dataLabelColor = dataLabelColors[idx % dataLabelColors.length];
+		const label = barDatalabels[idx];
+		const leadingSpaces = Math.max(0, sideLabelWidth - label.length);
+
+		return `${" ".repeat(leadingSpaces)}${colorString(label, dataLabelColor)}`;
+	};
 
 	if (placement === "top") {
 		for (let i = 0; i < trueHeight + 1; i++) {
@@ -221,39 +163,15 @@ export function asciiBarchart({
 			for (let j = 0; j < dataPointsAmt; j++) {
 				const barColor = colors[j % colors.length];
 				if (j === 0) line += "▕";
-
-				// if (bars[j].length === i) {
-				// 	const dl = barDatalabels[j];
-				// 	const numSpacesLeft = Math.ceil((barWidth - dl.length) / 2);
-
-				// 	console.log("nsl", numSpacesLeft);
-				// 	const lbl = " ".repeat(numSpacesLeft) + dl;
-				// 	line += "#".repeat(numSpacesLeft) + dl;
-				// } else {
-				// 	console.log(i, j, "spaces:", gap);
-				// 	line += "-".repeat(gap);
-				// }
 				line += " ".repeat(gap);
 
-				// line += (bars[j][i] ?? " ".repeat(constantBarWidth));
 				if (bars[j][i]) {
 					line += colorString(bars[j][i], barColor);
 				} else {
-					if (bars[j].length === i && dataLabels) {
-						const dataLabelColor = dataLabelColors[j % dataLabelColors.length];
-						const dl = truncateString(barDatalabels[j], constantBarWidth);
-						const numSpacesLeft = Math.floor(
-							(constantBarWidth - dl.length) / 2,
-						);
-						const numSpacesRight =
-							constantBarWidth - (dl.length + numSpacesLeft);
-
-						line += `${" ".repeat(numSpacesLeft)}${colorString(dl, dataLabelColor)}${" ".repeat(numSpacesRight)}`;
+					if (bars[j].length === i && shouldRenderDataLabels) {
+						line += createCenteredDataLabel(j);
 					} else line += " ".repeat(constantBarWidth);
 				}
-				// line += bars[j][i]
-				// 	? colorString(bars[j][i], barColor)
-				// 	: " ".repeat(constantBarWidth);
 
 				if (j === dataPointsAmt - 1) {
 					line += pad(gap);
@@ -271,13 +189,23 @@ export function asciiBarchart({
 		for (let i = 0; i < trueHeight; i++) {
 			let line = "";
 			const check = (i % interval) - 1;
+			const currentBarIdx = Math.floor(i / interval);
+			const barColor = colors[currentBarIdx % colors.length];
+			const isLabelRow =
+				shouldRenderDataLabels &&
+				currentBarIdx < dataPointsAmt &&
+				i % interval === gap + Math.floor(constantBarWidth / 2);
 			line += "▕";
 
 			if (check < offsetGap) {
-				line += " ".repeat(trueWidth + aMaxLen);
+				line += " ".repeat(trueWidth + sideLabelWidth);
 			} else {
 				const adding = barLines.shift() ?? "";
-				line += `${adding}${" ".repeat(trueWidth - adding.length + aMaxLen)}`;
+				line += colorString(adding, barColor);
+				line += isLabelRow
+					? createSideDataLabel(currentBarIdx)
+					: " ".repeat(sideLabelWidth);
+				line += " ".repeat(trueWidth - adding.length);
 			}
 
 			lines += `${line}\n`;
@@ -292,12 +220,22 @@ export function asciiBarchart({
 		for (let i = 0; i < trueHeight; i++) {
 			let line = "";
 			const check = (i % interval) - 1;
+			const currentBarIdx = Math.floor(i / interval);
+			const barColor = colors[currentBarIdx % colors.length];
+			const isLabelRow =
+				shouldRenderDataLabels &&
+				currentBarIdx < dataPointsAmt &&
+				i % interval === gap + Math.floor(constantBarWidth / 2);
 
 			if (check < offsetGap) {
-				line += " ".repeat(trueWidth+aMaxLen);
+				line += " ".repeat(trueWidth + sideLabelWidth);
 			} else {
 				const adding = barLines.shift() ?? "";
-				line += `${" ".repeat(trueWidth - adding.length + aMaxLen)}${adding}`;
+				line += " ".repeat(trueWidth - adding.length);
+				line += isLabelRow
+					? createSideDataLabelBeforeBar(currentBarIdx)
+					: " ".repeat(sideLabelWidth);
+				line += colorString(adding, barColor);
 			}
 			line += "▏";
 
@@ -306,12 +244,21 @@ export function asciiBarchart({
 	}
 
 	if (placement === "bottom") {
-		for (let i = trueHeight; i >= 0; i--) {
+		for (let i = Math.floor(trueHeight); i >= 0; i--) {
 			let line = "";
 			for (let j = 0; j < dataPointsAmt; j++) {
+				const barColor = colors[j % colors.length];
 				if (j === 0) line += "▕";
-				line +=
-					" ".repeat(gap) + (bars[j].at(i) ?? " ".repeat(constantBarWidth));
+				line += " ".repeat(gap);
+				if (bars[j].at(i)) {
+					line += colorString(bars[j].at(i) ?? "", barColor);
+				} else if (bars[j].length === i && shouldRenderDataLabels) {
+					line += createCenteredDataLabel(j);
+				} else {
+					line += " ".repeat(constantBarWidth);
+				}
+				// line +=
+				// 	" ".repeat(gap) + (bars[j].at(i) ?? " ".repeat(constantBarWidth));
 				if (j === dataPointsAmt - 1) {
 					line += pad(gap);
 				}
@@ -331,14 +278,6 @@ export function asciiBarchart({
 		if (placement === "top") lines += `${autoMax}`;
 	}
 	// if (placement === "top") lines += `${Math.max(...data)}`;
-
-	console.log("===");
-	// console.log(lines);
-	// console.log(rgb24(lines, { r: 225, g: 5, b: 71 }));
-	// console.log(lines);
-	// console.log(lines.replaceAll(" ", "."));
-
-	// console.log(annotateBounds(lines));
 
 	return lines;
 }

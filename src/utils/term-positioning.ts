@@ -16,7 +16,7 @@ export function drawSideBySide(
 	let out = "";
 
 	for (let i = 0; i < maxRows; i++) {
-		for(const col of colValues) {
+		for (const col of colValues) {
 			if (col.length <= i) continue;
 			const cell = col[i];
 			const padded = padOrTrim(cell, paneWidth);

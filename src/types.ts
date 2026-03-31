@@ -424,7 +424,10 @@ export type AsciiBarChartOptionsBase = {
 	width: number;
 	colors: AsciiColors;
 	title: string;
-	dataLabels: "literal" | "percentage" | ((v: number, i: number, ...args: unknown[]) => string);
+	dataLabels:
+		| "literal"
+		| "percentage"
+		| ((v: number, i: number, ...args: unknown[]) => string);
 	dataLabelColors: AsciiColors;
 };
 

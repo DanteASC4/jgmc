@@ -55,8 +55,8 @@ export const colorString = (str: string, color: AsciiColors[number]) => {
 };
 
 export const truncateString = (str: string, maxLength: number) => {
-  if (str.length > maxLength) {
-    return `${str.slice(0, maxLength - 1)}…`;
-  }
-  return str;
-}
+	if (str.length > maxLength) {
+		return `${str.slice(0, maxLength - 1)}…`;
+	}
+	return str;
+};

@@ -1894,7 +1894,7 @@ I realized partway through that the title of a chart should not be opposite from
 - [x] Colors
 - [x] Title ~~(text across from placement)~~
 - [ ] Character choice (added but untested)
-- [ ] Datalabels
+- [x] Datalabels
 - [x] Left/Right placement
 
 # 3/31/2026
@@ -1904,3 +1904,7 @@ I'm back in the mood for making some charts. I left off on ASCII bar charts, I t
 That being said I don't want to add a big TUI dependency or anything, so I'm gonna try to take a stab at some basic side by side positioning logic via a helper.
 
 Then according to my little task list above (thanks past me) I've gotta finalize character choice & datalabels.
+
+**Update**
+
+I've got datalabels working & colors working for all orientations! Going to add some more tests, and potentially add a `axisColor` option.

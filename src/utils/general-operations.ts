@@ -9,7 +9,9 @@ export const stackedToSummed = (arr: number[][]) => {
 };
 
 export const autoMaxNumerical = (data: number[]) => {
-	return roundToTen(Math.max(...data));
+	const max = Math.max(...data);
+	if (max > 0 && max <= 4) return 10;
+	return roundToTen(max);
 };
 export const autoMinNumerical = (data: number[]) => {
 	return roundToTen(Math.min(...data));

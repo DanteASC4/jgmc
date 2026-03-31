@@ -10,7 +10,11 @@
       "command": "deno test --watch --allow-write --allow-read --allow-env tests/asciibarchart.test.ts",
       "description": "Runs a single test file in watch mode"
     },
-    "cov": "deno test tests/ --allow-write --allow-read --coverage=coverage",
+    "devonew": {
+      "command": "deno test --watch --allow-write --allow-read --allow-env tests/asciibarchart.test.ts",
+      "description": "Runs a single test file in watch mode"
+    },
+    "cov": "deno test tests/ --allow-env --allow-write --allow-read --coverage=coverage",
     "covdev": {
       "command": "watchexec --restart --exts ts -- deno task cov",
       "description": "Uses watchexec to restart coverage testing on change"
