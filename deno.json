@@ -7,11 +7,11 @@
     },
     "dev": "deno test --allow-write --allow-read --allow-env tests",
     "devone": {
-      "command": "deno test --watch --allow-write --allow-read --allow-env tests/asciibarchart.test.ts",
+      "command": "deno test --watch --allow-write --allow-read --allow-env tests/ascii_tinker.test.ts",
       "description": "Runs a single test file in watch mode"
     },
     "devonew": {
-      "command": "deno test --watch --allow-write --allow-read --allow-env tests/asciibarchart.test.ts",
+      "command": "deno test --watch --allow-write --allow-read --allow-env tests/ascii_tinker.test.ts",
       "description": "Runs a single test file in watch mode"
     },
     "cov": "deno test tests/ --allow-env --allow-write --allow-read --coverage=coverage",

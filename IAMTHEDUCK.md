@@ -1908,3 +1908,31 @@ Then according to my little task list above (thanks past me) I've gotta finalize
 **Update**
 
 I've got datalabels working & colors working for all orientations! Going to add some more tests, and potentially add a `axisColor` option.
+
+
+# 4/1/2026
+
+So I've pretty much got the `asciiBarchart` working! But I'm at that point where I feel I could keep adding more to it.
+
+- [x] Colors
+- [x] Title ~~(text across from placement)~~
+- [x] Character choice (added but untested)
+- [x] Datalabels
+- [x] Left/Right placement
+
+For example, the above `axisColor` option, and I could add gradients too (yes terminals can show gradients!). But, I can't get too sucked into that because those rabbit holes really have no end in sight haha.
+
+I also had a lot of fun making it, I've always lived in the terminal as much as I could so I definitely want to cater to terminal output, but I think for now I'll go back & continue with SVGs. Even my own use cases would better utilize SVG output as of now. That being said I will revisit ASCII output again, and would like to greatly expand upon it! I think since there's more standardization I could do for ASCII stuff, but I don't want to focus on that now, I won't document it quite yet & it won't get it's own release. It will be included in the next release but will remain experimental for now & as such won't get docs yet.
+
+That being said, what's the next chart type that I'll focus on? There's plenty of options, but I think what I want to do next are `pie` & `donut` charts! They should be quite similar.
+
+That being said the function names will be `donutchart` & `piechart`. Which altogether would be:
+
+- `barchart`
+- `barchartStacked`
+- `linechart`
+- `piechart`
+- `donutchart`
+- `asciiBarchart`
+
+Let's go!
