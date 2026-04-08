@@ -1936,3 +1936,15 @@ That being said the function names will be `donutchart` & `piechart`. Which alto
 - `asciiBarchart`
 
 Let's go!
+
+# 4/8/2026
+
+After loads of tinkering and research I've nailed how to create perfect slices with the `d` attribute of a `<path>`!! The `A` command is pretty neat. Learned a bit about circles & SVGs capabilities.
+
+I was tempted to take a shortcut here and there, but I'm glad I didn't. Not only should this be quite performant, but it also keeps things consistent & allows for a high degree of control.
+
+That being said I have what I need to make the `piechart` function, but the `donutchart` will need some additional work.
+
+So before getting started here I'm going to figure that one out too since I think it should be an extension of what I have already!
+
+I whipped up an SVG workspace for tinkering with things, I think as part of the next 'docs' update I might include it as a 'playground' of sorts. Or maybe later I'll make it nicer & for now perhaps I'll include it in the repo. Not super important, back to tinkering!
