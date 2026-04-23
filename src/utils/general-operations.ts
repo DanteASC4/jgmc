@@ -13,6 +13,7 @@ export const autoMaxNumerical = (data: number[]) => {
 	if (max > 0 && max <= 4) return 10;
 	return roundToTen(max);
 };
+
 export const autoMinNumerical = (data: number[]) => {
 	return roundToTen(Math.min(...data));
 };

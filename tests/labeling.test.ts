@@ -7,7 +7,7 @@ import { buildGalleryPage, type SaveablePairs } from "./helpers.ts";
 
 const pairs: SaveablePairs = [];
 
-Deno.test(function miscTests() {
+Deno.test(function labelsTests() {
 	const t0 = barchart({
 		data: [50, 100, 30],
 		labels: ["1st", "2nd", "3rd"],

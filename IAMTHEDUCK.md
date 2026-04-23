@@ -1948,3 +1948,95 @@ That being said I have what I need to make the `piechart` function, but the `don
 So before getting started here I'm going to figure that one out too since I think it should be an extension of what I have already!
 
 I whipped up an SVG workspace for tinkering with things, I think as part of the next 'docs' update I might include it as a 'playground' of sorts. Or maybe later I'll make it nicer & for now perhaps I'll include it in the repo. Not super important, back to tinkering!
+
+**Update**
+
+And I was right! Making it a donut wasn't too much more difficult. Now that I've got that process down time to start building the actual chart making functions!
+
+# 4/14/2026
+
+So I got started on implementing `piechart` & `donutchart` and realized I forgot something....... Label calculation!! Those'd be in the center of the slices, so I'm hoping it won't be too crazy of a calculation to figure out. Welp, off to do that!
+
+
+**Update**
+
+Wow this is far from simple..... Time for some mathing & learning!
+
+# 4/23/2026
+
+Well that was difficult! Math is cool, that was unexpectedly more complicated than I imagine, but in a fascinating way. Centroids! One small issue is that for pie slices greater than 50% of the pie, the centroid gets closer to the center, as the arc passes 180 deg. So I will likely have to figure out how to offset it directionally away from the center of the pie, in the direction that would be halfway through the large arc... Back to tinkering! 
+
+**Update**
+
+As I was continuing on the implementation for the `piechart` function, I ran into the gradient portion. Of course I want to support gradient backgrounds here, but two things:
+- I'm not sure how they'll look as a fill color, in terms of placement. I wonder if I would need to align them coordinate wise to where the slice is... Which'd be annoying.
+- Right now I only have linear gradients implemented, and this is for a circular chart. Time to add radial gradients to the to-do list!
+
+It'll probably take a bit before I get to radial graidents because I think gradients themselves are yet another (fun) rabbit hole. I quite like how I've implemented them currently as well so I'm not rushing to change that greatly.
+
+That being said I think my current plan of action is roughly as follows:
+- implement `piechart` & options
+- implement `donutchart` & options
+- update docs
+    - also update underlying docs framework
+- new release
+
+Then from there I think I will go and do some refinement + make the library as a whole react-friendly. Anyway, back to `piechart`! Also as for 'refinement' checkout the `TODO.md` file.
+
+**Update**
+
+So as I was continuing with the `piechart` implementation I ran into another thing to consider. That being that in my current setup for creating slices I use an SVG circle element. I wonder if there's a way to do things without needing an SVG circle.
+
+It's used in two parts of the calculation process 
+- getting the total circle length (that all  slices would take up) `circle.getTotalLength()`
+- getting points along that cirlce for cutting into slices `circle.getPointAtLength()`
+
+It would be a bit of work but would save on having to create this alignment circle that is only used for calculations and not actually part of the final chart.
+
+One thing I need to be mindful of is mixing of units. But this sounds like something that should be math-able...
+
+Ok yeah a few quick google searchs later & the circumference has more than one simple formula. The `getTotalLength` method is also not just for circles, it's use lies in that it can be used for any `<path>` like element. But for this case, since we'll always be working with a perfect circle I think we can calculate it manually.
+
+Formulas:
+- `C = πd`
+    - `d` is the diameter
+- `C = 2πr`
+    - `r` is the radius
+
+The `getPointAtLength` though I'm not sure about.
+
+Ha, as I write this I'm doing a few more checks here & there, and of course calculating the `getPointAtLength` is doable. Except unfortunately it seems not simple, fortunately on the other hand the math involves calculating an arc. Ha!!! I've got this! Pausing implementation yet again for a hopefully brief visit to tinkering land. It's 1000% worth doing since I'm 10,000,000,000% sure it will be more performant to do a bit of math than instantiation a whole SVG shape!
+
+One minor note to myself - I tried logging the calculation result of `2πr` & it appears to be off by `-0.4px` compared to the result of `circle.getTotalLength()`. I think this could be due to minor differences in floating point precision since I do some rounding among other things, and `0.4px` is not a worrying amount. But want to make note of this here in case I go crazy with what should be correct looking wrong later.
+
+**Update**
+
+A math only version was actually really straightforward to implement! It was really just the two places I was using those methods, and the result is visually identical. 
+
+Back to the implementation!
+
+**Update**
+And I'm instantly back here to justify another decision.
+
+So for the calculation(s) I need the radius of the pie chart's underlying circle, but I don't want to make the user think about that. So I'll just derive it from the given dimensions, which makes sense!
+
+Except I thought - "should I use the height or width?" and I realized for both a **pie** and **donut** chart the height & width should be the same. There's no such thing as an elliptical pie/donut chart. I mean, maybe I could make that work somehow & create a salvador dali like chart buuuuuuuuut that doesn't sound practical.
+
+Which makes me think, for these two charts I think instead of taking a `height` & `width` as options, I'll take a `size` option & use that!
+
+One other thing so I don't forget!
+
+These two charts have another option unique to them - true center label! What's that mean? Well I've already prepared the stuff needed for data labels on the slices themselves, but I mean the literal center of the pie/donut! Like this:
+
+```
+    * * *      
+  *        *  
+ *          *
+ *     #    *
+ *          *
+  *        *
+    * * *  
+```
+
+That seems like it'd be quite useful if you wanted to show like a 'grand total' or some other thing! Will add!
+I also gotta look at the math for slice center calcs & make sure I'm not doing anything extra / redundant.

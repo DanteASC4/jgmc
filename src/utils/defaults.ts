@@ -5,6 +5,11 @@ export const BarChartDefaults = {
 	placement: "bottom",
 } as const;
 
+export const PieChartDefaults = {
+	size: 300,
+	padding: 15,
+} as const;
+
 export const LineChartDefaults = {
 	min: 0,
 	height: 200,

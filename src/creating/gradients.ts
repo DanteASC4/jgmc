@@ -95,7 +95,7 @@ export const createBarChartMask = (bars: SVGElement[]) => {
 		mask.appendChild(maskBar);
 
 		// Cuts down on end payload size
-		if (maskBar.getAttribute("title")) maskBar.removeAttribute("title");
+		// if (maskBar.getAttribute("title")) maskBar.removeAttribute("title");
 	}
 
 	return [maskId, mask] as const;
@@ -116,13 +116,40 @@ export const createLinesMask = (lines: SVGPathElement[]) => {
 	mask.appendChild(bg);
 
 	for (const line of lines) {
-		// Shouldn't have children, and asserting since it should only ever be rects
+		// Shouldn't have children
 		const maskLine = line.cloneNode() as unknown as (typeof lines)[number];
 		maskLine.setAttribute("stroke", "#ffffff");
 		mask.appendChild(maskLine);
 
 		// Cuts down on end payload size
 		// if (maskLine.getAttribute("title")) maskLine.removeAttribute("title");
+	}
+
+	return [maskId, mask] as const;
+};
+
+export const createPathsMask = (paths: SVGPathElement[]) => {
+	const maskId = randId();
+	const mask = createSVGElement("mask");
+	mask.id = maskId;
+
+	const bg = createSVGElement("rect");
+	bg.setAttribute("x", "0");
+	bg.setAttribute("y", "0");
+	bg.setAttribute("width", "100%");
+	bg.setAttribute("height", "100%");
+	bg.setAttribute("fill", "#000000");
+
+	mask.appendChild(bg);
+
+	for (const path of paths) {
+		// Shouldn't have children
+		const maskPath = path.cloneNode() as unknown as (typeof paths)[number];
+		maskPath.setAttribute("fill", "#ffffff");
+		mask.appendChild(maskPath);
+
+		// Cuts down on end payload size
+		// if (maskPath.getAttribute("title")) maskPath.removeAttribute("title");
 	}
 
 	return [maskId, mask] as const;

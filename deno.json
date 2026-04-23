@@ -7,12 +7,12 @@
     },
     "dev": "deno test --allow-write --allow-read --allow-env tests",
     "devone": {
-      "command": "deno test --watch --allow-write --allow-read --allow-env tests/ascii_tinker.test.ts",
+      "command": "deno test --watch --allow-write --allow-read --allow-env tests/piechart.test.ts",
       "description": "Runs a single test file in watch mode"
     },
-    "devonew": {
-      "command": "deno test --watch --allow-write --allow-read --allow-env tests/ascii_tinker.test.ts",
-      "description": "Runs a single test file in watch mode"
+    "testone": {
+      "command": "deno test --allow-write --allow-read --allow-env tests/piechart.test.ts",
+      "description": "Runs a single test file once"
     },
     "cov": "deno test tests/ --allow-env --allow-write --allow-read --coverage=coverage",
     "covdev": {
@@ -29,7 +29,7 @@
     },
     "examplebuild": {
       "command": "BUILD=true deno run -A scripts/build_npm.ts 0.0.1",
-      "description": "Example command to build the npm package with a specific version"
+      "description": "NOT MEANT TO BE RUN! This is an example command to build the npm package with a specific version"
     }
   },
   "imports": {

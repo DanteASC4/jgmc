@@ -96,6 +96,42 @@ export type BarChartClasses = {
 	barGroupClass: string;
 };
 
+export type PieChartClasses = {
+	/**
+	 * Attached to the parent `SVG` element
+	 */
+	parentClass: string;
+	/**
+	 * Attached to each individual slice `<path ... />` element
+	 */
+	sliceClass: string;
+	// TODO: Determine if `sliceGroupClass` needed
+	/**
+	 * Attached to the parent `<g>` element which contains the bar elements
+	 */
+	sliceGroupClass: string;
+	/**
+	 * Attached to the centered `<text>` element (if `centerLabel` option supplied)
+	 */
+	centerLabelClass: string;
+};
+
+export type DonutChartClasses = {
+	/**
+	 * Attached to the parent `SVG` element
+	 */
+	parentClass: string;
+	/**
+	 * Attached to each individual slice `<path ... />` element
+	 */
+	sliceClass: string;
+	// TODO: Determine if `sliceGroupClass` needed
+	/**
+	 * Attached to the parent `<g>` element which contains the bar elements
+	 */
+	// sliceGroupClass: string;
+};
+
 export type LineChartClasses = {
 	/**
 	 * Added to resulting `<path>` elements
@@ -251,6 +287,7 @@ export type ImageLabel = {
 	width?: number;
 };
 
+// TODO rename "Labels" -> "LabelOptions"
 export type Labels = {
 	/**
 	 * Defaults to `#ffffff`
@@ -309,7 +346,7 @@ export type ManyLinearGradientOptions = {
 	gradientDirection: LinearGradientDirection;
 };
 
-export type BarChartStyleOptions = {
+export type GeneralChartStyleOptions = {
 	/**
 	 * Used as the "fill" on resulting bars.
 	 * Defaults to `["#ffffff"]` if not supplied.
@@ -361,9 +398,39 @@ export type BarChartOptionsBase = {
 	// classes: BarChartClasses & LabelClasses;
 } & LinearGradientOptions & // & BarChartClasses
 	Labels &
-	BarChartStyleOptions &
+	GeneralChartStyleOptions &
 	ChartOptions & {
 		classes: { [K in keyof (BarChartClasses & LabelClasses)]?: string };
+	};
+
+type CircleChartCenterLabelOptions = {
+	centerLabel: 'sum' | string;
+	centerLabelColor: string;
+}
+
+export type PieChartOptionsBase = {
+	/**
+	 * When not supplied, defaults to 300.
+	 */
+	size:number;
+	padding: number;
+} & LinearGradientOptions &
+	Labels & CircleChartCenterLabelOptions &
+	GeneralChartStyleOptions &
+	Omit<ChartOptions, "width" | "height"> & {
+		classes: { [K in keyof (PieChartClasses & LabelClasses)]?: string };
+	};
+
+export type DonutChartOptionsBase = {
+	/**
+	 * When not supplied, defaults to 300.
+	 */
+	size: number;
+} & LinearGradientOptions &
+	Labels &
+	GeneralChartStyleOptions &
+	Omit<ChartOptions, "width" | "height"> & {
+		classes: { [K in keyof (DonutChartClasses & LabelClasses)]?: string };
 	};
 
 export type LineChartOptionsBase = {
@@ -431,6 +498,7 @@ export type AsciiBarChartOptionsBase = {
 	dataLabelColors: AsciiColors;
 };
 
+// TODO rename `Opts` -> `Options`
 export type BarChartNumericalOpts = Prettify<
 	Optional<BarChartOptionsBase> & {
 		/**
@@ -440,6 +508,7 @@ export type BarChartNumericalOpts = Prettify<
 	}
 >;
 
+// TODO rename `Opts` -> `Options`
 export type BarChartStackedOpts = Prettify<
 	Optional<BarChartOptionsBase> & {
 		/**
@@ -449,6 +518,25 @@ export type BarChartStackedOpts = Prettify<
 	}
 >;
 
+export type PieChartOptions = Prettify<
+	Optional<PieChartOptionsBase> & {
+		/**
+		 * A single array of numbers, each number representing a slice of the pie.
+		 */
+		readonly data: number[];
+	}
+>;
+
+export type DonutChartOptions = Prettify<
+	Optional<DonutChartOptionsBase> & {
+		/**
+		 * A single array of numbers, each number representing a slice of the pie.
+		 */
+		readonly data: number[];
+	}
+>;
+
+// STUB - is this even used anywhere?
 export type BarChartOptions = BarChartNumericalOpts | BarChartStackedOpts;
 
 export type LineChartOptions = Prettify<

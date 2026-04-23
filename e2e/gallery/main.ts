@@ -52,6 +52,11 @@ app.get('/', (c) => {
         <a href="./out/linechart.html"> Line Chart </a>
         <a href="./out/linechartextras.html"> Line Chart Extras </a>
         <br />
+
+        <br />
+        <a href="./out/piechart.html"> Pie Chart Docs Examples </a>
+        <a href="./out/piechart.html"> Pie Chart </a>
+        <br />
         <a href="./out/tinker.html"> Tinker </a>
       </body>
     </html>`);
