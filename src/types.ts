@@ -129,7 +129,11 @@ export type DonutChartClasses = {
 	/**
 	 * Attached to the parent `<g>` element which contains the bar elements
 	 */
-	// sliceGroupClass: string;
+	sliceGroupClass: string;
+	/**
+	 * Attached to the centered `<text>` element (if `centerLabel` option supplied)
+	 */
+	centerLabelClass: string;
 };
 
 export type LineChartClasses = {
@@ -404,18 +408,22 @@ export type BarChartOptionsBase = {
 	};
 
 type CircleChartCenterLabelOptions = {
-	centerLabel: 'sum' | string;
+	centerLabel: "sum" | string;
 	centerLabelColor: string;
-}
+};
 
 export type PieChartOptionsBase = {
 	/**
-	 * When not supplied, defaults to 300.
+	 * Defaults to `300`
 	 */
-	size:number;
+	size: number;
+	/**
+	 * Defaults to `15`
+	 */
 	padding: number;
 } & LinearGradientOptions &
-	Labels & CircleChartCenterLabelOptions &
+	Labels &
+	CircleChartCenterLabelOptions &
 	GeneralChartStyleOptions &
 	Omit<ChartOptions, "width" | "height"> & {
 		classes: { [K in keyof (PieChartClasses & LabelClasses)]?: string };
@@ -423,11 +431,16 @@ export type PieChartOptionsBase = {
 
 export type DonutChartOptionsBase = {
 	/**
-	 * When not supplied, defaults to 300.
+	 * Defaults to `300`
 	 */
 	size: number;
+	/**
+	 * Defaults to `15`
+	 */
+	padding: number;
 } & LinearGradientOptions &
 	Labels &
+	CircleChartCenterLabelOptions &
 	GeneralChartStyleOptions &
 	Omit<ChartOptions, "width" | "height"> & {
 		classes: { [K in keyof (DonutChartClasses & LabelClasses)]?: string };

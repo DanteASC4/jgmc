@@ -10,6 +10,11 @@ export const PieChartDefaults = {
 	padding: 15,
 } as const;
 
+export const DonutChartDefaults = {
+	size: 300,
+	padding: 15,
+} as const;
+
 export const LineChartDefaults = {
 	min: 0,
 	height: 200,
