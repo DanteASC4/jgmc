@@ -1,4 +1,3 @@
-import { bold, magenta } from "@std/fmt/colors";
 import { barchart } from "../../src/index.ts";
 import { randomDataArray } from "../helpers.ts";
 

@@ -1,6 +1,5 @@
-import { bold } from "@std/fmt/colors";
 import { barchart } from "../../src/index.ts";
-import { formatTime, randomDataArray } from "../helpers.ts";
+import { randomDataArray } from "../helpers.ts";
 
 const size3RandomDataArrs: number[][] = [];
 const size5RandomDataArrs: number[][] = [];
@@ -23,7 +22,7 @@ for (let i = 0; i < 1000; i++) {
 
 const size3Timings: number[] = [];
 const times: number[] = [];
-let totalTime = 0;
+let _totalTime = 0;
 for (const dataset of size3RandomDataArrs) {
 	const start = performance.now();
 	barchart({
@@ -32,7 +31,7 @@ for (const dataset of size3RandomDataArrs) {
 	const end = performance.now();
 	const time = end - start;
 	size3Timings.push(time);
-	totalTime += time;
+	_totalTime += time;
 	times.push(time);
 	// if(time > 5) {
 	// 	console.log(dataset);
@@ -42,17 +41,6 @@ for (const dataset of size3RandomDataArrs) {
 	// console.log(`Time taken: ${formatTime(time)}`);
 	// console.log('');
 }
-console.log(
-	`Top 5 longest runs: ${times
-		.sort((a, z) => z - a)
-		.slice(0, 5)
-		.join(", ")}`,
-);
-console.log(
-	`Finished ${size3Timings.length} charts in total time ${formatTime(
-		totalTime,
-	)}`,
-);
 
 // Ramping size checks
 
@@ -72,18 +60,12 @@ for (let i = 0; i < 100; i++) {
 		if (!sizeTimings.has(size)) {
 			sizeTimings.set(size, []);
 		}
-		sizeTimings.get(size)!.push(time);
+		sizeTimings.get(size)?.push(time);
 	}
 
 	// console.log(`Finished ${size} charts`);
 }
 
-const average = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
-
-console.log("| Size | Average Time |");
-console.log("|------|--------------|");
-for (const [size, timings] of sizeTimings) {
-	console.log(
-		`| ${bold("Size")}: ${size} | ${bold("Average Time")}: ${formatTime(average(timings))} |`,
-	);
+const _average = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
+for (const [_size, _timings] of sizeTimings) {
 }

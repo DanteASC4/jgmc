@@ -9,7 +9,5 @@ Deno.test(function asciiMiscTinkeringTests() {
 		barCharacter: "light",
 	});
 
-	console.log(output);
-
 	assertStringIncludes(output, "0");
 });
