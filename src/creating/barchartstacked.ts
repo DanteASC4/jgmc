@@ -20,7 +20,7 @@ export const createStackedBarAndText = (
 	{
 		barClass,
 		labelClass,
-	}: Pick<BarChartStackedOpts, "groupClass" | "barClass" | "labelClass">,
+	}: Pick<BarChartStackedOpts['classes'], "barClass" | "labelClass">,
 ) => {
 	// Compute bar dimensions and coordinates analogous to single-bar charts
 	const [trueBarHeight, trueBarWidth] = calcBarDims(
@@ -80,7 +80,7 @@ export const createStackedBarAndText = (
 		}
 
 		// bar.setAttribute("title", `Bar value of ${dataPoint}`);
-		if (barClass) bar.classList.add(barClass);
+		if (barClass) bar.classList.add(barClass as string);
 
 		bars.push(bar);
 	}
@@ -89,9 +89,9 @@ export const createStackedBarAndText = (
 	text.setAttribute("fill", labelColor);
 	text.setAttribute("x", `${textX}`);
 	text.setAttribute("y", `${textY}`);
-	text.setAttribute("title", `Bar label ${label}`);
+	// text.setAttribute("title", `Bar label ${label}`);
 	text.textContent = label;
-	if (labelClass) text.classList.add(labelClass);
+	if (labelClass) text.classList.add(labelClass as string);
 
 	// group.appendChild(bar);
 	// group.appendChild(text);

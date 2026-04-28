@@ -94,7 +94,7 @@ export const createBarAndText = (
 	text.setAttribute("fill", labelColor);
 	text.setAttribute("x", `${textX}`);
 	text.setAttribute("y", `${textY}`);
-	text.setAttribute("title", `Bar label ${label}`);
+	// text.setAttribute("title", `Bar label ${label}`);
 	text.textContent = label;
 	if (labelClass) text.classList.add(labelClass);
 

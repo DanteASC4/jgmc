@@ -12,7 +12,7 @@ export const createLabel = (
 	text.setAttribute("fill", labelColor);
 	text.setAttribute("x", `${textX}`);
 	text.setAttribute("y", `${textY}`);
-	text.setAttribute("title", `Bar label ${label}`);
+	// text.setAttribute("title", `Bar label ${label}`);
 	text.setAttribute("text-anchor", "middle");
 	text.setAttribute("alignment-baseline", "middle");
 	text.textContent = label;

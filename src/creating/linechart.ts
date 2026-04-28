@@ -140,7 +140,7 @@ export const createLineDataLabels = (
 		} else {
 			text.setAttribute("y", `${y - 20}`);
 		}
-		text.setAttribute("title", `Bar label ${label}`);
+		// text.setAttribute("title", `Bar label ${label}`);
 		text.textContent = label;
 		if (labelClass) text.classList.add(labelClass);
 		lg.appendChild(text);

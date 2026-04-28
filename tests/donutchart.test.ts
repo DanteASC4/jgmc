@@ -102,16 +102,106 @@ Deno.test(function donutchartTests() {
 });
 
 Deno.test(function donutchartDocsExamples() {
-	const t1 = donutchart({
+	const tp = donutchart({
 		data: [400, 100, 300, 70, 130],
 		gradientColors: ["#ff00ff", "#00ffff"],
 		gradientDirection: "left-to-right",
 		gradientMode: "continuous",
 	});
-	assertEquals(t1.getAttribute("width"), "300");
-	assertEquals(t1.getAttribute("height"), "300");
+	assertEquals(tp.getAttribute("width"), "300");
 
-	docPairs.push([t1, "Placeholder"]);
+	const tpc0 = donutchart({
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+	});
+	assertEquals(tpc0.getAttribute("width"), "300");
+
+	const tpc0a = donutchart({
+		data: [300, 300, 300, 300],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00", "#d4453a"],
+	});
+	assertEquals(tpc0a.getAttribute("width"), "300");
+
+	const tpc0b = donutchart({
+		data: [50, 50],
+		fillColors: ["#00ffff", "#ff00ff"],
+	});
+	assertEquals(tpc0b.getAttribute("width"), "300");
+
+	const tpc0c = donutchart({
+		data: [400, 100, 300, 70, 130],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00", "#d4453a", "#3e9503"],
+	});
+	assertEquals(tpc0c.getAttribute("width"), "300");
+
+	const tpc1 = donutchart({
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+		labels: ["Cyan", "Magenta", "Yellow"],
+		labelColors: ["#000000"],
+	});
+	assertEquals(tpc1.getAttribute("width"), "300");
+
+	const tpc2 = donutchart({
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+		dataLabels: "literal",
+		labelColors: ["#000000"],
+	});
+	assertEquals(tpc2.getAttribute("width"), "300");
+
+	const tpc3 = donutchart({
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+		dataLabels: "percentage",
+		labelColors: ["#000000"],
+	});
+	assertEquals(tpc3.getAttribute("width"), "300");
+
+	const tpc4 = donutchart({
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+		size: 50,
+	});
+	assertEquals(tpc4.getAttribute("width"), "50");
+
+	const tpc5 = donutchart({
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+		padding: 50,
+	});
+	assertEquals(tpc5.getAttribute("width"), "300");
+
+	const tpc6 = donutchart({
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+		strokeColors: ["#ffffff"],
+		strokeWidths: [5],
+	});
+	assertEquals(tpc6.getAttribute("width"), "300");
+
+	const tpc7 = donutchart({
+		data: [30, 30, 30],
+		gradientColors: ["#ff00ff", "#00ffff"],
+		gradientDirection: "left-to-right",
+		gradientMode: "continuous",
+		strokeColors: ["#ffffff"],
+	});
+	assertEquals(tpc7.getAttribute("width"), "300");
+
+	docPairs.push(
+		[tpc0, "basic pie, data & color"],
+		[tpc0a, "basic pie, diff data 4"],
+		[tpc0b, "basic pie, diff data 2"],
+		[tpc0c, "basic pie, diff data 5"],
+		[tpc1, "pie, labels"],
+		[tpc2, "pie, datalabels literal"],
+		[tpc3, "pie, datalabels percentage"],
+		[tpc4, "pie, size small"],
+		[tpc5, "pie, padding"],
+		[tpc6, "pie, stroke"],
+		[tpc7, "pie, gradient"],
+	);
 });
 
 afterAll(() => {
