@@ -197,11 +197,11 @@ Deno.test(function piechartDocsExamples() {
 	assertEquals(tpc8.getAttribute("width"), "300");
 
 	const tpc9 = piechart({
-			data: [30, 30, 30],
-			fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
-			centerLabel: "sum",
-		});
-		assertEquals(tpc9.getAttribute("width"), "300");
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+		centerLabel: "sum",
+	});
+	assertEquals(tpc9.getAttribute("width"), "300");
 
 	docPairs.push(
 		[tpc0, "basic pie, data & color"],

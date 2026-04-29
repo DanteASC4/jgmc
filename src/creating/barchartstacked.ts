@@ -20,7 +20,7 @@ export const createStackedBarAndText = (
 	{
 		barClass,
 		labelClass,
-	}: Pick<BarChartStackedOpts['classes'], "barClass" | "labelClass">,
+	}: Pick<BarChartStackedOpts["classes"], "barClass" | "labelClass">,
 ) => {
 	// Compute bar dimensions and coordinates analogous to single-bar charts
 	const [trueBarHeight, trueBarWidth] = calcBarDims(
