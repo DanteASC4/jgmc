@@ -16,6 +16,9 @@ export function piechart({
 	imageLabels,
 	centerLabel,
 	centerLabelColor,
+	centerLabelFontSize = PieChartDefaults.centerLabelFontSize,
+	centerLabelFontWeight = PieChartDefaults.centerLabelFontWeight,
+	centerLabelFontFamily = PieChartDefaults.centerLabelFontFamily,
 	vWidth,
 	vHeight,
 	fillColors,
@@ -68,7 +71,7 @@ export function piechart({
 		dataLabels ||
 		(imageLabels && imageLabels.length > 0);
 
-	const labelGroup = hasLabels ? createSVGElement("g") : null;
+	const labelGroup = hasLabels || centerLabel ? createSVGElement("g") : null;
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
@@ -203,22 +206,26 @@ export function piechart({
 				labelGroup.appendChild(labelEle);
 			}
 		}
+	}
 
-		if (centerLabel) {
-			const centerLabelTrueColor = centerLabelColor ?? "#000000";
-			const centerLabelValue =
-				centerLabel === "sum" ? String(sum) : centerLabel;
-			const centerLabelEle = createLabel(
-				centerLabelValue,
-				center.x,
-				center.y,
-				centerLabelTrueColor,
-			);
+	if (centerLabel) {
+		const centerLabelTrueColor = centerLabelColor ?? "#000000";
+		const centerLabelValue = centerLabel === "sum" ? String(sum) : centerLabel;
+		const centerLabelEle = createLabel(
+			centerLabelValue,
+			center.x,
+			center.y,
+			centerLabelTrueColor,
+		);
+		centerLabelEle.classList.add("tmc-pie-center-label");
 
-			if (classes?.centerLabelClass)
-				centerLabelEle.classList.add(classes.centerLabelClass);
-			labelGroup?.appendChild(centerLabelEle);
-		}
+		centerLabelEle.setAttribute("font-size", `${centerLabelFontSize}`);
+		centerLabelEle.setAttribute("font-weight", `${centerLabelFontWeight}`);
+		centerLabelEle.setAttribute("font-family", `${centerLabelFontFamily}`);
+
+		if (classes?.centerLabelClass)
+			centerLabelEle.classList.add(classes.centerLabelClass);
+		labelGroup?.appendChild(centerLabelEle);
 	}
 
 	if (
@@ -235,7 +242,7 @@ export function piechart({
 	}
 
 	parent.appendChild(slicesGroup);
-	if (hasLabels && labelGroup) parent.appendChild(labelGroup);
+	if ((hasLabels || centerLabel) && labelGroup) parent.appendChild(labelGroup);
 
 	if (classes?.parentClass) parent.classList.add(classes.parentClass);
 

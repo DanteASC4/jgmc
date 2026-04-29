@@ -29,7 +29,7 @@ document.querySelectorAll('.svg-view').forEach(view => {
 	view.addEventListener('dblclick', () => {
 		const svg = view.querySelector('svg');
 		if (!svg) return;
-		const svgString = svg.innerHTML;
+		const svgString = svg.outerHTML;
 		// const svgString = new XMLSerializer().serializeToString(svg);
 		navigator.clipboard.writeText(svgString).then(() => {
 			console.log('SVG copied to clipboard!');

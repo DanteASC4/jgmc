@@ -8,11 +8,17 @@ export const BarChartDefaults = {
 export const PieChartDefaults = {
 	size: 300,
 	padding: 15,
+	centerLabelFontSize: 32,
+	centerLabelFontWeight: "bold",
+	centerLabelFontFamily: "monospace",
 } as const;
 
 export const DonutChartDefaults = {
 	size: 300,
 	padding: 15,
+	centerLabelFontSize: 32,
+	centerLabelFontWeight: "bold",
+	centerLabelFontFamily: "monospace",
 } as const;
 
 export const LineChartDefaults = {

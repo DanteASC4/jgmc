@@ -189,18 +189,36 @@ Deno.test(function donutchartDocsExamples() {
 	});
 	assertEquals(tpc7.getAttribute("width"), "300");
 
+	const tpc8 = donutchart({
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+		centerLabel: "A center label",
+		centerLabelColor: "#7c7c7c",
+	});
+	assertEquals(tpc8.getAttribute("width"), "300");
+
+	const tpc9 = donutchart({
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+		centerLabel: "sum",
+		centerLabelColor: "#7c7c7c",
+	});
+	assertEquals(tpc9.getAttribute("width"), "300");
+
 	docPairs.push(
-		[tpc0, "basic pie, data & color"],
-		[tpc0a, "basic pie, diff data 4"],
-		[tpc0b, "basic pie, diff data 2"],
-		[tpc0c, "basic pie, diff data 5"],
-		[tpc1, "pie, labels"],
-		[tpc2, "pie, datalabels literal"],
-		[tpc3, "pie, datalabels percentage"],
-		[tpc4, "pie, size small"],
-		[tpc5, "pie, padding"],
-		[tpc6, "pie, stroke"],
-		[tpc7, "pie, gradient"],
+		[tpc0, "basic donut, data & color"],
+		[tpc0a, "basic donut, diff data 4"],
+		[tpc0b, "basic donut, diff data 2"],
+		[tpc0c, "basic donut, diff data 5"],
+		[tpc1, "donut, labels"],
+		[tpc2, "donut, datalabels literal"],
+		[tpc3, "donut, datalabels percentage"],
+		[tpc4, "donut, size small"],
+		[tpc5, "donut, padding"],
+		[tpc6, "donut, stroke"],
+		[tpc7, "donut, gradient"],
+		[tpc8, "donut, center label"],
+		[tpc9, "donut, center label sum"],
 	);
 });
 

@@ -189,6 +189,20 @@ Deno.test(function piechartDocsExamples() {
 	});
 	assertEquals(tpc7.getAttribute("width"), "300");
 
+	const tpc8 = piechart({
+		data: [30, 30, 30],
+		fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+		centerLabel: "A center label",
+	});
+	assertEquals(tpc8.getAttribute("width"), "300");
+
+	const tpc9 = piechart({
+			data: [30, 30, 30],
+			fillColors: ["#00ffff", "#ff00ff", "#ffff00"],
+			centerLabel: "sum",
+		});
+		assertEquals(tpc9.getAttribute("width"), "300");
+
 	docPairs.push(
 		[tpc0, "basic pie, data & color"],
 		[tpc0a, "basic pie, diff data 4"],
@@ -201,6 +215,8 @@ Deno.test(function piechartDocsExamples() {
 		[tpc5, "pie, padding"],
 		[tpc6, "pie, stroke"],
 		[tpc7, "pie, gradient"],
+		[tpc8, "pie, center label"],
+		[tpc9, "pie, center label sum"],
 	);
 });
 

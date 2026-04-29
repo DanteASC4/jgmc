@@ -410,6 +410,9 @@ export type BarChartOptionsBase = {
 type CircleChartCenterLabelOptions = {
 	centerLabel: "sum" | string;
 	centerLabelColor: string;
+	centerLabelFontSize: number | number;
+	centerLabelFontWeight: string | number;
+	centerLabelFontFamily: string;
 };
 
 export type PieChartOptionsBase = {
