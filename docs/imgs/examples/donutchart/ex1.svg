@@ -1,0 +1,16 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 330" height="300" width="300"><g class="tmc-donutgroup"><path fill="#00ffff" d="M 165 15
+    A 150 150 0 0 1 294.9038105676658 239.99999999999997
+    L 229.9519052838329 202.5
+    A 75 75 0 0 0 165 90
+    L 165 15
+    Z"></path><path fill="#ff00ff" d="M 294.9038105676658 239.99999999999997
+    A 150 150 0 0 1 35.09618943233423 240.00000000000006
+    L 100.04809471616711 202.50000000000003
+    A 75 75 0 0 0 229.9519052838329 202.5
+    L 294.9038105676658 239.99999999999997
+    Z"></path><path fill="#ffff00" d="M 35.09618943233423 240.00000000000006
+    A 150 150 0 0 1 165 15
+    L 165 90
+    A 75 75 0 0 0 100.04809471616711 202.50000000000003
+    L 35.09618943233423 240.00000000000006
+    Z"></path></g><g><text alignment-baseline="middle" text-anchor="middle" y="108.75" x="262.4278579257493" fill="#000000">Cyan</text><text alignment-baseline="middle" text-anchor="middle" y="277.5" x="165" fill="#000000">Magenta</text><text alignment-baseline="middle" text-anchor="middle" y="108.75000000000007" x="67.5721420742506" fill="#000000">Yellow</text></g></svg>

@@ -1,0 +1,10 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 110" height="110" width="300"><g><path stroke-linecap="round" stroke-width="3" stroke="#ffffff" fill="none" d="M 0,60
+  L 0,60
+ 100,10
+ 200,70"></path><path stroke-linecap="round" stroke-width="3" stroke="#ffffff" fill="none" d="M 0,100
+  L 0,100
+ 100,90
+ 200,105"></path><path stroke-linecap="round" stroke-width="3" stroke="#ffffff" fill="none" d="M 0,20
+  L 0,20
+ 100,30
+ 200,40"></path></g><g class="tmc-label-group"><text alignment-baseline="middle" text-anchor="middle" title="Bar label 1st" y="55" x="215" fill="#ffffff">1st</text><text alignment-baseline="middle" text-anchor="middle" title="Bar label 2nd" y="90" x="215" fill="#ffffff">2nd</text><text alignment-baseline="middle" text-anchor="middle" title="Bar label 3rd" y="25" x="215" fill="#ffffff">3rd</text></g></svg>
