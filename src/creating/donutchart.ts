@@ -9,7 +9,7 @@ export const drawDonutSlice = (
 	center: [number, number],
 	fill: string,
 	strokeColor?: string,
-	strokeWidth?: number,
+	strokeWidth?: string | number,
 ) => {
 	const path = createSVGElement("path");
 	const largeArcFlag = largeArc ? "1" : "0";

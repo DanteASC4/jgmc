@@ -4,7 +4,15 @@ import { createImageLabel, createLabel } from "./creating/labels.ts";
 import { drawPieSlice } from "./creating/piechart.ts";
 import { calcPieSliceCentroidCoords } from "./math/piechart.ts";
 import type { PieChartOptions } from "./types.ts";
-import { PieChartDefaults } from "./utils/defaults.ts";
+import { getSingleOrWrap } from "./utils/get-single-or-wrap.ts";
+
+export const PieChartDefaults = {
+	size: 300,
+	padding: 15,
+	centerLabelFontSize: 32,
+	centerLabelFontWeight: "bold",
+	centerLabelFontFamily: "monospace",
+} satisfies { [K in keyof PieChartOptions]?: PieChartOptions[K] };
 
 export function piechart({
 	data,
@@ -123,11 +131,15 @@ export function piechart({
 		}
 
 		const strokeColor = strokeColors
-			? strokeColors[i % strokeColors.length]
+			?	getSingleOrWrap(strokeColors, i)
 			: undefined;
+
 		const strokeWidth = strokeWidths
-			? strokeWidths[i % strokeWidths.length]
+			? getSingleOrWrap(strokeWidths, i)
 			: undefined;
+		// const strokeWidth = strokeWidths
+		// 	? strokeWidths[i % strokeWidths.length]
+		// 	: undefined;
 
 		const slicePath = drawPieSlice(
 			[coord.x, coord.y, coord.v],

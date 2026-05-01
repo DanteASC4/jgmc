@@ -14,6 +14,7 @@ import {
 	autoMaxNumerical,
 	stackedToSummed,
 } from "./utils/general-operations.ts";
+import { getSingleOrWrap } from "./utils/get-single-or-wrap.ts";
 import { fillEmptyArray, fillStrings } from "./utils/misc.ts";
 
 export function barchartStacked({
@@ -30,23 +31,9 @@ export function barchartStacked({
 	max,
 	placement,
 	barWidth,
-	// groupClass,
-	// parentClass,
-	// barClass,
-	// labelClass,
-	// dataLabelClass,
-	// imageLabelTextClass,
-	// imageLabelClass,
-	// barGroupClass,
-	// labelGroupClass,
-	// dataLabelGroupClass,
-	// imageLabelSubGroupClass,
-	// imageLabelContainerClass,
 	fillColors,
 	strokeColors,
 	strokeWidths,
-	// colors,
-	// labelColors,
 	gradientColors,
 	gradientMode,
 	gradientDirection,
@@ -200,19 +187,18 @@ export function barchartStacked({
 			// color = fillColors[i % fillColors.length];
 		}
 
-		let stroke: string | undefined;
-		if (strokeColors && strokeColors.length > 0) {
-			stroke = strokeColors[i % strokeColors.length];
-		}
-
-		let strokeWidth: number | undefined;
-		if (strokeWidths && strokeWidths.length > 0) {
-			strokeWidth = strokeWidths[i % strokeWidths.length];
-		}
-
 		const labelColor = labelColors
-			? labelColors[i % labelColors.length]
+			? getSingleOrWrap(labelColors, i)
 			: "#ffffff";
+
+		const strokeColor = strokeColors
+			? getSingleOrWrap(strokeColors, i)
+			: undefined;
+
+		const strokeWidth = strokeWidths
+			? getSingleOrWrap(strokeWidths, i)
+			: undefined;
+
 		const dataLabelColor = "#000000";
 
 		const [trueBarHeight, trueBarWidth] = calcBarDims(
@@ -241,7 +227,7 @@ export function barchartStacked({
 			if (typeof color === "string") seg.setAttribute("fill", color);
 			else seg.setAttribute("fill", color[si % color.length]);
 
-			if (stroke) seg.setAttribute("stroke", stroke);
+			if (strokeColor) seg.setAttribute("stroke", strokeColor);
 			if (strokeWidth) seg.setAttribute("stroke-width", String(strokeWidth));
 
 			const topOrBot = placement === "top" || placement === "bottom";

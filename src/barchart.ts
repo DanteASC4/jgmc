@@ -12,6 +12,7 @@ import { calcLabelCoords } from "./math/labels.ts";
 import type { BarChartNumericalOptions } from "./types.ts";
 import { BarChartDefaults, ClassNameDefaults } from "./utils/defaults.ts";
 import { autoMaxNumerical } from "./utils/general-operations.ts";
+import { getSingleOrWrap } from "./utils/get-single-or-wrap.ts";
 import { fillZeros } from "./utils/misc.ts";
 
 export function barchart({
@@ -198,19 +199,18 @@ export function barchart({
 			color = fillColors[i % fillColors.length];
 		}
 		const labelColor = labelColors
-			? labelColors[i % labelColors.length]
+			? getSingleOrWrap(labelColors, i)
 			: "#ffffff";
+
 		const dataLabelColor = color === "#ffffff" ? "#000000" : "#ffffff";
 
-		let stroke: string | undefined;
-		if (strokeColors && strokeColors.length > 0) {
-			stroke = strokeColors[i % strokeColors.length];
-		}
+		const strokeColor = strokeColors
+			? getSingleOrWrap(strokeColors, i)
+			: undefined;
 
-		let strokeWidth: number | undefined;
-		if (strokeWidths && strokeWidths.length > 0) {
-			strokeWidth = strokeWidths[i % strokeWidths.length];
-		}
+		const strokeWidth = strokeWidths
+			? getSingleOrWrap(strokeWidths, i)
+			: undefined;
 
 		const [trueBarHeight, trueBarWidth] = calcBarDims(
 			placement,
@@ -237,7 +237,7 @@ export function barchart({
 			trueBarWidth,
 			trueBarHeight,
 			color,
-			stroke,
+			strokeColor,
 			strokeWidth,
 		);
 		if (classes?.barClass) bar.classList.add(classes.barClass);

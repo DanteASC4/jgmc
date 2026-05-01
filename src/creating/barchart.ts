@@ -112,7 +112,7 @@ export const createBar = (
 	trueBarHeight: number,
 	fill: string,
 	stroke?: string,
-	strokeWidth?: number,
+	strokeWidth?: string | number,
 	// barClass: Pick<BarChartNumericalOptions, "barClass">,
 ) => {
 	const bar = createSVGElement("rect");

@@ -27,6 +27,8 @@ type MaxP = MakeRange<101>;
 
 type Percentage = `${MaxP[number]}%`;
 
+type StringOrNumber = string | number;
+
 //       ▄▄▄▄███▄▄▄▄    ▄█     ▄████████  ▄████████
 //     ▄██▀▀▀███▀▀▀██▄ ███    ███    ███ ███    ███
 //     ███   ███   ███ ███▌   ███    █▀  ███    █▀
@@ -355,15 +357,15 @@ export type GeneralChartStyleOptions = {
 	 * Used as the "fill" on resulting bars.
 	 * Defaults to `["#ffffff"]` if not supplied.
 	 */
-	fillColors: string[];
+	fillColors: string | string[];
 	/**
 	 * Used as the stroke on resulting bars.
 	 */
-	strokeColors: string[];
+	strokeColors: string | string[];
 	/**
 	 * Used as the "stroke-width" on resulting bars.
 	 */
-	strokeWidths: number[];
+	strokeWidths: StringOrNumber | StringOrNumber[];
 };
 
 //  ▄████████    ▄█    █▄       ▄████████    ▄████████     ███        ▄████████
@@ -381,10 +383,6 @@ export type BarChartOptionsBase = {
 	 * Defaults to `"bottom"` if not supplied
 	 */
 	placement: "top" | "right" | "bottom" | "left";
-	/**
-	 * Currently unused
-	 */
-	responsive: boolean;
 	/**
 	 * When not supplied this is calculated automatically using the following formula:
 	 * ```
@@ -500,6 +498,7 @@ export type LineChartOptionsBase = {
 	colors: string | string[];
 } & ChartOptions &
 	LinearGradientOptions &
+	GeneralChartStyleOptions &
 	Labels & {
 		classes: { [K in keyof (LineChartClasses & LabelClasses)]?: string };
 	};

@@ -21,6 +21,7 @@
     },
     "format": "deno run -A npm:@biomejs/biome format --write",
     "lint": "deno run -A npm:@biomejs/biome lint --write",
+    "check:dry": "deno run -A npm:@biomejs/biome check",
     "check": "deno run -A npm:@biomejs/biome check --write",
     "checkf": "deno run -A npm:@biomejs/biome check --write --unsafe",
     "bench1k": {

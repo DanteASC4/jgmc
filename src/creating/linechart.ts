@@ -3,7 +3,7 @@ import { createSVGElement } from "./common.ts";
 export const drawLineStraight = (
 	coords: [number, number][],
 	color: string,
-	thickness: number,
+	thickness: number | string,
 	linecap: string,
 ) => {
 	const path = createSVGElement("path");
@@ -31,7 +31,7 @@ export const drawLineStraight = (
 export const drawLineSmooth = (
 	coords: [number, number][],
 	color: string,
-	thickness: number,
+	thickness: number | string,
 	linecap: string,
 ) => {
 	const path = createSVGElement("path");

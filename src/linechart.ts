@@ -14,6 +14,14 @@ import {
 	autoMaxNumerical,
 	autoMinNumerical,
 } from "./utils/general-operations.ts";
+import { getSingleOrWrap } from "./utils/get-single-or-wrap.ts";
+
+export const LineChartDefaults = {
+	min: 0,
+	height: 200,
+	width: 300,
+	lineType: "straight",
+} satisfies { [K in keyof LineChartOptions]?: LineChartOptions[K] };
 
 export function linechart({
 	data,
@@ -31,23 +39,13 @@ export function linechart({
 	fullWidthLine = false,
 	cap = ["round"],
 	thickness,
-	// lineClass,
-	// lineGroupClass,
-	// parentClass,
-	// labelClass,
-	// labelGroupClass,
-	// dataLabelClass,
-	// dataLabelGroupClass,
-	// imageLabelClass,
-	// imageLabelSubGroupClass,
-	// imageLabelContainerClass,
-	// imageLabelTextClass,
 	colors,
+	strokeWidths,
 	gradientColors,
 	gradientMode,
 	gradientDirection,
 	classes,
-}: LineChartOptions) {
+}: Omit<LineChartOptions, "strokeColors">) {
 	// Arrays, arrays everywhere!
 	if (data.every((item) => typeof item === "number")) data = [data];
 	// if (labels.every((l) => typeof l === "string")) labels = [labels];
@@ -130,11 +128,16 @@ export function linechart({
 
 	for (let i = 0; i < data.length; i++) {
 		const lineData = data[i];
-		const thick = thickness ? thickness[i % thickness.length] : 3;
+		const thick = thickness
+			? getSingleOrWrap(thickness, i)
+			: strokeWidths
+				? getSingleOrWrap(strokeWidths, i)
+				: 3;
+		// const thick = thickness ? thickness[i % thickness.length] : 3;
 		const dataPointsAmt = lineData.length;
 		const offset = autoOffset(width, dataPointsAmt - (fullWidthLine ? 1 : 0));
 		const nonGradientLineColor =
-			colors && !isGradient ? colors[i % colors.length] : "#ffffff";
+			colors && !isGradient ? getSingleOrWrap(colors, i) : "#ffffff";
 		const lineCap = cap[i % cap.length];
 
 		const coords = genCoordsStraight(lineData, offset, vHeight, min);
@@ -161,7 +164,7 @@ export function linechart({
 		}
 
 		const labelColor = labelColors
-			? labelColors[i % labelColors.length]
+			? getSingleOrWrap(labelColors, i)
 			: "#ffffff";
 
 		// Image labels & normal labels are to be applied only on the last point

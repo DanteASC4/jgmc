@@ -2040,3 +2040,37 @@ These two charts have another option unique to them - true center label! What's 
 
 That seems like it'd be quite useful if you wanted to show like a 'grand total' or some other thing! Will add!
 I also gotta look at the math for slice center calcs & make sure I'm not doing anything extra / redundant.
+
+# 5/1/2026
+
+It's been a bit and I published `v0.2.2` with `piechart` & `donutchart`!
+
+
+Now I'm working on refinement. One part of that which I'm working through is doing some cleanup of the big `types` used all over the lib. And one thing I keep scratching my head over is styling options.
+
+
+Specifically, single vs multiple. Right now all the charts have something like the following for coloring:
+
+- `fillColors`
+- `strokeColors`
+
+Which takes an array of colors. If you want all chart items to be one color, you can just give it an array with one color.
+
+But I feel like that may not be as intuitive as it could be for users.
+
+Then I thought "ok I can make it take a single value OR an array" but then it's no longer plural for `strokeWidths`... But you know what as I'm writing this I think I realize that's fine because you could also interpret it as 'the width for the stroke of each items' sort of plural.
+
+Even if not I think it'd still be fine to allow single values honestly.
+
+**Update**
+
+So I'm back and I was just about to go & implement the aforementioned styling changes, but then I came across an issue.
+
+
+`linechart`.... already does this!!!
+
+Except of course I named the things differently, for line chart it's `thickness`...
+
+Which is ok for it being intuitive but is not consistent with other chart types. Ahhh naming, I'm often reminded of how true that saying is - "the two hardest things in programming are nomenclature and cache invalidation."
+
+But I think there's a good solution to satisfy consistency & naming. I actually wrote it in my notes `TODO.md`, thanks past me! I'm going to just add `strokeWidths` as an alias, and I'll combine my other bullet of having a general "styling" types that I'll pull from in other types. Anyways off to do that, time for 1 million type errors!

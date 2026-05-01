@@ -4,7 +4,15 @@ import { createLinearGradient, createPathsMask } from "./creating/gradients.ts";
 import { createImageLabel, createLabel } from "./creating/labels.ts";
 import { calcDonutSliceCentroidCoords } from "./math/donutchart.ts";
 import type { DonutChartOptions } from "./types.ts";
-import { DonutChartDefaults } from "./utils/defaults.ts";
+import { getSingleOrWrap } from "./utils/get-single-or-wrap.ts";
+
+export const DonutChartDefaults = {
+	size: 300,
+	padding: 15,
+	centerLabelFontSize: 32,
+	centerLabelFontWeight: "bold",
+	centerLabelFontFamily: "monospace",
+} satisfies { [K in keyof DonutChartOptions]?: DonutChartOptions[K] };
 
 export function donutchart({
 	data,
@@ -122,10 +130,10 @@ export function donutchart({
 		}
 
 		const strokeColor = strokeColors
-			? strokeColors[i % strokeColors.length]
+			? getSingleOrWrap(strokeColors, i)
 			: undefined;
 		const strokeWidth = strokeWidths
-			? strokeWidths[i % strokeWidths.length]
+			? getSingleOrWrap(strokeWidths, i)
 			: undefined;
 
 		const slicePath = drawDonutSlice(
