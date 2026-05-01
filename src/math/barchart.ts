@@ -1,8 +1,8 @@
-import type { BarChartNumericalOpts } from "../types.ts";
+import type { BarChartNumericalOptions } from "../types.ts";
 
 export const calcBarCoords = (
 	idx: number,
-	placement: BarChartNumericalOpts["placement"],
+	placement: BarChartNumericalOptions["placement"],
 	gap: number,
 	width: number,
 	height: number,
@@ -43,7 +43,7 @@ export const calcBarCoords = (
 };
 
 export const calcBarDims = (
-	placement: BarChartNumericalOpts["placement"],
+	placement: BarChartNumericalOptions["placement"],
 	dataPoint: number,
 	evenWidth: number,
 	barWidth: number,

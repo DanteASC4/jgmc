@@ -1,13 +1,13 @@
 import { calcBarCoords, calcBarDims } from "../math/barchart.ts";
 import { calcLabelCoords } from "../math/labels.ts";
-import type { BarChartStackedOpts } from "../types.ts";
+import type { BarChartStackedOptions } from "../types.ts";
 import { createSVGElement } from "./common.ts";
 
 // text offset now computed via shared calcLabelCoords
 
 export const createStackedBarAndText = (
 	gIdx: number,
-	placement: BarChartStackedOpts["placement"],
+	placement: BarChartStackedOptions["placement"],
 	dataPoint: number[],
 	numericalDataPoint: number,
 	label: string,
@@ -20,7 +20,7 @@ export const createStackedBarAndText = (
 	{
 		barClass,
 		labelClass,
-	}: Pick<BarChartStackedOpts["classes"], "barClass" | "labelClass">,
+	}: Pick<BarChartStackedOptions["classes"], "barClass" | "labelClass">,
 ) => {
 	// Compute bar dimensions and coordinates analogous to single-bar charts
 	const [trueBarHeight, trueBarWidth] = calcBarDims(

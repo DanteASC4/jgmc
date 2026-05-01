@@ -9,7 +9,7 @@ import { calcBarCoords, calcBarDims } from "./math/barchart.ts";
 import { autoBarWidth, calcDataLabelCoords } from "./math/barcharts-common.ts";
 import { autoGap } from "./math/common.ts";
 import { calcLabelCoords } from "./math/labels.ts";
-import type { BarChartNumericalOpts } from "./types.ts";
+import type { BarChartNumericalOptions } from "./types.ts";
 import { BarChartDefaults, ClassNameDefaults } from "./utils/defaults.ts";
 import { autoMaxNumerical } from "./utils/general-operations.ts";
 import { fillZeros } from "./utils/misc.ts";
@@ -35,7 +35,7 @@ export function barchart({
 	gradientMode,
 	gradientDirection,
 	classes,
-}: BarChartNumericalOpts) {
+}: BarChartNumericalOptions) {
 	let userMax = false;
 	if (max) userMax = true;
 	const largest = autoMaxNumerical(data);

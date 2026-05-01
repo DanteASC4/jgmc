@@ -1,7 +1,7 @@
-import type { BarChartNumericalOpts } from "../types.ts";
+import type { BarChartNumericalOptions } from "../types.ts";
 
 export const calcLabelCoords = (
-	placement: BarChartNumericalOpts["placement"],
+	placement: BarChartNumericalOptions["placement"],
 	barX: number,
 	barY: number,
 	trueBarWidth: number,

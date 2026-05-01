@@ -8,7 +8,7 @@ import { calcBarCoords, calcBarDims } from "./math/barchart.ts";
 import { autoBarWidth, calcDataLabelCoords } from "./math/barcharts-common.ts";
 import { autoGap } from "./math/common.ts";
 import { calcLabelCoords } from "./math/labels.ts";
-import type { BarChartStackedOpts } from "./types.ts";
+import type { BarChartStackedOptions } from "./types.ts";
 import { BarChartDefaults, ClassNameDefaults } from "./utils/defaults.ts";
 import {
 	autoMaxNumerical,
@@ -51,7 +51,7 @@ export function barchartStacked({
 	gradientMode,
 	gradientDirection,
 	classes,
-}: BarChartStackedOpts) {
+}: BarChartStackedOptions) {
 	const asNumerical = stackedToSummed(data);
 	let userMax = false;
 	if (max) userMax = true;

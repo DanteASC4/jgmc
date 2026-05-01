@@ -366,6 +366,16 @@ export type GeneralChartStyleOptions = {
 	strokeWidths: number[];
 };
 
+//  ▄████████    ▄█    █▄       ▄████████    ▄████████     ███        ▄████████
+// ███    ███   ███    ███     ███    ███   ███    ███ ▀█████████▄   ███    ███
+// ███    █▀    ███    ███     ███    ███   ███    ███    ▀███▀▀██   ███    █▀
+// ███         ▄███▄▄▄▄███▄▄   ███    ███  ▄███▄▄▄▄██▀     ███   ▀   ███
+// ███        ▀▀███▀▀▀▀███▀  ▀███████████ ▀▀███▀▀▀▀▀       ███     ▀███████████
+// ███    █▄    ███    ███     ███    ███ ▀███████████     ███              ███
+// ███    ███   ███    ███     ███    ███   ███    ███     ███        ▄█    ███
+// ████████▀    ███    █▀      ███    █▀    ███    ███    ▄████▀    ▄████████▀
+//                                          ███    ███
+
 export type BarChartOptionsBase = {
 	/**
 	 * Defaults to `"bottom"` if not supplied
@@ -515,7 +525,7 @@ export type AsciiBarChartOptionsBase = {
 };
 
 // TODO rename `Opts` -> `Options`
-export type BarChartNumericalOpts = Prettify<
+export type BarChartNumericalOptions = Prettify<
 	Optional<BarChartOptionsBase> & {
 		/**
 		 * A single array of numbers, each number representing a bar.
@@ -525,7 +535,7 @@ export type BarChartNumericalOpts = Prettify<
 >;
 
 // TODO rename `Opts` -> `Options`
-export type BarChartStackedOpts = Prettify<
+export type BarChartStackedOptions = Prettify<
 	Optional<BarChartOptionsBase> & {
 		/**
 		 * A 2D array of numbers, each sub-array representing a stack of bars.
@@ -553,7 +563,7 @@ export type DonutChartOptions = Prettify<
 >;
 
 // STUB - is this even used anywhere?
-export type BarChartOptions = BarChartNumericalOpts | BarChartStackedOpts;
+export type BarChartOptions = BarChartNumericalOptions | BarChartStackedOptions;
 
 export type LineChartOptions = Prettify<
 	Optional<LineChartOptionsBase> & {

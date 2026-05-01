@@ -1,11 +1,11 @@
-import type { BarChartNumericalOpts } from "../types.ts";
+import type { BarChartNumericalOptions } from "../types.ts";
 
 export const autoBarWidth = (surfaceWidth: number, numBars: number) => {
 	return surfaceWidth / numBars / 2;
 };
 
 export const calcDataLabelCoords = (
-	placement: BarChartNumericalOpts["placement"],
+	placement: BarChartNumericalOptions["placement"],
 	barX: number,
 	barY: number,
 	trueBarWidth: number,

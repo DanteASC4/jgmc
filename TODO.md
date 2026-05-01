@@ -12,9 +12,9 @@ This will now be a smaller list of things that aren't critical but should be don
   - [ ] Add `strokeWidth` as an alias for `thickness`
     - If both exist use `strokeWidth`
   - [ ] Change wording for explaining the `gap` option to say that it will automatically evenly space the bars.
-  - [ ] Rename for consistency
-    - [ ] `BarChartNumericalOpts` -> `BarChartNumericalOptions`
-    - [ ] `BarChartStackedOpts` -> `BarChartStackedOptions`
+  - [x] Rename for consistency
+    - [x] `BarChartNumericalOpts` -> `BarChartNumericalOptions`
+    - [x] `BarChartStackedOpts` -> `BarChartStackedOptions`
   - [ ] Do a once-over on type descriptions
 - [ ] Radial gradients
 - [ ] Refinement things
