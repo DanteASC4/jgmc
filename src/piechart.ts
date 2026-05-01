@@ -12,6 +12,9 @@ export const PieChartDefaults = {
 	centerLabelFontSize: 32,
 	centerLabelFontWeight: "bold",
 	centerLabelFontFamily: "monospace",
+	centerLabelColor: "#000000",
+	fillColors: "#ffffff",
+	labelColors: "#000000", // Labels are on top of slices here
 } satisfies { [K in keyof PieChartOptions]?: PieChartOptions[K] };
 
 export function piechart({
@@ -19,17 +22,17 @@ export function piechart({
 	size = PieChartDefaults.size,
 	padding = PieChartDefaults.padding,
 	labels,
-	labelColors,
+	labelColors = PieChartDefaults.labelColors,
 	dataLabels,
 	imageLabels,
 	centerLabel,
-	centerLabelColor,
+	centerLabelColor = PieChartDefaults.centerLabelColor,
 	centerLabelFontSize = PieChartDefaults.centerLabelFontSize,
 	centerLabelFontWeight = PieChartDefaults.centerLabelFontWeight,
 	centerLabelFontFamily = PieChartDefaults.centerLabelFontFamily,
 	vWidth,
 	vHeight,
-	fillColors,
+	fillColors = PieChartDefaults.fillColors,
 	strokeColors,
 	strokeWidths,
 	gradientColors,
@@ -120,8 +123,7 @@ export function piechart({
 		// STUB - gradients
 		const largeArcFlag = coord.v >= halfLength;
 
-		// const color = fillColors ? fillColors[i%fillColors.length] : '#ffffff';
-		let color = "#ffffff";
+		let color = getSingleOrWrap(fillColors, i);
 		if (isGradient && gradientId) {
 			if (gradientMode === "continuous") color = "transparent";
 			else color = `url('#${gradientId}')`;
@@ -155,9 +157,7 @@ export function piechart({
 		if (gradientMode === "continuous" && gradientId) slices.push(slicePath);
 
 		if (hasLabels && labelGroup) {
-			const labelColor = labelColors
-				? labelColors[i % labelColors.length]
-				: "#ffffff";
+			const labelColor = getSingleOrWrap(labelColors, i);
 			const arcLength = coord.v;
 			const prevAngleRads = asCoords
 				.slice(0, i)
@@ -174,7 +174,7 @@ export function piechart({
 			centroids.push(centroidCoords);
 
 			if (imageLabels?.[i]) {
-				const imageLabel = imageLabels[i % imageLabels.length];
+				const imageLabel = imageLabels[i]; // Shouldn't wrap image labels
 				const imageLabelEle = createImageLabel(
 					imageLabel,
 					centroidCoords[0],
@@ -212,13 +212,12 @@ export function piechart({
 	}
 
 	if (centerLabel) {
-		const centerLabelTrueColor = centerLabelColor ?? "#000000";
 		const centerLabelValue = centerLabel === "sum" ? String(sum) : centerLabel;
 		const centerLabelEle = createLabel(
 			centerLabelValue,
 			center.x,
 			center.y,
-			centerLabelTrueColor,
+			centerLabelColor,
 		);
 		centerLabelEle.classList.add("tmc-pie-center-label");
 

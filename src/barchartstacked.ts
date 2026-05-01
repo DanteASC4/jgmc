@@ -9,7 +9,7 @@ import { autoBarWidth, calcDataLabelCoords } from "./math/barcharts-common.ts";
 import { autoGap } from "./math/common.ts";
 import { calcLabelCoords } from "./math/labels.ts";
 import type { BarChartStackedOptions } from "./types.ts";
-import { BarChartDefaults, ClassNameDefaults } from "./utils/defaults.ts";
+import { ClassNameDefaults } from "./utils/defaults.ts";
 import {
 	autoMaxNumerical,
 	stackedToSummed,
@@ -17,19 +17,28 @@ import {
 import { getSingleOrWrap } from "./utils/get-single-or-wrap.ts";
 import { fillEmptyArray, fillStrings } from "./utils/misc.ts";
 
+export const BarChartStackedDefaults = {
+	height: 300,
+	width: 300,
+	gap: 3,
+	placement: "bottom",
+	fillColors: ["#ffffff", "#aaaaaa"],
+	labelColors: "#ffffff",
+} satisfies { [K in keyof BarChartStackedOptions]?: BarChartStackedOptions[K] };
+
 export function barchartStacked({
 	data,
 	labels = [],
-	labelColors,
+	labelColors = BarChartStackedDefaults.labelColors,
 	dataLabels,
 	imageLabels,
-	height = BarChartDefaults.size,
-	width = BarChartDefaults.size,
+	height = BarChartStackedDefaults.height,
+	width = BarChartStackedDefaults.width,
 	vWidth,
 	vHeight,
 	gap,
 	max,
-	placement,
+	placement = BarChartStackedDefaults.placement,
 	barWidth,
 	fillColors,
 	strokeColors,
@@ -49,7 +58,6 @@ export function barchartStacked({
 	// if (!gap) gap = BarChartDefaults.gap;
 	if (!vWidth) vWidth = width;
 	if (!vHeight) vHeight = height;
-	if (!placement) placement = BarChartDefaults.placement;
 
 	const padLabels = labels.length < data.length;
 	if (padLabels) {
@@ -162,8 +170,8 @@ export function barchartStacked({
 		const datap = data[i];
 		const datapNumerical = asNumerical[i];
 
+		// Because this function also accepts a 2d array of colors typescript gets angry when I try to use defautls, leaving as-is for now
 		let color: string | string[] = ["#ffffff", "#aaaaaa"];
-
 		if (isGradient && gradientId) {
 			if (gradientMode === "continuous") color = "transparent";
 			else color = `url('#${gradientId}')`;
@@ -172,19 +180,15 @@ export function barchartStacked({
 			// color = fillColors[i % fillColors.length];
 		}
 
-		const labelColor = labelColors
-			? getSingleOrWrap(labelColors, i)
-			: "#ffffff";
+		const labelColor = getSingleOrWrap(labelColors, i);
 
-		const strokeColor = strokeColors
-			? getSingleOrWrap(strokeColors, i)
-			: undefined;
+		const strokeColor = getSingleOrWrap(strokeColors, i);
 
 		const strokeWidth = strokeWidths
 			? getSingleOrWrap(strokeWidths, i)
 			: undefined;
 
-		const dataLabelColor = "#000000";
+		const dataLabelColor = labelColor;
 
 		const [trueBarHeight, trueBarWidth] = calcBarDims(
 			placement,
@@ -241,8 +245,8 @@ export function barchartStacked({
 			trueBarHeight,
 		);
 
-		if (imageLabels && imageLabels.length > 0) {
-			const imageLabel = imageLabels[i % imageLabels.length];
+		if (imageLabels?.[i]) {
+			const imageLabel = imageLabels[i];
 
 			const xOffset =
 				placement === "top" || placement === "bottom"
@@ -267,7 +271,7 @@ export function barchartStacked({
 				imageLabel.height,
 			);
 			imageLabelGroup.appendChild(imageLabelElement);
-		} else if (labels && labels.length > 0) {
+		} else if (labels?.[i]) {
 			const text = createLabel(label, labelX, labelY, labelColor);
 			textGroup.appendChild(text);
 		}

@@ -21,25 +21,29 @@ export const LineChartDefaults = {
 	height: 200,
 	width: 300,
 	lineType: "straight",
+	colors: "#ffffff",
+	labelColors: "#ffffff",
+	fullWidthLine: false,
+	cap: "round",
 } satisfies { [K in keyof LineChartOptions]?: LineChartOptions[K] };
 
 export function linechart({
 	data,
-	labels = [],
-	labelColors,
+	labels,
+	labelColors = LineChartDefaults.labelColors,
 	dataLabels,
 	imageLabels,
 	height,
 	width,
 	vWidth,
 	vHeight,
-	min = 0,
+	min = LineChartDefaults.min,
 	max,
-	lineType = ["straight"],
-	fullWidthLine = false,
-	cap = ["round"],
+	lineType = LineChartDefaults.lineType,
+	fullWidthLine = LineChartDefaults.fullWidthLine,
+	cap = [LineChartDefaults.cap],
 	thickness,
-	colors,
+	colors = LineChartDefaults.colors,
 	strokeWidths,
 	gradientColors,
 	gradientMode,
@@ -128,16 +132,17 @@ export function linechart({
 		// const thick = thickness ? thickness[i % thickness.length] : 3;
 		const dataPointsAmt = lineData.length;
 		const offset = autoOffset(width, dataPointsAmt - (fullWidthLine ? 1 : 0));
-		const nonGradientLineColor =
-			colors && !isGradient ? getSingleOrWrap(colors, i) : "#ffffff";
-		const lineCap = cap[i % cap.length];
+		const nonGradientLineColor = getSingleOrWrap(colors, i);
+		// const nonGradientLineColor =
+		// 	colors && !isGradient ? getSingleOrWrap(colors, i) : "#ffffff";
+		const lineCap = getSingleOrWrap(cap, i);
 
 		const coords = genCoordsStraight(lineData, offset, vHeight, min);
 		// Future me, ended up not needing any control point calculation here
 		// Ended up only needing a first control point thanks to reflection
 		// const controls = genControlPoints(coords);
 		// const controlPoint = genSingleControlPoint(coords[0], coords[1]);
-		const currentLineType = lineType[i % lineType.length];
+		const currentLineType = getSingleOrWrap(lineType, i);
 		let line: SVGPathElement;
 		if (currentLineType === "straight") {
 			line = drawLineStraight(
@@ -155,15 +160,13 @@ export function linechart({
 			);
 		}
 
-		const labelColor = labelColors
-			? getSingleOrWrap(labelColors, i)
-			: "#ffffff";
+		const labelColor = getSingleOrWrap(labelColors, i);
 
 		// Image labels & normal labels are to be applied only on the last point
-		if (imageLabels && imageLabels.length > 0) {
+		if (imageLabels?.[i]) {
 			const lastCoord = coords[coords.length - 1];
 
-			const imageLabel = imageLabels[i % imageLabels.length];
+			const imageLabel = imageLabels[i];
 			// Static offsets here because lines don't have placement options
 
 			let adjustedY = lastCoord[1];
@@ -184,9 +187,9 @@ export function linechart({
 				imageLabel.height,
 			);
 			imageLabelGroup.appendChild(imageLabelElement);
-		} else if (labels && labels.length > 0) {
+		} else if (labels?.[i]) {
 			const lastCoord = coords[coords.length - 1];
-			const label = labels[i % labels.length];
+			const label = labels[i];
 			const text = createLabel(
 				label,
 				lastCoord[0] + labelOffset,

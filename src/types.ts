@@ -299,7 +299,7 @@ export type Labels = {
 	 * Defaults to `#ffffff`
 	 * Will alternate between colors if there are less colors than the number of drawn labels.
 	 */
-	labelColors: string[];
+	labelColors: string | string[];
 	/**
 	 * An array of strings attached to various datasets of charts. See chart's themselves for specifics.
 	 */

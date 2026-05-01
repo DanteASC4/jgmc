@@ -2098,3 +2098,23 @@ Except, I am unsure of the new name. `@tmc` is taken & `@toomanycharts` feels a 
 My next idea was `@dtmc`, "dante's too many charts" which I can use! Except, I don't know about using my own name in the name of it & I'm not sure I really like how it feels.
 
 So the name remains undecided since I still need to do the refinement & current todos. But it's something I'll be revisiting soon!
+
+
+**Update** 
+
+So I've gone ahead and remove the `classes` option from all charts. I already am happy with that decision! Next up I will need to do some inspecting of chart outputs to ensure I'm providing sensible built-in classes for all the charts so easy styling is enabled via css. 
+
+I think as a rule of thumb for 'where' I will do common classes vs special classes is something like:
+- Unique chart items can get classes in-place
+- Common creation related operations should pull from project-wide default classes
+
+And I think I've already done it for the most part. I will do some more visual inspection later on when I write some documentation on styling via css.
+
+**Update**
+As I've been updating defaults I think I need to add allowing a function as the label so users can have custom labels! That wouldn't be too hard to do either.
+
+I also just got the idea of having `"unit"` as an option for `dataLabels`!!! That would be great I think, kinda like sheets.
+
+**Update**
+So I just went through & changed a bunch of stuff to actually use their respective default values. Like setting the fill color to `#ffffff`. And of course I see a bunch of ways I can improve things for the charts I've got. But now's not the time for that, if I go down that road I'll be in an infinite loop of improvement. I'll do that when I move things to framework-specific exports!!!
+

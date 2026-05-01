@@ -12,6 +12,9 @@ export const DonutChartDefaults = {
 	centerLabelFontSize: 32,
 	centerLabelFontWeight: "bold",
 	centerLabelFontFamily: "monospace",
+	centerLabelColor: "#000000",
+	fillColors: "#ffffff",
+	labelColors: "#000000",
 } satisfies { [K in keyof DonutChartOptions]?: DonutChartOptions[K] };
 
 export function donutchart({
@@ -19,17 +22,17 @@ export function donutchart({
 	size = DonutChartDefaults.size,
 	padding = DonutChartDefaults.padding,
 	labels,
-	labelColors,
+	labelColors = DonutChartDefaults.labelColors,
 	dataLabels,
 	imageLabels,
 	centerLabel,
-	centerLabelColor,
+	centerLabelColor = DonutChartDefaults.centerLabelColor,
 	centerLabelFontSize = DonutChartDefaults.centerLabelFontSize,
 	centerLabelFontWeight = DonutChartDefaults.centerLabelFontWeight,
 	centerLabelFontFamily = DonutChartDefaults.centerLabelFontFamily,
 	vWidth,
 	vHeight,
-	fillColors,
+	fillColors = DonutChartDefaults.fillColors,
 	strokeColors,
 	strokeWidths,
 	gradientColors,
@@ -119,8 +122,7 @@ export function donutchart({
 		const coordTo = i === asCoords.length - 1 ? asCoords[0] : asCoords[i + 1];
 		const largeArcFlag = coord.v >= halfLength;
 
-		// const color = fillColors ? fillColors[i%fillColors.length] : '#ffffff';
-		let color = "#ffffff";
+		let color = getSingleOrWrap(fillColors, i);
 		if (isGradient && gradientId) {
 			if (gradientMode === "continuous") color = "transparent";
 			else color = `url('#${gradientId}')`;
@@ -150,9 +152,7 @@ export function donutchart({
 		if (gradientMode === "continuous" && gradientId) slices.push(slicePath);
 
 		if (hasLabels && labelGroup) {
-			const labelColor = labelColors
-				? labelColors[i % labelColors.length]
-				: "#ffffff";
+			const labelColor = getSingleOrWrap(labelColors, i);
 			const arcLength = coord.v;
 			const prevAngleRads = asCoords
 				.slice(0, i)
@@ -169,7 +169,8 @@ export function donutchart({
 			centroids.push(centroidCoords);
 
 			if (imageLabels?.[i]) {
-				const imageLabel = imageLabels[i % imageLabels.length];
+				const imageLabel = imageLabels[i]; // Shouldn't wrap image labels
+				// const imageLabel = getSingleOrWrap(imageLabels, i);
 				const imageLabelEle = createImageLabel(
 					imageLabel,
 					centroidCoords[0],
@@ -207,13 +208,12 @@ export function donutchart({
 	}
 
 	if (centerLabel) {
-		const centerLabelTrueColor = centerLabelColor ?? "#000000";
 		const centerLabelValue = centerLabel === "sum" ? String(sum) : centerLabel;
 		const centerLabelEle = createLabel(
 			centerLabelValue,
 			center.x,
 			center.y,
-			centerLabelTrueColor,
+			centerLabelColor,
 		);
 		centerLabelEle.classList.add("tmc-donut-center-label");
 		centerLabelEle.setAttribute("font-size", `${centerLabelFontSize}`);

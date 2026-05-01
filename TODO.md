@@ -18,9 +18,8 @@ This will now be a smaller list of things that aren't critical but should be don
   - [ ] Do a once-over on type descriptions
 - [ ] Refinement things
   - [ ] Ensure top-level chart exported functions have a standard logic flow
-    - [ ] Also check that things are only happening when needed (e.g. I see in `barchart` I create a `textGroup`, `dataLabelTextGroup`, and `imageLabelGroup` element despite labels being optional!!!)
-    - [ ] I also have an anchor comment for `classes?.groupClass` ?!?!
-  - [ ] Maybe get test coverage to 100?
+    - [x] Also check that things are only happening when needed (e.g. I see in `barchart` I create a `textGroup`, `dataLabelTextGroup`, and `imageLabelGroup` element despite labels being optional!!!)
+    - [x] I also have an anchor comment for `classes?.groupClass` ?!?!
   - [ ] The above "types cleanup" todos
   - [ ] Use arrays over objects for coords
   - [ ] Standardize the default `tmc-...` class nomenclature & usage
@@ -31,12 +30,18 @@ This will now be a smaller list of things that aren't critical but should be don
     - [ ] Universals page (explain some of the ideology behind things, like strokeWidths being on all chart types, array params wrapping, `classes`, etc...)
     - [ ] Per-chart page defaults made clear
       - [ ] default classes too!
-  - [ ] Remove the `classes` option!
+  - [x] Remove the `classes` option!
 
-# Postponed / Future / Not Priority ToDos
+
+# Next Up
+- [ ] Allow a function for labels so users can have their own format.
+- [ ] Add 'unit' as an option for `dataLabels` display format.
+
+# Postponed / Not Priority ToDos
 
 - [ ] Implement support for `ManyLinearGradientOptions` aka more than one linear gradient
   - Also a valid argument for *not* doing that, being performance mainly.
 - [ ] Radial gradients?
 - [ ] Remove or use `feedback.ts`
   - [ ] Not a huge issue since I don't think it affects output size or anything but need to clean that up or use it eventually! Original idea was interesting!
+- [ ] Maybe get test coverage to 100?

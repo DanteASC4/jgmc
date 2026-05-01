@@ -10,26 +10,37 @@ import { autoBarWidth, calcDataLabelCoords } from "./math/barcharts-common.ts";
 import { autoGap } from "./math/common.ts";
 import { calcLabelCoords } from "./math/labels.ts";
 import type { BarChartNumericalOptions } from "./types.ts";
-import { BarChartDefaults, ClassNameDefaults } from "./utils/defaults.ts";
+import { ClassNameDefaults } from "./utils/defaults.ts";
 import { autoMaxNumerical } from "./utils/general-operations.ts";
 import { getSingleOrWrap } from "./utils/get-single-or-wrap.ts";
 import { fillZeros } from "./utils/misc.ts";
 
+export const BarChartDefaults = {
+	height: 300,
+	width: 300,
+	gap: 3,
+	placement: "bottom",
+	fillColors: "#ffffff",
+	labelColors: "#ffffff",
+} satisfies {
+	[K in keyof BarChartNumericalOptions]?: BarChartNumericalOptions[K];
+};
+
 export function barchart({
 	data,
 	labels,
-	labelColors,
+	labelColors = BarChartDefaults.labelColors,
 	dataLabels,
 	imageLabels,
-	height = BarChartDefaults.size,
-	width = BarChartDefaults.size,
+	height = BarChartDefaults.height,
+	width = BarChartDefaults.width,
 	vWidth,
 	vHeight,
 	gap,
 	max,
 	placement = BarChartDefaults.placement,
 	barWidth,
-	fillColors,
+	fillColors = BarChartDefaults.fillColors,
 	strokeColors,
 	strokeWidths,
 	gradientColors,
@@ -42,18 +53,7 @@ export function barchart({
 
 	if (!vWidth) vWidth = width;
 	if (!vHeight) vHeight = height;
-	// if (!max) max = autoMaxNumerical(data);
 
-	// if (!min) min = BarChartDefaults.min;
-	// if (!placement) placement = BarChartDefaults.placement;
-	// if (!labels) labels = []
-
-	/* const padLabels = labels.length < data.length;
-	if (padLabels) {
-		const diff = Math.abs(labels.length - data.length);
-		fillStrings(labels, diff);
-	}
-		*/
 	const padData = labels && data.length < labels.length;
 	if (padData) {
 		const diff = Math.abs(labels.length - data.length);
@@ -64,11 +64,6 @@ export function barchart({
 		placement === "top" || placement === "bottom"
 			? autoBarWidth(width, dataPointsAmt)
 			: autoBarWidth(height, dataPointsAmt);
-
-	// if (!barWidth || typeof barWidth !== "number") {
-	// 	// barWidth = autoBarWidth(placement, width, height, dataPointsAmt);
-	// 	barWidth = evenWidth;
-	// }
 
 	if (!gap) {
 		gap =
@@ -175,18 +170,17 @@ export function barchart({
 		 * Future me update:
 		 * This now comes from "fillColors" but I'm going to leave the variable name as "color" for now
 		 */
-		let color: string = "#ffffff";
+		let color: string = getSingleOrWrap(fillColors, i);
 		if (isGradient && gradientId) {
 			if (gradientMode === "continuous") color = "transparent";
 			else color = `url('#${gradientId}')`;
 		} else if (fillColors && fillColors.length > 0) {
-			color = fillColors[i % fillColors.length];
+			color = getSingleOrWrap(fillColors, i);
 		}
-		const labelColor = labelColors
-			? getSingleOrWrap(labelColors, i)
-			: "#ffffff";
+		const labelColor = getSingleOrWrap(labelColors, i);
 
-		const dataLabelColor = color === "#ffffff" ? "#000000" : "#ffffff";
+		// NOTE: Need to make it clear in docs that labelColors also applies to data labels, since they aren't meant to be used simulateously (labels & datalabels)
+		const dataLabelColor = labelColor;
 
 		const strokeColor = strokeColors
 			? getSingleOrWrap(strokeColors, i)
@@ -227,7 +221,7 @@ export function barchart({
 		bar.classList.add(ClassNameDefaults.rectClass);
 		barGroup.appendChild(bar);
 
-		if (imageLabels && imageLabels.length > 0) {
+		if (imageLabels?.[i]) {
 			const [labelX, labelY] = calcLabelCoords(
 				placement,
 				barX,
@@ -235,7 +229,7 @@ export function barchart({
 				trueBarWidth,
 				trueBarHeight,
 			);
-			const imageLabel = imageLabels[i % imageLabels.length];
+			const imageLabel = imageLabels?.[i];
 
 			const xOffset =
 				placement === "top" || placement === "bottom"
@@ -260,7 +254,7 @@ export function barchart({
 				imageLabel.height,
 			);
 			imageLabelGroup.appendChild(imageLabelElement);
-		} else if (labels && labels.length > 0) {
+		} else if (labels?.[i]) {
 			const currentLabelText = labels[i];
 			const [labelX, labelY] = calcLabelCoords(
 				placement,
