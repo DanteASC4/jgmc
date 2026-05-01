@@ -132,9 +132,6 @@ Deno.test(function miscTests() {
 			},
 		],
 		dataLabels: "percentage",
-		classes: {
-			parentClass: "test-parent",
-		},
 	});
 	assertEquals(typeof t6.outerHTML, "string");
 	pairs.push([t6]);

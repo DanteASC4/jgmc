@@ -145,28 +145,9 @@ Deno.test(function barchartStackedTests() {
 		labels: new Array(rsd9.dataArray.length).fill(randShortString()),
 		placement: "top",
 		fillColors: ["#ff00ff", "#00ffff"],
-		classes: {
-			barClass: "mybars",
-			barGroupClass: "mybargroup",
-			labelClass: "mylabels",
-			labelGroupClass: "mylabelgroup",
-			groupClass: "mygroup",
-			parentClass: "myparent",
-		},
 	});
 	assertEquals(tbcs9.getAttribute("width"), "300");
 	assertEquals(tbcs9.getAttribute("height"), "300");
-	assertEquals(tbcs9.querySelectorAll(".mybars").length, rsd9.totalDatapoints);
-	assertEquals(tbcs9.querySelectorAll(".mybargroup").length, 1);
-	assertEquals(
-		tbcs9.querySelectorAll(".mylabels").length,
-		rsd9.dataArray.length,
-	);
-	assertEquals(tbcs9.querySelectorAll(".mylabelgroup").length, 1);
-	assertEquals(tbcs9.querySelectorAll(".mygroup").length, 2);
-	// Since the parent class gets added to the outerHTML querySelectorAll doesn't pick it up as it only targets descendents.
-	// assertEquals(tbcs9.querySelectorAll(".myparent").length, 1);
-	assertEquals(tbcs9.outerHTML.includes('class="myparent"'), true);
 
 	// Bar width & top placement
 	const rsd10 = randomStackedDataArray();

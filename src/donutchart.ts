@@ -35,7 +35,6 @@ export function donutchart({
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-	classes,
 }: DonutChartOptions) {
 	const sum = data.reduce((v, p) => v + p, 0);
 	const asDecimalPercentages = data.map((n) => n / sum);
@@ -177,15 +176,10 @@ export function donutchart({
 					centroidCoords[1],
 					labelColor,
 					subgrouping,
-					classes?.imageLabelTextClass,
-					classes?.imageLabelClass,
-					classes?.imageLabelSubGroupClass,
 					imageLabel.width,
 					imageLabel.height,
 				);
 
-				if (classes?.imageLabelClass)
-					imageLabelEle.classList.add(classes.imageLabelClass);
 				labelGroup.appendChild(imageLabelEle);
 			} else if (dataLabels) {
 				const dataLabelValue =
@@ -198,8 +192,6 @@ export function donutchart({
 					centroidCoords[1],
 					labelColor,
 				);
-				if (classes?.dataLabelClass)
-					dataLabelEle.classList.add(classes.dataLabelClass);
 				labelGroup.appendChild(dataLabelEle);
 			} else if (labels?.[i]) {
 				const labelEle = createLabel(
@@ -209,7 +201,6 @@ export function donutchart({
 					labelColor,
 				);
 
-				if (classes?.labelClass) labelEle.classList.add(classes.labelClass);
 				labelGroup.appendChild(labelEle);
 			}
 		}
@@ -229,8 +220,6 @@ export function donutchart({
 		centerLabelEle.setAttribute("font-weight", `${centerLabelFontWeight}`);
 		centerLabelEle.setAttribute("font-family", `${centerLabelFontFamily}`);
 
-		if (classes?.centerLabelClass)
-			centerLabelEle.classList.add(classes.centerLabelClass);
 		labelGroup?.appendChild(centerLabelEle);
 	}
 
@@ -249,8 +238,6 @@ export function donutchart({
 
 	parent.appendChild(slicesGroup);
 	if ((hasLabels || centerLabel) && labelGroup) parent.appendChild(labelGroup);
-
-	if (classes?.parentClass) parent.classList.add(classes.parentClass);
 
 	return parent;
 }

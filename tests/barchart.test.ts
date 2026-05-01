@@ -108,42 +108,19 @@ Deno.test(function barchartTests() {
 		placement: "top",
 		height: 200,
 		width: 500,
-		classes: {
-			barClass: "mybars",
-			labelClass: "mytext",
-		},
 		barWidth: 10,
 	});
 	assertEquals(tbc8.getAttribute("width"), "500");
 	assertEquals(tbc8.getAttribute("height"), "200");
-
-	assertEquals(
-		tbc8.querySelectorAll("rect")[0].classList.contains("mybars"),
-		true,
-	);
-	assertEquals(
-		tbc8.querySelectorAll("text")[0].classList.contains("mytext"),
-		true,
-	);
 
 	// Data padding, label colors, & group classe
 	const tbc9 = barchart({
 		data: [50, 100],
 		labels: ["a", "b", "c"],
 		labelColors: ["#00ffff", "#ff00ff"],
-		classes: {
-			labelGroupClass: "mylabelgroup",
-			barGroupClass: "mybargroup",
-			groupClass: "mygroups",
-			parentClass: "myparent",
-		},
 	});
 	assertEquals(tbc9.getAttribute("width"), "300");
 	assertEquals(tbc9.getAttribute("height"), "300");
-	assertEquals(tbc9.querySelectorAll(".mybargroup").length, 1);
-	assertEquals(tbc9.querySelectorAll(".mylabelgroup").length, 1);
-	assertEquals(tbc9.querySelectorAll(".mygroups").length, 2);
-	assertEquals(tbc9.outerHTML.includes('class="myparent"'), true);
 
 	pairs.push(
 		[tbc0, "simplest possible"],

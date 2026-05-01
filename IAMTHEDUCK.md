@@ -2074,3 +2074,27 @@ Except of course I named the things differently, for line chart it's `thickness`
 Which is ok for it being intuitive but is not consistent with other chart types. Ahhh naming, I'm often reminded of how true that saying is - "the two hardest things in programming are nomenclature and cache invalidation."
 
 But I think there's a good solution to satisfy consistency & naming. I actually wrote it in my notes `TODO.md`, thanks past me! I'm going to just add `strokeWidths` as an alias, and I'll combine my other bullet of having a general "styling" types that I'll pull from in other types. Anyways off to do that, time for 1 million type errors!
+
+**Update**
+
+So I've updated the `ToDo` and separated some more 'idealike' & low priority items. One thing I've been thinking of as I do things is the whole classes part. It's currently something I don't really like how I'm doing & I'm not sure I will. 
+
+I think it's overly verbose no matter how you spin it. One thing I did today was move chart 'defaults' into each respective file, to keep things more neat & have less imports since they're small.
+
+I also saw I had some 'default' class names I use throughout operations, which I *do* like. And I think honestly I am going to just have that & remove the additional 'optional' classes. I think sensible default classnames will suffice, and with CSS targetting whatever you want wouldn't be too hard, and I can actually just do some docs on selectors.
+
+
+
+This also brings me to one other topic - the fabled 'framework-specific' exports.
+
+
+
+So that is not quite as simple as I had initially thought it might be. At least if I want to do it the 'right' way from my understanding. In my research no the topic, I now understand why packages do things like `@package/react`. And I think that's something I want to do too! After finishing the refinement update & todos I have so far though.
+
+Which yes would mean moving the package's publish install! Which is a big shift, but I think something like that makes complete sense earlier on where there is less to move.
+
+Except, I am unsure of the new name. `@tmc` is taken & `@toomanycharts` feels a bit long, but may end up being what I go with. Maybe someone reading this picked up on it but the name "too many charts" is something I thought of from the famous minecraft mod "too many items"! And I've checked, both `@nec` & `@jec` are taken (not enough charts & just enough charts). 
+
+My next idea was `@dtmc`, "dante's too many charts" which I can use! Except, I don't know about using my own name in the name of it & I'm not sure I really like how it feels.
+
+So the name remains undecided since I still need to do the refinement & current todos. But it's something I'll be revisiting soon!

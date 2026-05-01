@@ -35,7 +35,6 @@ export function barchart({
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-	classes,
 }: BarChartNumericalOptions) {
 	let userMax = false;
 	if (max) userMax = true;
@@ -156,21 +155,6 @@ export function barchart({
 	datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
 	imageLabelGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
 
-	// TODO remove this
-	if (classes?.groupClass) {
-		barGroup.classList.add(classes.groupClass);
-		textGroup.classList.add(classes.groupClass);
-	}
-	if (classes?.barGroupClass) barGroup.classList.add(classes.barGroupClass);
-	if (classes?.labelGroupClass)
-		textGroup.classList.add(classes.labelGroupClass);
-	if (dataLabels && classes?.dataLabelGroupClass) {
-		datalabelTextGroup.classList.add(classes.dataLabelGroupClass);
-	}
-	if (classes?.imageLabelContainerClass) {
-		imageLabelGroup.classList.add(classes.imageLabelContainerClass);
-	}
-
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
 	);
@@ -240,7 +224,7 @@ export function barchart({
 			strokeColor,
 			strokeWidth,
 		);
-		if (classes?.barClass) bar.classList.add(classes.barClass);
+		bar.classList.add(ClassNameDefaults.rectClass);
 		barGroup.appendChild(bar);
 
 		if (imageLabels && imageLabels.length > 0) {
@@ -272,9 +256,6 @@ export function barchart({
 				labelY + yOffset,
 				labelColor,
 				subgrouping,
-				classes?.imageLabelTextClass,
-				classes?.imageLabelClass,
-				classes?.imageLabelSubGroupClass,
 				imageLabel.width,
 				imageLabel.height,
 			);
@@ -289,7 +270,6 @@ export function barchart({
 				trueBarHeight,
 			);
 			const label = createLabel(currentLabelText, labelX, labelY, labelColor);
-			if (classes?.labelClass) label.classList.add(classes.labelClass);
 			textGroup.appendChild(label);
 		}
 
@@ -308,8 +288,6 @@ export function barchart({
 				dataLabelY,
 				dataLabelColor,
 			);
-			if (classes?.dataLabelClass)
-				dataLabel.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(dataLabel);
 		} else if (dataLabels === "percentage") {
 			const percentage = ((datap / sum) * 100).toFixed(1);
@@ -327,8 +305,6 @@ export function barchart({
 				dataLabelY,
 				dataLabelColor,
 			);
-			if (classes?.dataLabelClass)
-				dataLabel.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(dataLabel);
 		}
 
@@ -371,8 +347,6 @@ export function barchart({
 	if (imageLabels) parent.appendChild(imageLabelGroup);
 	else if (labels && labels.length > 0) parent.appendChild(textGroup);
 	if (dataLabels) parent.appendChild(datalabelTextGroup);
-
-	if (classes?.parentClass) parent.classList.add(classes.parentClass);
 
 	return parent;
 }

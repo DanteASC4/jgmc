@@ -40,9 +40,6 @@ Deno.test(function labelsTests() {
 	const t3 = barchart({
 		data: [50, 100, 30],
 		labels: ["1st", "2nd", "3rd"],
-		classes: {
-			labelClass: "my-bar-labels", // [!code ++]
-		},
 	});
 	assertEquals(typeof t3.outerHTML, "string");
 	pairs.push([t3]);
@@ -126,9 +123,6 @@ Deno.test(function labelsTests() {
 			},
 		],
 		dataLabels: "percentage",
-		classes: {
-			parentClass: "test-parent",
-		},
 	});
 	assertEquals(typeof t8.outerHTML, "string");
 	pairs.push([t8]);

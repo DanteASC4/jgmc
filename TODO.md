@@ -9,9 +9,9 @@ This will now be a smaller list of things that aren't critical but should be don
     - I had already done this!
   - [x] Either use or remove the `responsive` option
     - Maybe do a future thing with it
-  - [ ] Add `strokeWidths` as an alias for `thickness`
+  - [x] Add `strokeWidths` as an alias for `thickness`
     - If both exist use `thickness`
-  - [ ] Change wording for explaining the `gap` option to say that it will automatically evenly space the bars.
+  - [x] Change wording for explaining the `gap` option to say that it will automatically evenly space the bars.
   - [x] Rename for consistency
     - [x] `BarChartNumericalOpts` -> `BarChartNumericalOptions`
     - [x] `BarChartStackedOpts` -> `BarChartStackedOptions`
@@ -30,10 +30,13 @@ This will now be a smaller list of things that aren't critical but should be don
   - [ ] Documentation needed:
     - [ ] Universals page (explain some of the ideology behind things, like strokeWidths being on all chart types, array params wrapping, `classes`, etc...)
     - [ ] Per-chart page defaults made clear
-      - [ ] `classes` too!
+      - [ ] default classes too!
+  - [ ] Remove the `classes` option!
 
 # Postponed / Future / Not Priority ToDos
 
 - [ ] Implement support for `ManyLinearGradientOptions` aka more than one linear gradient
   - Also a valid argument for *not* doing that, being performance mainly.
 - [ ] Radial gradients?
+- [ ] Remove or use `feedback.ts`
+  - [ ] Not a huge issue since I don't think it affects output size or anything but need to clean that up or use it eventually! Original idea was interesting!

@@ -1,4 +1,5 @@
 import type { ImageLabel } from "../types.ts";
+import { ClassNameDefaults } from "../utils/defaults.ts";
 import { createSVGElement } from "./common.ts";
 
 export const createLabel = (
@@ -15,6 +16,7 @@ export const createLabel = (
 	// text.setAttribute("title", `Bar label ${label}`);
 	text.setAttribute("text-anchor", "middle");
 	text.setAttribute("alignment-baseline", "middle");
+	text.classList.add(ClassNameDefaults.textClass);
 	text.textContent = label;
 
 	return text;
@@ -26,9 +28,7 @@ export const createImageLabel = (
 	textY: number,
 	labelColor: string,
 	subgrouping = false,
-	textClass?: string,
-	imgLabelClass?: string,
-	imgLabelGroupClass?: string,
+
 	width = 50,
 	height = 50,
 ) => {
@@ -39,8 +39,7 @@ export const createImageLabel = (
 			"transform",
 			`translate(${textX}, ${textY})`,
 		);
-		if (imgLabelGroupClass)
-			imageLabelSubGroup.classList.add(imgLabelGroupClass);
+		imageLabelSubGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
 
 		const topText = createLabel(imgLabel.topText || "", 0, -20, labelColor);
 		const bottomText = createLabel(
@@ -49,10 +48,8 @@ export const createImageLabel = (
 			20,
 			labelColor,
 		);
-		if (textClass) {
-			topText.classList.add(textClass);
-			bottomText.classList.add(textClass);
-		}
+		topText.classList.add(ClassNameDefaults.textClass);
+		bottomText.classList.add(ClassNameDefaults.textClass);
 
 		const img = createSVGElement("image");
 		img.setAttribute("href", imgLabel.href);
@@ -63,7 +60,6 @@ export const createImageLabel = (
 		img.setAttribute("x", String(-width / 2));
 		img.setAttribute("y", String(-height / 2));
 		img.setAttribute("class", "tmc-image-label");
-		if (imgLabelClass) img.classList.add(imgLabelClass);
 
 		if (topText) imageLabelSubGroup.appendChild(topText);
 		imageLabelSubGroup.appendChild(img);
@@ -80,8 +76,6 @@ export const createImageLabel = (
 		img.setAttribute("y", String(textY - height / 2));
 
 		img.setAttribute("class", "tmc-image-label");
-
-		if (imgLabelClass) img.classList.add(imgLabelClass);
 
 		return img;
 	}

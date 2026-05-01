@@ -10,9 +10,6 @@ Deno.test(function lineChartExtras() {
 		data: [50, 100, 30],
 		labels: ["1", "2", "3"],
 		gradientColors: ["#ff00ff", "#00ffff"],
-		classes: {
-			labelClass: "da-labels",
-		},
 	});
 	assertEquals(tlc0.getAttribute("width"), "300");
 	assertEquals(tlc0.getAttribute("height"), "110");
@@ -113,12 +110,6 @@ Deno.test(function linechartCoverageTests() {
 		height: 300,
 		// lineType: "smooth",
 		gradientColors: ["#ff00ff", "#00ffff"],
-		classes: {
-			parentClass: "lineparent",
-			lineGroupClass: "linegroup",
-			lineClass: "line",
-			labelGroupClass: "labels",
-		},
 	});
 	assertEquals(tlc1.getAttribute("width"), "600");
 	assertEquals(tlc1.getAttribute("height"), "300");

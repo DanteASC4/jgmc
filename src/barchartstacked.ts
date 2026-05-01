@@ -37,7 +37,6 @@ export function barchartStacked({
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-	classes,
 }: BarChartStackedOptions) {
 	const asNumerical = stackedToSummed(data);
 	let userMax = false;
@@ -146,20 +145,6 @@ export function barchartStacked({
 	const datalabelTextGroup = createSVGElement("g");
 	const imageLabelGroup = createSVGElement("g");
 
-	if (classes?.groupClass) {
-		barGroup.classList.add(classes.groupClass);
-		textGroup.classList.add(classes.groupClass);
-	}
-	if (classes?.barGroupClass) barGroup.classList.add(classes.barGroupClass);
-	if (classes?.labelGroupClass)
-		textGroup.classList.add(classes.labelGroupClass);
-	if (dataLabels && classes?.dataLabelGroupClass) {
-		datalabelTextGroup.classList.add(classes.dataLabelGroupClass);
-	}
-	if (classes?.imageLabelContainerClass) {
-		imageLabelGroup.classList.add(classes.imageLabelContainerClass);
-	}
-
 	barGroup.classList.add("tmc-bargroup");
 	textGroup.classList.add(ClassNameDefaults.labelGroupClass);
 	datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
@@ -242,7 +227,7 @@ export function barchartStacked({
 				seg.setAttribute("width", String(current));
 				seg.setAttribute("height", String(trueBarHeight));
 			}
-			if (classes?.barClass) seg.classList.add(classes.barClass);
+			seg.classList.add(ClassNameDefaults.rectClass);
 			barGroup.appendChild(seg);
 			if (gradientMode === "continuous" && gradientId) bars.push(seg);
 		}
@@ -278,16 +263,12 @@ export function barchartStacked({
 				labelY + yOffset,
 				labelColor,
 				subgrouping,
-				classes?.imageLabelTextClass,
-				classes?.imageLabelClass,
-				classes?.imageLabelSubGroupClass,
 				imageLabel.width,
 				imageLabel.height,
 			);
 			imageLabelGroup.appendChild(imageLabelElement);
 		} else if (labels && labels.length > 0) {
 			const text = createLabel(label, labelX, labelY, labelColor);
-			if (classes?.labelClass) text.classList.add(classes.labelClass);
 			textGroup.appendChild(text);
 		}
 
@@ -305,8 +286,6 @@ export function barchartStacked({
 				dataLabelY,
 				dataLabelColor,
 			);
-			if (classes?.dataLabelClass)
-				dataLabel.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(dataLabel);
 		} else if (dataLabels === "percentage") {
 			const percentage =
@@ -324,8 +303,6 @@ export function barchartStacked({
 				dataLabelY,
 				dataLabelColor,
 			);
-			if (classes?.dataLabelClass)
-				dataLabel.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(dataLabel);
 		}
 	}
@@ -348,8 +325,6 @@ export function barchartStacked({
 		parent.appendChild(imageLabelGroup);
 	} else if (labels && labels.length > 0) parent.appendChild(textGroup);
 	if (dataLabels) parent.appendChild(datalabelTextGroup);
-
-	if (classes?.parentClass) parent.classList.add(classes.parentClass);
 
 	return parent;
 }

@@ -44,7 +44,6 @@ export function linechart({
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-	classes,
 }: Omit<LineChartOptions, "strokeColors">) {
 	// Arrays, arrays everywhere!
 	if (data.every((item) => typeof item === "number")) data = [data];
@@ -106,13 +105,6 @@ export function linechart({
 	labelGroup.classList.add(ClassNameDefaults.labelGroupClass);
 	datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
 	imageLabelGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
-
-	if (classes?.labelGroupClass)
-		labelGroup.classList.add(classes.labelGroupClass);
-	if (dataLabels && classes?.dataLabelGroupClass)
-		datalabelTextGroup.classList.add(classes.dataLabelGroupClass);
-	if (classes?.imageLabelContainerClass)
-		imageLabelGroup.classList.add(classes.imageLabelContainerClass);
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
@@ -188,9 +180,6 @@ export function linechart({
 				adjustedY,
 				labelColor,
 				subgrouping,
-				classes?.imageLabelTextClass,
-				classes?.imageLabelClass,
-				classes?.imageLabelSubGroupClass,
 				imageLabel.width,
 				imageLabel.height,
 			);
@@ -204,7 +193,6 @@ export function linechart({
 				lastCoord[1] - labelOffset,
 				labelColor,
 			);
-			if (classes?.labelClass) text.classList.add(classes.labelClass);
 			labelGroup.appendChild(text);
 		}
 
@@ -214,10 +202,7 @@ export function linechart({
 				lineData.map(String),
 				labelColor,
 				vHeight,
-				classes?.dataLabelClass,
 			);
-			if (classes?.dataLabelClass)
-				lineLabelGroup.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(lineLabelGroup);
 		} else if (dataLabels === "percentage") {
 			const percentages = lineData.map((datap) => {
@@ -229,20 +214,14 @@ export function linechart({
 				percentages,
 				labelColor,
 				vHeight,
-				classes?.dataLabelClass,
 			);
-			if (classes?.dataLabelClass)
-				lineLabelGroup.classList.add(classes.dataLabelClass);
 			datalabelTextGroup.appendChild(lineLabelGroup);
 		}
 
-		if (classes?.lineClass) line.classList.add(classes.lineClass);
+		line.classList.add(ClassNameDefaults.pathClass);
 		lineGroup.appendChild(line);
 		lines.push(line);
 	}
-
-	if (classes?.parentClass) parent.classList.add(classes.parentClass);
-	if (classes?.lineGroupClass) lineGroup.classList.add(classes.lineGroupClass);
 
 	if (
 		isGradient &&

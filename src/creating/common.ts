@@ -70,6 +70,7 @@ export const makeSVGParent = (
 	minY = 0,
 ) => {
 	const svg = createSVGElement("svg");
+	svg.classList.add("tmc-chart");
 	svg.setAttribute("width", `${width}`);
 	svg.setAttribute("height", `${height}`);
 	svg.setAttribute("viewBox", `${minX} ${minY} ${vWidth} ${vHeight}`);

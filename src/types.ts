@@ -411,9 +411,7 @@ export type BarChartOptionsBase = {
 } & LinearGradientOptions & // & BarChartClasses
 	Labels &
 	GeneralChartStyleOptions &
-	ChartOptions & {
-		classes: { [K in keyof (BarChartClasses & LabelClasses)]?: string };
-	};
+	ChartOptions;
 
 type CircleChartCenterLabelOptions = {
 	centerLabel: "sum" | string;
@@ -436,9 +434,7 @@ export type PieChartOptionsBase = {
 	Labels &
 	CircleChartCenterLabelOptions &
 	GeneralChartStyleOptions &
-	Omit<ChartOptions, "width" | "height"> & {
-		classes: { [K in keyof (PieChartClasses & LabelClasses)]?: string };
-	};
+	Omit<ChartOptions, "width" | "height">;
 
 export type DonutChartOptionsBase = {
 	/**
@@ -453,9 +449,7 @@ export type DonutChartOptionsBase = {
 	Labels &
 	CircleChartCenterLabelOptions &
 	GeneralChartStyleOptions &
-	Omit<ChartOptions, "width" | "height"> & {
-		classes: { [K in keyof (DonutChartClasses & LabelClasses)]?: string };
-	};
+	Omit<ChartOptions, "width" | "height">;
 
 export type LineChartOptionsBase = {
 	/**
@@ -499,9 +493,7 @@ export type LineChartOptionsBase = {
 } & ChartOptions &
 	LinearGradientOptions &
 	GeneralChartStyleOptions &
-	Labels & {
-		classes: { [K in keyof (LineChartClasses & LabelClasses)]?: string };
-	};
+	Labels;
 
 // This will get cleaned up later
 export type AsciiBarChartOptionsBase = {
