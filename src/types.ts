@@ -253,7 +253,7 @@ export type ChartOptions = {
 	 *
 	 * Defaults to width if unset.
 	 *
-	 * **WARN** Can lead to unexpected results, docs demo usage page is TODO!
+	 * **WARN** This is an advanced option & can lead to unexpected results, docs demo usage page is TODO!
 	 */
 	vWidth: number;
 	/**
@@ -261,7 +261,7 @@ export type ChartOptions = {
 	 *
 	 * Defaults to height if unset.
 	 *
-	 * **WARN** Can lead to unexpected results, docs demo usage page is TODO!
+	 * **WARN** This is an advanced option & can lead to unexpected results, docs demo usage page is TODO!
 	 */
 	vHeight: number;
 };
@@ -332,15 +332,37 @@ export type LinearGradientType = "individual" | "continuous";
 
 export type LinearGradientOptions = {
 	/**
-	 * Array of CSS color values
+	 * Array of CSS color values, optionally with a percentage to control the stop position for said color.
+	 * If percentage is not supplied, colors will be spaced evenly across the gradient.
+	 *
+	 * Examples of valid color strings:
+	 * - `"red"`
+	 * - `"#ff0000"`
+	 * - `"rgb(255, 0, 0)"`
+	 * - `"red:0%"` (if percentage is supplied, it must be in the form of a string with a colon separating the color and percentage)
+	 * - `"rgb(255, 0, 0):50%"`
 	 */
 	gradientColors: GradientColor[];
 	/**
-	 * Defaults to `"individual"` when `gradientColors` is supplied but no `gradientMode` is given.
+	 * Defaults to `"individual"` when `gradientColors` is supplied.
+	 *
+	 * Accepted values:
+	 * - "individual"
+	 *   - each color in `gradientColors` is applied to a separate segment of the chart (e.g. each bar gets its own gradient, or each line gets its own gradient).
+	 * - "continuous"
+	 *   - the gradient is applied across the entire chart, with colors transitioning smoothly from one to the next based on their specified percentages or their position in the array.
+	 *
 	 */
 	gradientMode: LinearGradientType;
 	/**
 	 * Defaults to `"left-to-right"` when `gradientColors` is supplied but no `gradientDirection` is given.
+	 *
+	 * Accepted values:
+	 * - "left-to-right"
+	 * - "right-to-left"
+	 * - "top-to-bottom"
+	 * - "bottom-to-top"
+	 * - any valid CSS angle value (e.g. "45deg", "90deg", etc.)
 	 */
 	gradientDirection: LinearGradientDirection;
 };
@@ -354,16 +376,27 @@ export type ManyLinearGradientOptions = {
 
 export type GeneralChartStyleOptions = {
 	/**
-	 * Used as the "fill" on resulting bars.
-	 * Defaults to `["#ffffff"]` if not supplied.
+	 * A single or array of [CSS color values](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Colors/Color_values)
+	 * Used as the "fill" on resulting chart elements.
+	 * Colors are applied in provided order, if there are fewer colors than chart elements, colors will alternate by wrapping around.
+	 *
+	 * Defaults to `"#ffffff"` if not supplied.
 	 */
 	fillColors: string | string[];
 	/**
+	 * A single or array of [CSS color values](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Colors/Color_values)
 	 * Used as the stroke on resulting bars.
+	 * Colors are applied in provided order, if there are fewer colors than chart elements, colors will alternate by wrapping around.
+	 *
+	 * No default value if not supplied.
 	 */
 	strokeColors: string | string[];
 	/**
+	 * A single or array of [CSS length units](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/length)
 	 * Used as the "stroke-width" on resulting bars.
+	 * Lengths are applied in provided order, if there are fewer lengths than chart elements, lengths will alternate by wrapping around.
+	 *
+	 * No default value if not supplied.
 	 */
 	strokeWidths: StringOrNumber | StringOrNumber[];
 };
@@ -396,7 +429,7 @@ export type BarChartOptionsBase = {
 	 *
 	 * Will override the SVG `viewBox` height if supplied.
 	 *
-	 * **WARN** Can lead to unexpected results, docs demo usage page is TODO!
+	 * **WARN** This is an advanced option & can lead to unexpected results, docs demo usage page is TODO!
 	 */
 	max: number;
 	/**
@@ -455,7 +488,7 @@ export type LineChartOptionsBase = {
 	/**
 	 * When not supplied defaults to `0` or a negative value if present in given data.
 	 *
-	 * **WARN** Can lead to unexpected results, leave unset if results are undesirable!
+	 * **WARN** This is an advanced option & can lead to unexpected results, leave unset if results are undesirable!
 	 */
 	min: number;
 	/**
@@ -463,7 +496,7 @@ export type LineChartOptionsBase = {
 	 *
 	 * Will override the SVG `viewBox` height if supplied.
 	 *
-	 * **WARN** Can lead to unexpected results, leave unset if results are undesirable!
+	 * **WARN** This is an advanced option & can lead to unexpected results, leave unset if results are undesirable!
 	 */
 	max: number;
 	/**
@@ -501,17 +534,93 @@ export type AsciiBarChartOptionsBase = {
 	 * Defaults to `"bottom"` if not supplied
 	 */
 	placement: "top" | "right" | "bottom" | "left";
+	/**
+	 * The character used to represent bars in the resulting ASCII chart. Can be any string or one of the built-in options:
+	 *
+	 * - "solid": "█"
+	 * - "light": "░"
+	 * - "medium": "▒"
+	 * - "dark": "▓"
+	 *
+	 * Defaults to "solid" if not supplied.
+	 */
 	barCharacter: AsciiBarCharacter;
+	/**
+	 * The width of each bar in characters.
+	 *
+	 * Defaults to `3` if not supplied.
+	 */
 	barWidth: number;
+	/**
+	 * The number of spaces between each bar.
+	 *
+	 * Defaults to `3` if not supplied.
+	 */
 	gap: number;
+	/**
+	 * Controls the height of the resulting ASCII chart in characters.
+	 *
+	 * Defaults to `24` if not supplied.
+	 */
 	height: number;
+	/**
+	 * Controls the width of the resulting ASCII chart in characters.
+	 *
+	 * Defaults to `80` if not supplied.
+	 */
 	width: number;
+	/**
+	 * Used as the color for the bars in the resulting ASCII chart. Can be an array to allow for alternating colors.
+	 *
+	 * Defaults to `["white"]` if not supplied.
+	 *
+	 * Accepted color values are:
+	 * - Any basic ANSI color
+	 * 	- "black"
+	 * 	- "red"
+	 * 	- "green"
+	 * 	- "yellow"
+	 * 	- "blue"
+	 * 	- "magenta"
+	 * 	- "cyan"
+	 * 	- "white"
+	 * 	- "gray"
+	 * - Any valid hex color string (e.g. "#ff0000")
+	 * - An object with r,g,b for each color value
+	 * 	- `{ r: 255, g: 0, b: 0 }`
+	 */
 	colors: AsciiColors;
 	title: string;
+	/**
+	 * Used to determine the format of data labels in the resulting ASCII chart. Can be a custom formatting function, or one of the following presets:
+	 * - "literal": displays the given number in-place
+	 * - "percentage": displays the value as a percentage of the sum of all values in the `data` array
+	 * - A custom function which takes the value and index of each data point, and returns a string to be displayed as the data label for that point. The function can optionally take additional arguments for more advanced use cases.
+	 */
 	dataLabels:
 		| "literal"
 		| "percentage"
 		| ((v: number, i: number, ...args: unknown[]) => string);
+	/**
+	 * Used as the color for the data labels in the resulting ASCII chart. Can be an array to allow for alternating colors.
+	 *
+	 * Defaults to `["white"]` if not supplied.
+	 *
+	 * Accepted color values are:
+	 * - Any basic ANSI color
+	 * 	- "black"
+	 * 	- "red"
+	 * 	- "green"
+	 * 	- "yellow"
+	 * 	- "blue"
+	 * 	- "magenta"
+	 * 	- "cyan"
+	 * 	- "white"
+	 * 	- "gray"
+	 * - Any valid hex color string (e.g. "#ff0000")
+	 * - An object with r,g,b for each color value
+	 * 	- `{ r: 255, g: 0, b: 0 }`
+	 */
 	dataLabelColors: AsciiColors;
 };
 

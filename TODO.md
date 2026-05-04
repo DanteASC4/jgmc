@@ -4,7 +4,7 @@ This will now be a smaller list of things that aren't critical but should be don
 
 - [x] Move defaults into their own chart file
   - Better bundling as every chart will no longer unnecessarily load the defaults of other charts
-- [ ] Types cleanup
+- [x] Types cleanup
   - [x] Consider expanding `BarChartStyleOptions` into a more general "style options" and just use `Pick` on sub-types.
     - I had already done this!
   - [x] Either use or remove the `responsive` option
@@ -15,17 +15,16 @@ This will now be a smaller list of things that aren't critical but should be don
   - [x] Rename for consistency
     - [x] `BarChartNumericalOpts` -> `BarChartNumericalOptions`
     - [x] `BarChartStackedOpts` -> `BarChartStackedOptions`
-  - [ ] Do a once-over on type descriptions
+  - [x] Do a once-over on type descriptions
 - [ ] Refinement things
   - [ ] Ensure top-level chart exported functions have a standard logic flow
-    - [x] Also check that things are only happening when needed (e.g. I see in `barchart` I create a `textGroup`, `dataLabelTextGroup`, and `imageLabelGroup` element despite labels being optional!!!)
+    - [ ] Also check that things are only happening when needed (e.g. I see in `barchart` I create a `textGroup`, `dataLabelTextGroup`, and `imageLabelGroup` element despite labels being optional!!!)
     - [x] I also have an anchor comment for `classes?.groupClass` ?!?!
-  - [ ] The above "types cleanup" todos
+  - [x] The above "types cleanup" todos
   - [ ] Use arrays over objects for coords
-  - [ ] Standardize the default `tmc-...` class nomenclature & usage
-    - [ ] Add to gradients & whatnot
-  - [ ] Do a once-over on defaults for all charts
-    - [ ] Move existing defaults where I fallback to colors to the 'defaults'
+  - [x] Standardize the default `tmc-...` class nomenclature & usage
+  - [x] Do a once-over on defaults for all charts
+    - [x] Move existing defaults where I fallback to colors to the 'defaults'
   - [ ] Documentation needed:
     - [ ] Universals page (explain some of the ideology behind things, like strokeWidths being on all chart types, array params wrapping, `classes`, etc...)
     - [ ] Per-chart page defaults made clear

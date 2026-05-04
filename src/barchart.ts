@@ -229,7 +229,7 @@ export function barchart({
 				trueBarWidth,
 				trueBarHeight,
 			);
-			const imageLabel = imageLabels?.[i];
+			const imageLabel = imageLabels[i];
 
 			const xOffset =
 				placement === "top" || placement === "bottom"
