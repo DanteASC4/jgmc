@@ -101,14 +101,20 @@ export function linechart({
 	// 	lineColor = color;
 	// }
 
-	const lineGroup = createSVGElement("g");
-	const labelGroup = createSVGElement("g");
-	const datalabelTextGroup = createSVGElement("g");
-	const imageLabelGroup = createSVGElement("g");
+	const hasNormalLabels = labels && labels.length > 0;
+	const hasImageLabels = imageLabels && imageLabels.length > 0;
+	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
 
-	labelGroup.classList.add(ClassNameDefaults.labelGroupClass);
-	datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
-	imageLabelGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
+	const lineGroup = createSVGElement("g");
+	const labelGroup = hasNormalLabels ? createSVGElement("g") : null;
+	const datalabelTextGroup = dataLabels ? createSVGElement("g") : null;
+	const imageLabelGroup = hasImageLabels ? createSVGElement("g") : null;
+
+	if (labelGroup) labelGroup.classList.add(ClassNameDefaults.labelGroupClass);
+	if (datalabelTextGroup)
+		datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
+	if (imageLabelGroup)
+		imageLabelGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
@@ -162,63 +168,66 @@ export function linechart({
 
 		const labelColor = getSingleOrWrap(labelColors, i);
 
-		// Image labels & normal labels are to be applied only on the last point
-		if (imageLabels?.[i]) {
-			const lastCoord = coords[coords.length - 1];
+		if (hasLabels) {
+			// Image labels & normal labels are to be applied only on the last point
+			if (imageLabelGroup && imageLabels?.[i]) {
+				const lastCoord = coords[coords.length - 1];
 
-			const imageLabel = imageLabels[i];
-			// Static offsets here because lines don't have placement options
+				const imageLabel = imageLabels[i];
+				// Static offsets here because lines don't have placement options
 
-			let adjustedY = lastCoord[1];
+				let adjustedY = lastCoord[1];
 
-			if (adjustedY <= 20) {
-				adjustedY += imageLabel.width ?? 50 / 2;
-			} else if (adjustedY >= vHeight - 20) {
-				adjustedY -= imageLabel.width ?? 50 / 2;
+				if (adjustedY <= 20) {
+					adjustedY += imageLabel.width ?? 50 / 2;
+				} else if (adjustedY >= vHeight - 20) {
+					adjustedY -= imageLabel.width ?? 50 / 2;
+				}
+
+				const imageLabelElement = createImageLabel(
+					imageLabel,
+					lastCoord[0] + imageLabelOffset + (subgrouping ? 20 : 0),
+					adjustedY,
+					labelColor,
+					subgrouping,
+					imageLabel.width,
+					imageLabel.height,
+				);
+				imageLabelGroup.appendChild(imageLabelElement);
+			} else if (labelGroup && labels?.[i]) {
+				const lastCoord = coords[coords.length - 1];
+				const label = labels[i];
+				const text = createLabel(
+					label,
+					lastCoord[0] + labelOffset,
+					lastCoord[1] - labelOffset,
+					labelColor,
+				);
+				labelGroup.appendChild(text);
 			}
 
-			const imageLabelElement = createImageLabel(
-				imageLabel,
-				lastCoord[0] + imageLabelOffset + (subgrouping ? 20 : 0),
-				adjustedY,
-				labelColor,
-				subgrouping,
-				imageLabel.width,
-				imageLabel.height,
-			);
-			imageLabelGroup.appendChild(imageLabelElement);
-		} else if (labels?.[i]) {
-			const lastCoord = coords[coords.length - 1];
-			const label = labels[i];
-			const text = createLabel(
-				label,
-				lastCoord[0] + labelOffset,
-				lastCoord[1] - labelOffset,
-				labelColor,
-			);
-			labelGroup.appendChild(text);
-		}
-
-		if (dataLabels === "literal") {
-			const lineLabelGroup = createLineDataLabels(
-				coords,
-				lineData.map(String),
-				labelColor,
-				vHeight,
-			);
-			datalabelTextGroup.appendChild(lineLabelGroup);
-		} else if (dataLabels === "percentage") {
-			const percentages = lineData.map((datap) => {
-				const percentage = sum === 0 ? "0.0" : ((datap / sum) * 100).toFixed(1);
-				return `${percentage}%`;
-			});
-			const lineLabelGroup = createLineDataLabels(
-				coords,
-				percentages,
-				labelColor,
-				vHeight,
-			);
-			datalabelTextGroup.appendChild(lineLabelGroup);
+			if (datalabelTextGroup && dataLabels === "literal") {
+				const lineLabelGroup = createLineDataLabels(
+					coords,
+					lineData.map(String),
+					labelColor,
+					vHeight,
+				);
+				datalabelTextGroup.appendChild(lineLabelGroup);
+			} else if (datalabelTextGroup && dataLabels === "percentage") {
+				const percentages = lineData.map((datap) => {
+					const percentage =
+						sum === 0 ? "0.0" : ((datap / sum) * 100).toFixed(1);
+					return `${percentage}%`;
+				});
+				const lineLabelGroup = createLineDataLabels(
+					coords,
+					percentages,
+					labelColor,
+					vHeight,
+				);
+				datalabelTextGroup.appendChild(lineLabelGroup);
+			}
 		}
 
 		line.classList.add(ClassNameDefaults.pathClass);
@@ -243,10 +252,10 @@ export function linechart({
 	// 	labelGroups.forEach((lg) => parent.appendChild(lg));
 	parent.appendChild(lineGroup);
 
-	if (imageLabels && imageLabels.length > 0)
-		parent.appendChild(imageLabelGroup);
-	else if (labels && labels.length > 0) parent.appendChild(labelGroup);
-	if (dataLabels) parent.appendChild(datalabelTextGroup);
+	if (imageLabelGroup && hasImageLabels) parent.appendChild(imageLabelGroup);
+	else if (labelGroup && hasNormalLabels) parent.appendChild(labelGroup);
+
+	if (datalabelTextGroup && dataLabels) parent.appendChild(datalabelTextGroup);
 
 	return parent;
 }
