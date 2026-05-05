@@ -89,7 +89,7 @@ export function donutchart({
 
 	const quarterTurnAngle = 0.25 * (Math.PI * 2);
 	const radius = size / 2;
-	const center = { x: radius + padding, y: radius + padding };
+	const center: [number, number] = [radius + padding, radius + padding];
 	const totalLength = 2 * Math.PI * radius;
 	const halfLength = totalLength * 0.5;
 
@@ -101,15 +101,13 @@ export function donutchart({
 		return b;
 	});
 	const asDists = asStarts.map((d) => d * totalLength);
-	const asCoords = asDists.map((d, i) => {
+	const asCoords: [number, number, number][] = asDists.map((d, i) => {
 		const angle = d / radius - quarterTurnAngle;
-		return {
-			x: center.x + radius * Math.cos(angle),
-			y: center.y + radius * Math.sin(angle),
-			v:
-				asDecimalPercentages[(i + 1) % asDecimalPercentages.length] *
-				totalLength,
-		};
+		return [
+			center[0] + radius * Math.cos(angle),
+			center[1] + radius * Math.sin(angle),
+			asDecimalPercentages[(i + 1) % asDecimalPercentages.length] * totalLength,
+		];
 	});
 	asDecimalPercentages.shift();
 	asCoords.pop();
@@ -120,7 +118,7 @@ export function donutchart({
 	for (let i = 0; i < asCoords.length; i++) {
 		const coord = asCoords[i];
 		const coordTo = i === asCoords.length - 1 ? asCoords[0] : asCoords[i + 1];
-		const largeArcFlag = coord.v >= halfLength;
+		const largeArcFlag = coord[2] >= halfLength;
 
 		let color = getSingleOrWrap(fillColors, i);
 		if (isGradient && gradientId) {
@@ -138,11 +136,11 @@ export function donutchart({
 			: undefined;
 
 		const slicePath = drawDonutSlice(
-			[coord.x, coord.y],
-			[coordTo.x, coordTo.y],
+			coord,
+			coordTo,
 			largeArcFlag,
 			radius,
-			[center.x, center.y],
+			center,
 			color,
 			strokeColor,
 			strokeWidth,
@@ -153,7 +151,7 @@ export function donutchart({
 
 		if (hasLabels && labelGroup) {
 			const labelColor = getSingleOrWrap(labelColors, i);
-			const arcLength = coord.v;
+			const arcLength = coord[2];
 			const prevAngleRads = asCoords
 				.slice(0, i)
 				.map((_, idx) => (totalLength * asDecimalPercentages[idx]) / radius)
@@ -163,7 +161,7 @@ export function donutchart({
 				arcLength,
 				prevAngleRads,
 				radius,
-				[center.x, center.y],
+				center,
 				quarterTurnAngle,
 			);
 			centroids.push(centroidCoords);
@@ -211,8 +209,8 @@ export function donutchart({
 		const centerLabelValue = centerLabel === "sum" ? String(sum) : centerLabel;
 		const centerLabelEle = createLabel(
 			centerLabelValue,
-			center.x,
-			center.y,
+			center[0],
+			center[1],
 			centerLabelColor,
 		);
 		centerLabelEle.classList.add("tmc-donut-center-label");

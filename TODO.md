@@ -21,7 +21,7 @@ This will now be a smaller list of things that aren't critical but should be don
     - [ ] Also check that things are only happening when needed (e.g. I see in `barchart` I create a `textGroup`, `dataLabelTextGroup`, and `imageLabelGroup` element despite labels being optional!!!)
     - [x] I also have an anchor comment for `classes?.groupClass` ?!?!
   - [x] The above "types cleanup" todos
-  - [ ] Use arrays over objects for coords
+  - [x] Use arrays over objects for coords
   - [x] Standardize the default `tmc-...` class nomenclature & usage
   - [x] Do a once-over on defaults for all charts
     - [x] Move existing defaults where I fallback to colors to the 'defaults'

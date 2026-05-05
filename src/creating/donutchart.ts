@@ -2,8 +2,8 @@ import { midpoint } from "../math/common.ts";
 import { createSVGElement } from "./common.ts";
 
 export const drawDonutSlice = (
-	coord: [number, number],
-	coordTo: [number, number],
+	coord: [number, number, number],
+	coordTo: [number, number, number],
 	largeArc: boolean,
 	radius: number,
 	center: [number, number],
