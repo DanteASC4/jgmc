@@ -140,15 +140,21 @@ export function barchart({
 	if (gradientDef) parent.appendChild(gradientDef);
 	// if (gradientBg) parent.appendChild(gradientBg);
 
+	const hasNormalLabels = labels && labels.length > 0;
+	const hasImageLabels = imageLabels && imageLabels.length > 0;
+	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
+
 	const barGroup = createSVGElement("g");
 	barGroup.classList.add("tmc-bargroup");
-	const textGroup = createSVGElement("g");
-	const datalabelTextGroup = createSVGElement("g");
-	const imageLabelGroup = createSVGElement("g");
+	const textGroup = hasNormalLabels ? createSVGElement("g") : null;
+	const datalabelTextGroup = dataLabels ? createSVGElement("g") : null;
+	const imageLabelGroup = hasImageLabels ? createSVGElement("g") : null;
 
-	textGroup.classList.add(ClassNameDefaults.labelGroupClass);
-	datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
-	imageLabelGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
+	if (textGroup) textGroup.classList.add(ClassNameDefaults.labelGroupClass);
+	if (datalabelTextGroup)
+		datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
+	if (imageLabelGroup)
+		imageLabelGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
@@ -221,85 +227,87 @@ export function barchart({
 		bar.classList.add(ClassNameDefaults.rectClass);
 		barGroup.appendChild(bar);
 
-		if (imageLabels?.[i]) {
-			const [labelX, labelY] = calcLabelCoords(
-				placement,
-				barX,
-				barY,
-				trueBarWidth,
-				trueBarHeight,
-			);
-			const imageLabel = imageLabels[i];
+		if (hasLabels) {
+			if (imageLabelGroup && imageLabels?.[i]) {
+				const [labelX, labelY] = calcLabelCoords(
+					placement,
+					barX,
+					barY,
+					trueBarWidth,
+					trueBarHeight,
+				);
+				const imageLabel = imageLabels[i];
 
-			const xOffset =
-				placement === "top" || placement === "bottom"
-					? 0
-					: placement === "left"
-						? 15
-						: -15;
-			const yOffset =
-				placement === "left" || placement === "right"
-					? 0
-					: placement === "top"
-						? 15
-						: -15;
+				const xOffset =
+					placement === "top" || placement === "bottom"
+						? 0
+						: placement === "left"
+							? 15
+							: -15;
+				const yOffset =
+					placement === "left" || placement === "right"
+						? 0
+						: placement === "top"
+							? 15
+							: -15;
 
-			const imageLabelElement = createImageLabel(
-				imageLabel,
-				labelX + xOffset,
-				labelY + yOffset,
-				labelColor,
-				subgrouping,
-				imageLabel.width,
-				imageLabel.height,
-			);
-			imageLabelGroup.appendChild(imageLabelElement);
-		} else if (labels?.[i]) {
-			const currentLabelText = labels[i];
-			const [labelX, labelY] = calcLabelCoords(
-				placement,
-				barX,
-				barY,
-				trueBarWidth,
-				trueBarHeight,
-			);
-			const label = createLabel(currentLabelText, labelX, labelY, labelColor);
-			textGroup.appendChild(label);
-		}
+				const imageLabelElement = createImageLabel(
+					imageLabel,
+					labelX + xOffset,
+					labelY + yOffset,
+					labelColor,
+					subgrouping,
+					imageLabel.width,
+					imageLabel.height,
+				);
+				imageLabelGroup.appendChild(imageLabelElement);
+			} else if (textGroup && labels?.[i]) {
+				const currentLabelText = labels[i];
+				const [labelX, labelY] = calcLabelCoords(
+					placement,
+					barX,
+					barY,
+					trueBarWidth,
+					trueBarHeight,
+				);
+				const label = createLabel(currentLabelText, labelX, labelY, labelColor);
+				textGroup.appendChild(label);
+			}
 
-		if (dataLabels === "literal") {
-			const [dataLabelX, dataLabelY] = calcDataLabelCoords(
-				placement,
-				barX,
-				barY,
-				trueBarWidth,
-				trueBarHeight,
-			);
+			if (datalabelTextGroup && dataLabels === "literal") {
+				const [dataLabelX, dataLabelY] = calcDataLabelCoords(
+					placement,
+					barX,
+					barY,
+					trueBarWidth,
+					trueBarHeight,
+				);
 
-			const dataLabel = createLabel(
-				String(datap),
-				dataLabelX,
-				dataLabelY,
-				dataLabelColor,
-			);
-			datalabelTextGroup.appendChild(dataLabel);
-		} else if (dataLabels === "percentage") {
-			const percentage = ((datap / sum) * 100).toFixed(1);
-			const [dataLabelX, dataLabelY] = calcDataLabelCoords(
-				placement,
-				barX,
-				barY,
-				trueBarWidth,
-				trueBarHeight,
-			);
+				const dataLabel = createLabel(
+					String(datap),
+					dataLabelX,
+					dataLabelY,
+					dataLabelColor,
+				);
+				datalabelTextGroup.appendChild(dataLabel);
+			} else if (datalabelTextGroup && dataLabels === "percentage") {
+				const percentage = ((datap / sum) * 100).toFixed(1);
+				const [dataLabelX, dataLabelY] = calcDataLabelCoords(
+					placement,
+					barX,
+					barY,
+					trueBarWidth,
+					trueBarHeight,
+				);
 
-			const dataLabel = createLabel(
-				`${percentage}%`,
-				dataLabelX,
-				dataLabelY,
-				dataLabelColor,
-			);
-			datalabelTextGroup.appendChild(dataLabel);
+				const dataLabel = createLabel(
+					`${percentage}%`,
+					dataLabelX,
+					dataLabelY,
+					dataLabelColor,
+				);
+				datalabelTextGroup.appendChild(dataLabel);
+			}
 		}
 
 		// const [bar, text] = createBarAndText(
@@ -338,9 +346,10 @@ export function barchart({
 	}
 
 	parent.appendChild(barGroup);
-	if (imageLabels) parent.appendChild(imageLabelGroup);
-	else if (labels && labels.length > 0) parent.appendChild(textGroup);
-	if (dataLabels) parent.appendChild(datalabelTextGroup);
+	if (imageLabelGroup && hasImageLabels) parent.appendChild(imageLabelGroup);
+	else if (textGroup && hasNormalLabels) parent.appendChild(textGroup);
+	
+	if (datalabelTextGroup && dataLabels) parent.appendChild(datalabelTextGroup);
 
 	return parent;
 }
