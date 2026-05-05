@@ -51,11 +51,6 @@ export function barchartStacked({
 	let userMax = false;
 	if (max) userMax = true;
 	const largest = autoMaxNumerical(asNumerical);
-	// if (!max) max = autoMaxNumerical(asNumerical);
-	// if (!min) min = BarChartDefaults.min;
-	// if (!height) height = BarChartDefaults.size;
-	// if (!width) width = BarChartDefaults.size;
-	// if (!gap) gap = BarChartDefaults.gap;
 	if (!vWidth) vWidth = width;
 	if (!vHeight) vHeight = height;
 
@@ -148,15 +143,21 @@ export function barchartStacked({
 	if (gradientDef) parent.appendChild(gradientDef);
 	// if (gradientBg) parent.appendChild(gradientBg);
 
+	const hasNormalLabels = labels && labels.length > 0;
+	const hasImageLabels = imageLabels && imageLabels.length > 0;
+	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
+
 	const barGroup = createSVGElement("g");
-	const textGroup = createSVGElement("g");
-	const datalabelTextGroup = createSVGElement("g");
-	const imageLabelGroup = createSVGElement("g");
+	const textGroup = hasNormalLabels ? createSVGElement("g") : null;
+	const datalabelTextGroup = dataLabels ? createSVGElement("g") : null;
+	const imageLabelGroup = hasImageLabels ? createSVGElement("g") : null;
 
 	barGroup.classList.add("tmc-bargroup");
-	textGroup.classList.add(ClassNameDefaults.labelGroupClass);
-	datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
-	imageLabelGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
+	if (textGroup) textGroup.classList.add(ClassNameDefaults.labelGroupClass);
+	if (datalabelTextGroup)
+		datalabelTextGroup.classList.add(ClassNameDefaults.dataLabelGroupClass);
+	if (imageLabelGroup)
+		imageLabelGroup.classList.add(ClassNameDefaults.imageLabelGroupClass);
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
@@ -166,7 +167,6 @@ export function barchartStacked({
 	const bars: SVGElement[] = [];
 
 	for (let i = 0; i < data.length; i++) {
-		const label = labels[i];
 		const datap = data[i];
 		const datapNumerical = asNumerical[i];
 
@@ -236,78 +236,81 @@ export function barchartStacked({
 			if (gradientMode === "continuous" && gradientId) bars.push(seg);
 		}
 
-		// Coordinates for label placement derived from shared helper
-		const [labelX, labelY] = calcLabelCoords(
-			placement,
-			barX,
-			barY,
-			trueBarWidth,
-			trueBarHeight,
-		);
-
-		if (imageLabels?.[i]) {
-			const imageLabel = imageLabels[i];
-
-			const xOffset =
-				placement === "top" || placement === "bottom"
-					? 0
-					: placement === "left"
-						? 15
-						: -15;
-			const yOffset =
-				placement === "left" || placement === "right"
-					? 0
-					: placement === "top"
-						? 15
-						: -15;
-
-			const imageLabelElement = createImageLabel(
-				imageLabel,
-				labelX + xOffset,
-				labelY + yOffset,
-				labelColor,
-				subgrouping,
-				imageLabel.width,
-				imageLabel.height,
-			);
-			imageLabelGroup.appendChild(imageLabelElement);
-		} else if (labels?.[i]) {
-			const text = createLabel(label, labelX, labelY, labelColor);
-			textGroup.appendChild(text);
-		}
-
-		if (dataLabels === "literal") {
-			const [dataLabelX, dataLabelY] = calcDataLabelCoords(
+		if (hasLabels) {
+			// Coordinates for label placement derived from shared helper
+			const [labelX, labelY] = calcLabelCoords(
 				placement,
 				barX,
 				barY,
 				trueBarWidth,
 				trueBarHeight,
 			);
-			const dataLabel = createLabel(
-				String(datapNumerical),
-				dataLabelX,
-				dataLabelY,
-				dataLabelColor,
-			);
-			datalabelTextGroup.appendChild(dataLabel);
-		} else if (dataLabels === "percentage") {
-			const percentage =
-				sum === 0 ? "0.0" : ((datapNumerical / sum) * 100).toFixed(1);
-			const [dataLabelX, dataLabelY] = calcDataLabelCoords(
-				placement,
-				barX,
-				barY,
-				trueBarWidth,
-				trueBarHeight,
-			);
-			const dataLabel = createLabel(
-				`${percentage}%`,
-				dataLabelX,
-				dataLabelY,
-				dataLabelColor,
-			);
-			datalabelTextGroup.appendChild(dataLabel);
+
+			if (imageLabelGroup && imageLabels?.[i]) {
+				const imageLabel = imageLabels[i];
+
+				const xOffset =
+					placement === "top" || placement === "bottom"
+						? 0
+						: placement === "left"
+							? 15
+							: -15;
+				const yOffset =
+					placement === "left" || placement === "right"
+						? 0
+						: placement === "top"
+							? 15
+							: -15;
+
+				const imageLabelElement = createImageLabel(
+					imageLabel,
+					labelX + xOffset,
+					labelY + yOffset,
+					labelColor,
+					subgrouping,
+					imageLabel.width,
+					imageLabel.height,
+				);
+				imageLabelGroup.appendChild(imageLabelElement);
+			} else if (textGroup && labels?.[i]) {
+				const label = labels[i];
+				const text = createLabel(label, labelX, labelY, labelColor);
+				textGroup.appendChild(text);
+			}
+
+			if (datalabelTextGroup && dataLabels === "literal") {
+				const [dataLabelX, dataLabelY] = calcDataLabelCoords(
+					placement,
+					barX,
+					barY,
+					trueBarWidth,
+					trueBarHeight,
+				);
+				const dataLabel = createLabel(
+					String(datapNumerical),
+					dataLabelX,
+					dataLabelY,
+					dataLabelColor,
+				);
+				datalabelTextGroup.appendChild(dataLabel);
+			} else if (datalabelTextGroup && dataLabels === "percentage") {
+				const percentage =
+					sum === 0 ? "0.0" : ((datapNumerical / sum) * 100).toFixed(1);
+				const [dataLabelX, dataLabelY] = calcDataLabelCoords(
+					placement,
+					barX,
+					barY,
+					trueBarWidth,
+					trueBarHeight,
+				);
+				const dataLabel = createLabel(
+					`${percentage}%`,
+					dataLabelX,
+					dataLabelY,
+					dataLabelColor,
+				);
+				datalabelTextGroup.appendChild(dataLabel);
+			}
 		}
 	}
 
@@ -325,10 +328,11 @@ export function barchartStacked({
 	}
 
 	parent.appendChild(barGroup);
-	if (imageLabels && imageLabels.length > 0) {
+	if (imageLabelGroup && hasImageLabels) {
 		parent.appendChild(imageLabelGroup);
-	} else if (labels && labels.length > 0) parent.appendChild(textGroup);
-	if (dataLabels) parent.appendChild(datalabelTextGroup);
+	} else if (textGroup && hasNormalLabels) parent.appendChild(textGroup);
+	
+	if (datalabelTextGroup && dataLabels) parent.appendChild(datalabelTextGroup);
 
 	return parent;
 }
