@@ -331,7 +331,7 @@ export function barchartStacked({
 	if (imageLabelGroup && hasImageLabels) {
 		parent.appendChild(imageLabelGroup);
 	} else if (textGroup && hasNormalLabels) parent.appendChild(textGroup);
-	
+
 	if (datalabelTextGroup && dataLabels) parent.appendChild(datalabelTextGroup);
 
 	return parent;

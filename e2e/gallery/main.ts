@@ -60,6 +60,8 @@ app.get('/', (c) => {
         <a href="./out/donutchartdocsexamples.html"> Donut Chart Docs Examples </a>
         <a href="./out/donutchart.html"> Donut Chart </a>
         <br />
+        <a href="./out/barchartrevamped.html"> Bar Chart Revamped </a>
+        <br />
         <a href="./out/tinker.html"> Tinker </a>
       </body>
     </html>`);

@@ -4,7 +4,7 @@ import { ensureDirSync } from "jsr:@std/fs";
 import { join, resolve } from "jsr:@std/path";
 import { randomIntegerBetween } from "@std/random";
 
-export type SaveablePairs = ([SVGElement] | [SVGElement, string])[];
+export type SaveablePairs = ([SVGElement | string] | [SVGElement | string, string])[];
 
 const galleryP = (name: string) =>
 	resolve(join(Deno.cwd(), "e2e", "gallery", "out", `${name}.html`));
@@ -20,7 +20,7 @@ export const buildGalleryPage = (
 	const viewable = data.map((maybepair) => {
 		return `<div class="svg-view">
 <span>${maybepair[1] ?? ""}</span>
-${maybepair[0].outerHTML}
+${typeof maybepair[0] === "string" ? maybepair[0] : maybepair[0].outerHTML}
 </div>`;
 	});
 

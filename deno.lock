@@ -3,28 +3,36 @@
   "specifiers": {
     "jsr:@david/code-block-writer@^13.0.3": "13.0.3",
     "jsr:@deno/dnt@~0.42.3": "0.42.3",
-    "jsr:@std/assert@1": "1.0.16",
+    "jsr:@std/assert@1": "1.0.19",
     "jsr:@std/assert@^1.0.15": "1.0.16",
-    "jsr:@std/assert@^1.0.16": "1.0.16",
+    "jsr:@std/assert@^1.0.16": "1.0.19",
+    "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/async@^1.0.15": "1.0.15",
-    "jsr:@std/collections@^1.1.3": "1.1.3",
+    "jsr:@std/async@^1.3.0": "1.3.0",
+    "jsr:@std/collections@^1.1.3": "1.1.7",
+    "jsr:@std/data-structures@^1.0.11": "1.0.11",
     "jsr:@std/data-structures@^1.0.9": "1.0.9",
-    "jsr:@std/fmt@1": "1.0.8",
-    "jsr:@std/fmt@^1.0.8": "1.0.8",
+    "jsr:@std/fmt@1": "1.0.10",
+    "jsr:@std/fmt@^1.0.8": "1.0.10",
     "jsr:@std/fs@*": "1.0.20",
-    "jsr:@std/fs@1": "1.0.20",
+    "jsr:@std/fs@1": "1.0.23",
     "jsr:@std/fs@^1.0.19": "1.0.20",
-    "jsr:@std/internal@^1.0.12": "1.0.12",
+    "jsr:@std/fs@^1.0.23": "1.0.23",
+    "jsr:@std/internal@^1.0.12": "1.0.13",
+    "jsr:@std/internal@^1.0.13": "1.0.13",
     "jsr:@std/path@*": "1.1.3",
-    "jsr:@std/path@1": "1.1.3",
+    "jsr:@std/path@1": "1.1.4",
     "jsr:@std/path@^1.1.2": "1.1.3",
     "jsr:@std/path@^1.1.3": "1.1.3",
-    "jsr:@std/random@~0.1.4": "0.1.4",
-    "jsr:@std/testing@^1.0.16": "1.0.16",
+    "jsr:@std/path@^1.1.4": "1.1.4",
+    "jsr:@std/random@~0.1.4": "0.1.5",
+    "jsr:@std/random@~0.1.5": "0.1.5",
+    "jsr:@std/testing@^1.0.16": "1.0.18",
+    "jsr:@std/testing@^1.0.18": "1.0.18",
     "jsr:@ts-morph/bootstrap@0.27": "0.27.0",
     "jsr:@ts-morph/common@0.27": "0.27.0",
-    "npm:@biomejs/biome@*": "2.4.13",
-    "npm:@biomejs/biome@^2.4.13": "2.4.13",
+    "npm:@biomejs/biome@*": "2.4.15",
+    "npm:@biomejs/biome@^2.4.15": "2.4.15",
     "npm:hono@^4.8.12": "4.9.2",
     "npm:linkedom@~0.18.12": "0.18.12"
   },
@@ -45,49 +53,97 @@
     "@std/assert@1.0.16": {
       "integrity": "6a7272ed1eaa77defe76e5ff63ca705d9c495077e2d5fd0126d2b53fc5bd6532",
       "dependencies": [
-        "jsr:@std/internal"
+        "jsr:@std/internal@^1.0.12"
+      ]
+    },
+    "@std/assert@1.0.19": {
+      "integrity": "eaada96ee120cb980bc47e040f82814d786fe8162ecc53c91d8df60b8755991e",
+      "dependencies": [
+        "jsr:@std/internal@^1.0.12"
       ]
     },
     "@std/async@1.0.15": {
       "integrity": "55d1d9d04f99403fe5730ab16bdcc3c47f658a6bf054cafb38a50f046238116e"
     },
+    "@std/async@1.3.0": {
+      "integrity": "80485538a4f7baaa46bfe2246168069e02ed142b9f9079cd164f43bb060ad9e9"
+    },
     "@std/collections@1.1.3": {
       "integrity": "bf8b0818886df6a32b64c7d3b037a425111f28278d69fd0995aeb62777c986b0"
+    },
+    "@std/collections@1.1.7": {
+      "integrity": "56f659d011218a69740b12829cf5ea2c9b70bbed0af02597e27dc1eb5e69e208"
     },
     "@std/data-structures@1.0.9": {
       "integrity": "033d6e17e64bf1f84a614e647c1b015fa2576ae3312305821e1a4cb20674bb4d"
     },
+    "@std/data-structures@1.0.11": {
+      "integrity": "53b98ed7efa61f107dfc14244bd2ec5557f7f7ee0bbaef6d449d7937facacb89"
+    },
     "@std/fmt@1.0.8": {
       "integrity": "71e1fc498787e4434d213647a6e43e794af4fd393ef8f52062246e06f7e372b7"
+    },
+    "@std/fmt@1.0.10": {
+      "integrity": "90dfba288802ac6de82fb31d0917eb9e4450b9925b954d5e51fc29ac07419db5"
     },
     "@std/fs@1.0.20": {
       "integrity": "e953206aae48d46ee65e8783ded459f23bec7dd1f3879512911c35e5484ea187",
       "dependencies": [
-        "jsr:@std/internal",
+        "jsr:@std/internal@^1.0.12",
         "jsr:@std/path@^1.1.3"
+      ]
+    },
+    "@std/fs@1.0.23": {
+      "integrity": "3ecbae4ce4fee03b180fa710caff36bb5adb66631c46a6460aaad49515565a37",
+      "dependencies": [
+        "jsr:@std/internal@^1.0.12",
+        "jsr:@std/path@^1.1.4"
       ]
     },
     "@std/internal@1.0.12": {
       "integrity": "972a634fd5bc34b242024402972cd5143eac68d8dffaca5eaa4dba30ce17b027"
     },
+    "@std/internal@1.0.13": {
+      "integrity": "2f9546691d4ac2d32859c82dff284aaeac980ddeca38430d07941e7e288725c0"
+    },
     "@std/path@1.1.3": {
       "integrity": "b015962d82a5e6daea980c32b82d2c40142149639968549c649031a230b1afb3",
       "dependencies": [
-        "jsr:@std/internal"
+        "jsr:@std/internal@^1.0.12"
+      ]
+    },
+    "@std/path@1.1.4": {
+      "integrity": "1d2d43f39efb1b42f0b1882a25486647cb851481862dc7313390b2bb044314b5",
+      "dependencies": [
+        "jsr:@std/internal@^1.0.12"
       ]
     },
     "@std/random@0.1.4": {
       "integrity": "91407b5c30d63b6570e5d7be8b341bf5941c55d5c6d6b9569a220b63ae03e2d9"
     },
+    "@std/random@0.1.5": {
+      "integrity": "d26614c4f6c441afc22397a1c5b8f27d02ab8f5572f1d29e7b0cd57f3d548235"
+    },
     "@std/testing@1.0.16": {
       "integrity": "a917ffdeb5924c9be436dc78bc32e511760e14d3a96e49c607fc5ecca86d0092",
       "dependencies": [
         "jsr:@std/assert@^1.0.15",
-        "jsr:@std/async",
-        "jsr:@std/data-structures",
+        "jsr:@std/async@^1.0.15",
+        "jsr:@std/data-structures@^1.0.9",
         "jsr:@std/fs@^1.0.19",
-        "jsr:@std/internal",
+        "jsr:@std/internal@^1.0.12",
         "jsr:@std/path@^1.1.2"
+      ]
+    },
+    "@std/testing@1.0.18": {
+      "integrity": "d3152f57b11666bf6358d0e127c7e3488e91178b0c2d8fbf0793e1c53cd13cb1",
+      "dependencies": [
+        "jsr:@std/assert@^1.0.19",
+        "jsr:@std/async@^1.3.0",
+        "jsr:@std/data-structures@^1.0.11",
+        "jsr:@std/fs@^1.0.23",
+        "jsr:@std/internal@^1.0.13",
+        "jsr:@std/path@^1.1.4"
       ]
     },
     "@ts-morph/bootstrap@0.27.0": {
@@ -105,8 +161,8 @@
     }
   },
   "npm": {
-    "@biomejs/biome@2.4.13": {
-      "integrity": "sha512-gLXOwkOBBg0tr7bDsqlkIh4uFeKuMjxvqsrb1Tukww1iDmHcfr4Uu8MoQxp0Rcte+69+osRNWXwHsu/zxT6XqA==",
+    "@biomejs/biome@2.4.15": {
+      "integrity": "sha512-j5VH3a/h/HXTKBM50MDMxRCzkeLv9S2XJcW2WgnZT1+xyisi+0bISrXR82gCX+8S9lvK0skEvHJRN+3Ktr2hlw==",
       "optionalDependencies": [
         "@biomejs/cli-darwin-arm64",
         "@biomejs/cli-darwin-x64",
@@ -119,43 +175,43 @@
       ],
       "bin": true
     },
-    "@biomejs/cli-darwin-arm64@2.4.13": {
-      "integrity": "sha512-2KImO1jhNFBa2oWConyr0x6flxbQpGKv6902uGXpYM62Xyem8U80j441SyUJ8KyngsmKbQjeIv1q2CQfDkNnYg==",
+    "@biomejs/cli-darwin-arm64@2.4.15": {
+      "integrity": "sha512-rF3PPqLq1yoST79zaQbDjVJwsuIeci/O+9bgNmC5QpgOqz6aqYuzA4abyAGx+mgyiDXn4A049xAN8gijbuR1Qg==",
       "os": ["darwin"],
       "cpu": ["arm64"]
     },
-    "@biomejs/cli-darwin-x64@2.4.13": {
-      "integrity": "sha512-BKrJklbaFN4p1Ts4kPBczo+PkbsHQg57kmJ+vON9u2t6uN5okYHaSr7h/MutPCWQgg2lglaWoSmm+zhYW+oOkg==",
+    "@biomejs/cli-darwin-x64@2.4.15": {
+      "integrity": "sha512-/5KHXYMfSJs1fNXiX30xFtI8JcCFV6zaVVLxOa0M2sfqBKHkpQhRTv94yxQWxeTY2lzo2OuTlNvPC+hDQt2wcQ==",
       "os": ["darwin"],
       "cpu": ["x64"]
     },
-    "@biomejs/cli-linux-arm64-musl@2.4.13": {
-      "integrity": "sha512-U5MsuBQW25dXaYtqWWSPM3P96H6Y+fHuja3TQpMNnylocHW0tEbtFTDlUj6oM+YJLntvEkQy4grBvQNUD4+RCg==",
+    "@biomejs/cli-linux-arm64-musl@2.4.15": {
+      "integrity": "sha512-ZPcxznxm0pogHBLZhYntyR3sR+MrZjqJIKEr7ZqVen0Rl+P/4upVmfYXjftizi9RoqZntg33fv/1fbdhbYXpEQ==",
       "os": ["linux"],
       "cpu": ["arm64"]
     },
-    "@biomejs/cli-linux-arm64@2.4.13": {
-      "integrity": "sha512-NzkUDSqfvMBrPplKgVr3aXLHZ2NEELvvF4vZxXulEylKWIGqlvNEcwUcj9OLrn75TD3lJ/GIqCVlBwd1MZCuYQ==",
+    "@biomejs/cli-linux-arm64@2.4.15": {
+      "integrity": "sha512-owaAMZD/T4LrD0ELNCk0Km3qrRHuM0X6EAyVE1FSqGY0rbLoiDLrO4Us2tllm6cAeB2Ioa9C2C08NZPdr8+0Ug==",
       "os": ["linux"],
       "cpu": ["arm64"]
     },
-    "@biomejs/cli-linux-x64-musl@2.4.13": {
-      "integrity": "sha512-Z601MienRgTBDza/+u2CH3RSrWoXo9rtr8NK6A4KJzqGgfxx+H3VlyLgTJ4sRo40T3pIsqpTmiOQEvYzQvBRvQ==",
+    "@biomejs/cli-linux-x64-musl@2.4.15": {
+      "integrity": "sha512-CNq/9W38SYSH023lfcQ4KKU8K0YX8T//FZUhcgtMMRABDojx5XsMV7jlweAvGSl389wJQB29Qo6Zb/a+jdvt+w==",
       "os": ["linux"],
       "cpu": ["x64"]
     },
-    "@biomejs/cli-linux-x64@2.4.13": {
-      "integrity": "sha512-Az3ZZedYRBo9EQzNnD9SxFcR1G5QsGo6VEc2hIyVPZ1rdKwee/7E9oeBBZFpE8Z44ekxsDQBqbiWGW5ShOhUSQ==",
+    "@biomejs/cli-linux-x64@2.4.15": {
+      "integrity": "sha512-0jj7THz12GbUOLmMibktK6DZjqz2zV64KFxyBtcFTKPiiOIY0a7vns1elpO1dERvxpsZ5ik0oFfz0oGwFde1+g==",
       "os": ["linux"],
       "cpu": ["x64"]
     },
-    "@biomejs/cli-win32-arm64@2.4.13": {
-      "integrity": "sha512-Px9PS2B5/Q183bUwy/5VHqp3J2lzdOCeVGzMpphYfl8oSa7VDCqenBdqWpy6DCy/en4Rbf/Y1RieZF6dJPcc9A==",
+    "@biomejs/cli-win32-arm64@2.4.15": {
+      "integrity": "sha512-ouhkYdlhp/1GghEJPdWwD/Vi3gQ1nFxuSpMolWsbq3Lsq3QUR4jl6UdhhscdCugKU5vOEuMiJhvKj66O0OCq+w==",
       "os": ["win32"],
       "cpu": ["arm64"]
     },
-    "@biomejs/cli-win32-x64@2.4.13": {
-      "integrity": "sha512-tTcMkXyBrmHi9BfrD2VNHs/5rYIUKETqsBlYOvSAABwBkJhSDVb5e7wPukftsQbO3WzQkXe6kaztC6WtUOXSoQ==",
+    "@biomejs/cli-win32-x64@2.4.15": {
+      "integrity": "sha512-zBrGq5mx5wwpnow4+2BxUvleDM+GNd4sLbPaMapsSLQLD0NGRCquqPBTgN+7XkUteHvj7M+BstuI8tmnV7+HgQ==",
       "os": ["win32"],
       "cpu": ["x64"]
     },
@@ -252,7 +308,7 @@
       "jsr:@std/fmt@^1.0.8",
       "jsr:@std/random@~0.1.4",
       "jsr:@std/testing@^1.0.16",
-      "npm:@biomejs/biome@^2.4.13",
+      "npm:@biomejs/biome@^2.4.15",
       "npm:linkedom@~0.18.12"
     ],
     "members": {
@@ -260,6 +316,18 @@
         "dependencies": [
           "jsr:@std/assert@1",
           "npm:hono@^4.8.12"
+        ]
+      },
+      "packages/core": {
+        "dependencies": [
+          "jsr:@std/assert@1",
+          "jsr:@std/random@~0.1.5"
+        ]
+      },
+      "packages/vanilla": {
+        "dependencies": [
+          "jsr:@std/assert@1",
+          "jsr:@std/testing@^1.0.18"
         ]
       }
     }
