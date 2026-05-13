@@ -15,7 +15,7 @@ Deno.test(function barchartTests() {
 	});
 	assertEquals(typeof tbc0, "string");
 
-  pairs.push([tbc0, "Only data"]);
+	pairs.push([tbc0, "Only data"]);
 });
 
 afterAll(() => {

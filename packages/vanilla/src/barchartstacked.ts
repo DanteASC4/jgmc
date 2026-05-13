@@ -12,8 +12,8 @@ import {
 	fillStrings,
 	getOnlyItemOrWrap,
 	randId,
-	stackedToSummed,
 	type StringOrNumber,
+	stackedToSummed,
 } from "@jgmc/core";
 import {
 	createBarChartMask,
