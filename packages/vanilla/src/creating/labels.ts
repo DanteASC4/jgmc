@@ -31,18 +31,17 @@ export const createImageLabel = (
 	width = 50,
 	height = 50,
 ) => {
-	const imgAttrs: ImageAttrs = [
-		["href", imgLabel.href],
-		["alt", imgLabel.alt || ""],
-		["width", `${width}`],
-		["height", `${height}`],
-		["x", `${-width / 2}`],
-		["y", `${-height / 2}`],
-		["class", classNames.imageLabelEle],
-	];
-	const theImg = `<image ${combineAttrs(imgAttrs)} />`;
-
 	if (subgrouping) {
+		const imgAttrs: ImageAttrs = [
+			["href", imgLabel.href],
+			["alt", imgLabel.alt || ""],
+			["width", `${width}`],
+			["height", `${height}`],
+			["x", `${-width / 2}`],
+			["y", `${-height / 2}`],
+			["class", classNames.imageLabelEle],
+		];
+		const theImg = `<image ${combineAttrs(imgAttrs)} />`;
 		let imgLabelGroupBody = "";
 		if (imgLabel.topText)
 			imgLabelGroupBody += createTextLabel(
@@ -65,6 +64,16 @@ export const createImageLabel = (
 			["transform", `translate(${textX}, ${textY})`],
 		])}>${imgLabelGroupBody}</g>`;
 	} else {
+		const imgAttrs: ImageAttrs = [
+			["href", imgLabel.href],
+			["alt", imgLabel.alt || ""],
+			["width", `${width}`],
+			["height", `${height}`],
+			["x", `${textX - width / 2}`],
+			["y", `${textY - height / 2}`],
+			["class", classNames.imageLabelEle],
+		];
+		const theImg = `<image ${combineAttrs(imgAttrs)} />`;
 		return theImg;
 	}
 };
