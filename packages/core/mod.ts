@@ -1,6 +1,7 @@
 export * from "./src/barchart.ts";
 export * from "./src/common.ts";
 export * from "./src/labels.ts";
+export * from "./src/linechart.ts";
 export * from "./src/utils/escape.ts";
 export * from "./src/utils/general-operations.ts";
 export * from "./types.ts";

@@ -7,6 +7,7 @@
   "imports": {
     "@std/assert": "jsr:@std/assert@1",
     "$types": "./types.ts",
+    "@std/collections": "jsr:@std/collections@^1.1.7",
     "@std/testing": "jsr:@std/testing@^1.0.18"
   },
   "exports": "./mod.ts"

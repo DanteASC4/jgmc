@@ -1,5 +1,9 @@
 export const classNames = {
 	labelTextEle: "jgmc-text",
-	imageLabelGroup: "jgmc-image-label-group",
+	imageLabelGroupEle: "jgmc-image-label-group",
 	imageLabelEle: "jgmc-image-label",
+	rectEle: "jgmc-rect",
+	groupEle: "jgmc-group",
+	svgEle: "jgmc-svg",
+	pathEle: "jgmc-path",
 } as const;

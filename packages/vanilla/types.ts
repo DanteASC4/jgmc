@@ -15,3 +15,4 @@ export type RectAttrs = AttributePairs<
 >;
 export type GroupAttrs = AttributePairs<"transform" | "class">;
 export type SvgAttrs = AttributePairs<"width" | "height" | "viewBox">;
+export type PathAttrs = AttributePairs<"d" | "fill" | "stroke" | "stroke-width" | "stroke-linecap">;

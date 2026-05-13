@@ -41,11 +41,11 @@ export type StringOrNumber = string | number;
 /**
  * Used for resulting path's [`stroke-linecap`](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-linecap) attribute
  */
-type LineCaps = "round" | "butt" | "square";
+export type LineCaps = "round" | "butt" | "square";
 /**
  * Controls whether resulting lines are drawn straight or smooth
  */
-type LineTypes = "straight" | "smooth";
+export type LineTypes = "straight" | "smooth";
 
 export type AsciiBarCharacter =
 	| "solid"
@@ -54,7 +54,7 @@ export type AsciiBarCharacter =
 	| "dark"
 	| (string & {});
 
-type AsciiBasicColors =
+export type AsciiBasicColors =
 	| "black"
 	| "red"
 	| "green"

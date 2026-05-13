@@ -59,7 +59,7 @@ export const createImageLabel = (
 			);
 
 		return `<g ${combineAttrs([
-			["class", classNames.imageLabelGroup],
+			["class", classNames.imageLabelGroupEle],
 			["transform", `translate(${textX}, ${textY})`],
 		])}>${imgLabelGroupBody}</g>`;
 	} else {
