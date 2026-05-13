@@ -5,7 +5,7 @@
  * @returns calculated gap size between items, which is 1/4 of the average space allocated for each item on the surface
  */
 export const autoGap = (surfaceLength: number, numItems: number) => {
-	return surfaceLength / numItems / 4;
+  return surfaceLength / numItems / 4;
 };
 
 /**
@@ -15,7 +15,7 @@ export const autoGap = (surfaceLength: number, numItems: number) => {
  * @returns percentage value
  */
 export const asPercent = (num: number, ofnum: number) => {
-	return (num * 100) / ofnum;
+  return (num * 100) / ofnum;
 };
 
 /**
@@ -26,9 +26,9 @@ export const asPercent = (num: number, ofnum: number) => {
  * @returns rounded number
  */
 export const roundTo = (n: number, t = 10, upDown?: "up" | "down") => {
-	if (upDown === "up") return Math.ceil(n / t) * t;
-	if (upDown === "down") return Math.floor(n / t) * t;
-	return Math.round(n / t) * t;
+  if (upDown === "up") return Math.ceil(n / t) * t;
+  if (upDown === "down") return Math.floor(n / t) * t;
+  return Math.round(n / t) * t;
 };
 
 /**
@@ -61,10 +61,10 @@ export const roundUpTo100 = (n: number) => roundTo(n, 100, "up");
  * @returns resulting distance between two given points
  */
 export const distTwoPoint = (
-	x1: number,
-	y1: number,
-	x2: number,
-	y2: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
 ): number => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
 /**
@@ -76,10 +76,10 @@ export const distTwoPoint = (
  * @returns midpoint coordinates between two given points
  */
 export const midpoint = (
-	x1: number,
-	y1: number,
-	x2: number,
-	y2: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
 ): [number, number] => [(x1 + x2) / 2, (y1 + y2) / 2];
 
 /**
@@ -102,6 +102,21 @@ export const midpoint = (
  * @returns - A single item, either from the array wrapping around or if it's just one thing then that's given back
  */
 export const getOnlyItemOrWrap = <T>(v: T | T[], i: number): T => {
-	if (Array.isArray(v)) return v[i % v.length];
-	return v;
+  if (Array.isArray(v)) return v[i % v.length];
+  return v;
 };
+
+/**
+ * This utility function is currently used by both pie & donut charts. It sums the previous angle radians for a given index, used in the calculations for slice centroids.
+ */
+export const sumPrevAngleRads = (
+  i: number,
+  asCoords: [number, number, number][],
+  asPercentages: number[],
+  totalLength: number,
+  radius: number,
+): number => (
+  asCoords.slice(0, i).map((_, idx) =>
+    (totalLength * asPercentages[idx]) / radius
+  ).reduce((curr, prev) => prev + curr, 0)
+);

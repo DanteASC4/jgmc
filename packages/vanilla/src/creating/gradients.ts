@@ -67,7 +67,7 @@ export const createBarChartMask = (bars: string[]) => {
 	return [maskId, mask] as const;
 };
 
-export const createLineChartMask = (lines: string[]) => {
+export const createPathChartMask = (lines: string[]) => {
 	const maskId = randId();
 	const bg = createRect(0, 0, "100%", "100%", "#000000");
 	const mask = `<mask id="${maskId}">${bg}${lines.join("")}</mask>`;

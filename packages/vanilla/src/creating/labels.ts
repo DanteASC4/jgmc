@@ -8,6 +8,7 @@ export const createTextLabel = (
 	x: number,
 	y: number,
 	labelColor: string,
+	attrs?: TextAttrs,
 ) => {
 	const textAttrs: TextAttrs = [
 		["x", `${x}`],
@@ -17,6 +18,7 @@ export const createTextLabel = (
 		["text-anchor", "middle"],
 		["alignment-baseline", "middle"],
 	];
+	if(attrs) textAttrs.push(...attrs);
 	return `<text ${combineAttrs(textAttrs)}>${esc(label)}</text>`;
 };
 

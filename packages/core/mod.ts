@@ -4,4 +4,5 @@ export * from "./src/labels.ts";
 export * from "./src/linechart.ts";
 export * from "./src/utils/escape.ts";
 export * from "./src/utils/general-operations.ts";
+export * from "./src/piechart.ts";
 export * from "./types.ts";
