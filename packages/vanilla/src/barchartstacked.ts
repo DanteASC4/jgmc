@@ -268,7 +268,7 @@ export function barchartStacked({
 				createdLabels.push(createTextLabel(label, labelX, labelY, labelColor));
 			}
 
-			if (dataLabels === "literal") {
+			if (dataLabels) {
 				const [dataLabelX, dataLabelY] = calcDataLabelCoords(
 					placement,
 					barX,
@@ -276,24 +276,12 @@ export function barchartStacked({
 					trueBarWidth,
 					trueBarHeight,
 				);
+				const dataLabelText =
+					dataLabels === "literal"
+						? `${datap}`
+						: `${asPercent(datapNum, sum).toFixed(1)}%`;
 				const dataLabel = createTextLabel(
-					`${datap}`,
-					dataLabelX,
-					dataLabelY,
-					dataLabelColor,
-				);
-				createdDataLabels.push(dataLabel);
-			} else if (dataLabels === "percentage") {
-				const percentage = asPercent(datapNum, sum).toFixed(1);
-				const [dataLabelX, dataLabelY] = calcDataLabelCoords(
-					placement,
-					barX,
-					barY,
-					trueBarWidth,
-					trueBarHeight,
-				);
-				const dataLabel = createTextLabel(
-					`${percentage}%`,
+					dataLabelText,
 					dataLabelX,
 					dataLabelY,
 					dataLabelColor,

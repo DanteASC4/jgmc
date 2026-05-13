@@ -192,25 +192,16 @@ export function linechart({
 				);
 			}
 
-			if (dataLabels === "literal") {
+			if (dataLabels) {
 				const lastCoord = coords[coords.length - 1];
 				const dataLabel = data[i][data[i].length - 1];
+				const dataLabelText =
+					dataLabels === "literal"
+						? `${dataLabel}`
+						: `${asPercent(dataLabel, sum).toFixed(1)}%`;
 				createdDataLabels.push(
 					createTextLabel(
-						`${dataLabel}`,
-						lastCoord[0] + labelOffset,
-						lastCoord[1] - labelOffset,
-						labelColor,
-					),
-				);
-			} else if (dataLabels === "percentage") {
-				const lastCoord = coords[coords.length - 1];
-				const dataLabel = asPercent(data[i][data[i].length - 1], sum).toFixed(
-					1,
-				);
-				createdDataLabels.push(
-					createTextLabel(
-						`${dataLabel}%`,
+						dataLabelText,
 						lastCoord[0] + labelOffset,
 						lastCoord[1] - labelOffset,
 						labelColor,

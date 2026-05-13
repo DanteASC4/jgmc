@@ -175,19 +175,14 @@ export function donutchart({
 						imageLabel.height,
 					),
 				);
-			} else if (dataLabels === "literal") {
+			} else if (dataLabels) {
+				const dataLabelText =
+					dataLabels === "literal"
+						? `${data[i]}`
+						: `${asPercent(data[i], sum)}%`;
 				createdDataLabels.push(
 					createTextLabel(
-						`${data[i]}`,
-						centroidCoords[0],
-						centroidCoords[1],
-						labelColor,
-					),
-				);
-			} else if (dataLabels === "percentage") {
-				createdDataLabels.push(
-					createTextLabel(
-						`${asPercent(data[i], sum)}%`,
+						dataLabelText,
 						centroidCoords[0],
 						centroidCoords[1],
 						labelColor,
