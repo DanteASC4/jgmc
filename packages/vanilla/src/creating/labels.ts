@@ -18,7 +18,7 @@ export const createTextLabel = (
 		["text-anchor", "middle"],
 		["alignment-baseline", "middle"],
 	];
-	if(attrs) textAttrs.push(...attrs);
+	if (attrs) textAttrs.push(...attrs);
 	return `<text ${combineAttrs(textAttrs)}>${esc(label)}</text>`;
 };
 
