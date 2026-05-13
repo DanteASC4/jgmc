@@ -6,21 +6,21 @@
   ],
   "tasks": {
     "go": "deno task --recursive dev",
-    "godev": {
+    "go:dev": {
       "command": "watchexec --restart --exts ts -- deno task go",
       "description": "Uses watchexec to restart the recursive dev command running both the root-level 'dev' which runs all tests but also the gallery server for output visual inspection "
     },
     "dev": "deno test --allow-write --allow-read --allow-env tests",
-    "devone": {
-      "command": "deno test --watch --allow-write --allow-read --allow-env packages/vanilla/tests/barchart.test.ts",
+    "dev:one": {
+      "command": "deno test --watch --allow-write --allow-read --allow-env packages/vanilla/tests/barchartstacked.test.ts",
       "description": "Runs a single test file in watch mode"
     },
-    "testone": {
-      "command": "deno test --allow-write --allow-read --allow-env packages/vanilla/tests/barchart.test.ts",
+    "test:one": {
+      "command": "deno test --allow-write --allow-read --allow-env packages/vanilla/tests/barchartstacked.test.ts",
       "description": "Runs a single test file once"
     },
     "cov": "deno test tests/ --allow-env --allow-write --allow-read --coverage=coverage",
-    "covdev": {
+    "cov:dev": {
       "command": "watchexec --restart --exts ts -- deno task cov",
       "description": "Uses watchexec to restart coverage testing on change"
     },

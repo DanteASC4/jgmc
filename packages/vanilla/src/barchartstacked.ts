@@ -3,14 +3,16 @@ import {
 	autoBarWidth,
 	autoGap,
 	autoMaxNumerical,
-	type BarChartNumericalOptions,
+	type BarChartStackedOptions,
 	calcBarCoords,
 	calcBarDims,
 	calcBarLabelCoords,
 	calcDataLabelCoords,
-	fillZeros,
+	fillEmptyArray,
+	fillStrings,
 	getOnlyItemOrWrap,
 	randId,
+	stackedToSummed,
 	type StringOrNumber,
 } from "@jgmc/core";
 import {
@@ -20,53 +22,62 @@ import {
 import { createImageLabel, createTextLabel } from "./creating/labels.ts";
 import { createRect, createSvg } from "./creating/svg.ts";
 
-export const BarChartDefaults = {
+export const BarChartStackedDefaults = {
 	height: 300,
 	width: 300,
 	gap: 3,
 	placement: "bottom",
-	fillColors: "#ffffff",
+	fillColors: ["#ffffff", "#aaaaaa"],
 	labelColors: "#ffffff",
-} satisfies {
-	[K in keyof BarChartNumericalOptions]?: BarChartNumericalOptions[K];
-};
+} satisfies { [K in keyof BarChartStackedOptions]?: BarChartStackedOptions[K] };
 
-export function barchart({
+export function barchartStacked({
 	data,
-	labels,
-	labelColors = BarChartDefaults.labelColors,
+	labels = [],
+	labelColors = BarChartStackedDefaults.labelColors,
 	dataLabels,
 	imageLabels,
-	height = BarChartDefaults.height,
-	width = BarChartDefaults.width,
+	height = BarChartStackedDefaults.height,
+	width = BarChartStackedDefaults.width,
 	vWidth,
 	vHeight,
 	gap,
 	max,
-	placement = BarChartDefaults.placement,
+	placement = BarChartStackedDefaults.placement,
 	barWidth,
-	fillColors = BarChartDefaults.fillColors,
+	fillColors,
 	strokeColors,
 	strokeWidths,
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-}: BarChartNumericalOptions) {
-	const largest = autoMaxNumerical(data);
-
+}: BarChartStackedOptions) {
+	const asNumerical = stackedToSummed(data);
+	const largest = autoMaxNumerical(asNumerical);
 	if (!vWidth) vWidth = width;
 	if (!vHeight) vHeight = height;
 
-	const padData = labels && data.length < labels.length;
+	const padLabels = labels.length < data.length;
+	if (padLabels) {
+		const diff = Math.abs(labels.length - data.length);
+		fillStrings(labels, diff);
+	}
+	// this might need to be adjusted, as the logic behind this for stacked feels a bit different
+	const padData = data.length < labels.length;
 	if (padData) {
 		const diff = Math.abs(labels.length - data.length);
-		fillZeros(data, diff);
+		fillEmptyArray(data, diff);
 	}
-	const dataPointsAmt = data.length;
+
+	const dataPointsAmt = asNumerical.length;
 	const evenWidth =
 		placement === "top" || placement === "bottom"
 			? autoBarWidth(width, dataPointsAmt)
 			: autoBarWidth(height, dataPointsAmt);
+
+	if (!barWidth) {
+		barWidth = evenWidth;
+	}
 
 	if (!gap) {
 		gap =
@@ -74,9 +85,10 @@ export function barchart({
 				? autoGap(width, dataPointsAmt)
 				: autoGap(height, dataPointsAmt);
 	}
+
 	const topOrBot = placement === "top" || placement === "bottom";
-	const exceedsWidth = data.some((v) => v > vWidth);
-	const exceedsHeight = data.some((v) => v > vHeight);
+	const exceedsWidth = asNumerical.some((v) => v > vWidth);
+	const exceedsHeight = asNumerical.some((v) => v > vHeight);
 
 	let trueVWidth: StringOrNumber = vWidth;
 	let trueVHeight: StringOrNumber = vHeight;
@@ -107,7 +119,8 @@ export function barchart({
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
 	);
-	const sum = dataLabels === "percentage" ? data.reduce((a, b) => a + b, 0) : 0;
+	const sum =
+		dataLabels === "percentage" ? asNumerical.reduce((a, b) => a + b, 0) : 0;
 	const createdBars = [];
 	const createdMaskingBars = [];
 	const createdLabels = [];
@@ -115,28 +128,33 @@ export function barchart({
 
 	for (let i = 0; i < data.length; i++) {
 		const datap = data[i];
-		let color = getOnlyItemOrWrap(fillColors, i);
+		const datapNum = asNumerical[i];
+
+		let color: string | string[] = ["#ffffff", "#aaaaaa"];
+
 		if (isGradient && gradientId) {
 			if (gradientMode === "continuous") color = "transparent";
 			else color = `url('#${gradientId}')`;
+		} else if (fillColors && fillColors.length > 0) {
+			color = fillColors[i % fillColors.length];
 		}
 
 		const labelColor = getOnlyItemOrWrap(labelColors, i);
-		const dataLabelColor = labelColor; // for now, we use the same color for both, but we could easily allow separate colors for data labels and normal labels in the future
-		const strokeColor = strokeColors
-			? getOnlyItemOrWrap(strokeColors, i)
-			: undefined;
+
+		const strokeColor = getOnlyItemOrWrap(strokeColors, i);
+
 		const strokeWidth = strokeWidths
 			? getOnlyItemOrWrap(strokeWidths, i)
 			: undefined;
 
+		const dataLabelColor = labelColor;
+
 		const [trueBarHeight, trueBarWidth] = calcBarDims(
 			placement,
-			datap,
+			datapNum,
 			evenWidth,
 			barWidth ?? evenWidth,
 		);
-
 		const [barX, barY] = calcBarCoords(
 			i,
 			placement,
@@ -149,30 +167,62 @@ export function barchart({
 			trueBarHeight,
 		);
 
-		createdBars.push(
-			createRect(
-				barX,
-				barY,
-				trueBarWidth,
-				trueBarHeight,
-				color,
-				strokeColor,
-				strokeWidth,
-			),
-		);
+		for (let si = 0; si < datap.length; si++) {
+			const subDatap = datap[si];
+			const offset = datap.slice(0, si).reduce((c, p) => c + p, 0);
+			const segColor =
+				typeof color === "string" ? color : color[si % color.length];
 
-		if (gradientMode === "continuous" && gradientId)
-			createdMaskingBars.push(
-				createRect(
+			let barSeg = "";
+			if (topOrBot) {
+				barSeg = createRect(
 					barX,
-					barY,
+					barY + offset,
 					trueBarWidth,
-					trueBarHeight,
-					"#ffffff",
+					subDatap,
+					segColor,
 					strokeColor,
 					strokeWidth,
-				),
-			);
+				);
+				if (gradientMode === "continuous" && gradientId) {
+					createdMaskingBars.push(
+						createRect(
+							barX,
+							barY + offset,
+							trueBarWidth,
+							subDatap,
+							"#ffffff",
+							strokeColor,
+							strokeWidth,
+						),
+					);
+				}
+			} else {
+				barSeg = createRect(
+					barX + offset,
+					barY,
+					subDatap,
+					trueBarHeight,
+					segColor,
+					strokeColor,
+					strokeWidth,
+				);
+				if (gradientMode === "continuous" && gradientId) {
+					createdMaskingBars.push(
+						createRect(
+							barX + offset,
+							barY,
+							subDatap,
+							trueBarHeight,
+							"#ffffff",
+							strokeColor,
+							strokeWidth,
+						),
+					);
+				}
+			}
+			createdBars.push(barSeg);
+		}
 
 		if (hasLabels) {
 			if (imageLabels?.[i]) {
@@ -234,7 +284,7 @@ export function barchart({
 				);
 				createdDataLabels.push(dataLabel);
 			} else if (dataLabels === "percentage") {
-				const percentage = asPercent(datap, sum).toFixed(1);
+				const percentage = asPercent(datapNum, sum).toFixed(1);
 				const [dataLabelX, dataLabelY] = calcDataLabelCoords(
 					placement,
 					barX,
