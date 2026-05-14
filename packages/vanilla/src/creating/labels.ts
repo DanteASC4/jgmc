@@ -1,5 +1,5 @@
 import { esc, type ImageLabel } from "@jgmc/core";
-import type { ImageAttrs, TextAttrs } from "$types";
+import type { GroupAttrs, ImageAttrs, TextAttrs, TextAttrsArr } from "$types";
 import { classNames } from "../constants.ts";
 import { combineAttrs } from "./common.ts";
 
@@ -8,17 +8,20 @@ export const createTextLabel = (
 	x: number,
 	y: number,
 	labelColor: string,
-	attrs?: TextAttrs,
+	attrs?: TextAttrsArr,
 ) => {
-	const textAttrs: TextAttrs = [
+	const textAttrs: TextAttrs = new Map([
 		["x", `${x}`],
 		["y", `${y}`],
 		["fill", labelColor],
 		["class", classNames.labelTextEle],
 		["text-anchor", "middle"],
 		["alignment-baseline", "middle"],
-	];
-	if (attrs) textAttrs.push(...attrs);
+	]);
+	if (attrs)
+		attrs.forEach(([k, v]) => {
+			textAttrs.set(k, v);
+		});
 	return `<text ${combineAttrs(textAttrs)}>${esc(label)}</text>`;
 };
 
@@ -32,7 +35,7 @@ export const createImageLabel = (
 	height = 50,
 ) => {
 	if (subgrouping) {
-		const imgAttrs: ImageAttrs = [
+		const imgAttrs: ImageAttrs = new Map([
 			["href", imgLabel.href],
 			["alt", imgLabel.alt || ""],
 			["width", `${width}`],
@@ -40,7 +43,11 @@ export const createImageLabel = (
 			["x", `${-width / 2}`],
 			["y", `${-height / 2}`],
 			["class", classNames.imageLabelEle],
-		];
+		]);
+		const groupAttrs: GroupAttrs = new Map([
+			["class", classNames.imageLabelGroupEle],
+			["transform", `translate(${textX}, ${textY})`],
+		]);
 		const theImg = `<image ${combineAttrs(imgAttrs)} />`;
 		let imgLabelGroupBody = "";
 		if (imgLabel.topText)
@@ -59,12 +66,9 @@ export const createImageLabel = (
 				labelColor,
 			);
 
-		return `<g ${combineAttrs([
-			["class", classNames.imageLabelGroupEle],
-			["transform", `translate(${textX}, ${textY})`],
-		])}>${imgLabelGroupBody}</g>`;
+		return `<g ${combineAttrs(groupAttrs)}>${imgLabelGroupBody}</g>`;
 	} else {
-		const imgAttrs: ImageAttrs = [
+		const imgAttrs: ImageAttrs = new Map([
 			["href", imgLabel.href],
 			["alt", imgLabel.alt || ""],
 			["width", `${width}`],
@@ -72,7 +76,7 @@ export const createImageLabel = (
 			["x", `${textX - width / 2}`],
 			["y", `${textY - height / 2}`],
 			["class", classNames.imageLabelEle],
-		];
+		]);
 		const theImg = `<image ${combineAttrs(imgAttrs)} />`;
 		return theImg;
 	}
