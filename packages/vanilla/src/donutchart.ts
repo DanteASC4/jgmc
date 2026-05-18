@@ -7,7 +7,7 @@ import {
 	randId,
 	sumPrevAngleRads,
 } from "@jgmc/core";
-import type { TextAttrs } from "$types";
+import type { TextAttrsArr } from "$types";
 import {
 	createLinearGradient,
 	createPathChartMask,
@@ -205,7 +205,7 @@ export function donutchart({
 
 	if (centerLabel) {
 		const centerLabelText = centerLabel === "sum" ? `${sum}` : centerLabel;
-		const additionalAttrs: TextAttrs = [
+		const additionalAttrs: TextAttrsArr = [
 			["font-size", `${centerLabelFontSize}`],
 			["font-weight", `${centerLabelFontWeight}`],
 			["font-family", `${centerLabelFontFamily}`],

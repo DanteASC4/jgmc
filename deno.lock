@@ -322,7 +322,8 @@
       "packages/core": {
         "dependencies": [
           "jsr:@std/assert@1",
-          "jsr:@std/random@~0.1.5"
+          "jsr:@std/random@~0.1.5",
+          "jsr:@std/testing@^1.0.18"
         ]
       },
       "packages/vanilla": {

@@ -3,6 +3,7 @@ import type {
 	GroupAttrs,
 	GroupAttrsArr,
 	PathAttrs,
+	PathAttrsArr,
 	RectAttrs,
 	SvgAttrs,
 } from "$types";
@@ -69,7 +70,7 @@ export const createPath = (
 		linecap?: LineCaps;
 		fill?: string;
 	},
-	attrs?: PathAttrs,
+	attrs?: PathAttrsArr,
 ) => {
 	const pathAttrs: PathAttrs = new Map([
 		["d", d],
