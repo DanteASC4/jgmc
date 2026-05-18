@@ -1,4 +1,3 @@
-import type { TextAttrsArr } from "$types";
 import {
 	asPercent,
 	calcPieSliceCentroidCoords,
@@ -10,6 +9,7 @@ import {
 	sumArray,
 	sumPrevAngleRads,
 } from "@jgmc/core";
+import type { TextAttrsArr } from "$types";
 import {
 	createLinearGradient,
 	createPathChartMask,

@@ -1,8 +1,8 @@
 import {
 	asPercent,
 	calcDonutSliceCentroidCoords,
-	decimalPercentsToStarts,
 	type DonutChartOptions,
+	decimalPercentsToStarts,
 	getCoordsForCircularCharts,
 	getOnlyItemOrWrap,
 	midpoint,
