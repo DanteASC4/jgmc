@@ -1,10 +1,13 @@
 import {
 	asPercent,
 	calcDonutSliceCentroidCoords,
+	decimalPercentsToStarts,
 	type DonutChartOptions,
+	getCoordsForCircularCharts,
 	getOnlyItemOrWrap,
 	midpoint,
 	randId,
+	sumArray,
 	sumPrevAngleRads,
 } from "@jgmc/core";
 import type { TextAttrsArr } from "$types";
@@ -48,7 +51,7 @@ export function donutchart({
 	gradientMode,
 	gradientDirection,
 }: DonutChartOptions) {
-	const sum = data.reduce((v, p) => v + p, 0);
+	const sum = sumArray(data);
 	const asDecimalPercentages = data.map((n) => n / sum);
 
 	if (!vWidth) vWidth = size;
@@ -73,28 +76,23 @@ export function donutchart({
 	);
 	const quarterTurnAngle = 0.25 * (Math.PI * 2);
 	const radius = size / 2;
-	const center: [number, number] = [radius + padding, radius + padding];
 	const totalLength = 2 * Math.PI * radius;
 	const halfLength = totalLength * 0.5;
+	const center: [number, number] = [radius + padding, radius + padding];
 
 	asDecimalPercentages.unshift(0);
 
-	const asStarts = asDecimalPercentages.map((p, i) => {
-		const v = p + asDecimalPercentages.slice(0, i).reduce((v, c) => v + c, 0);
-		const b = v < 0 ? 1 + v : v;
-		return b;
-	});
+	const asStarts = decimalPercentsToStarts(asDecimalPercentages);
 	const asDists = asStarts.map((d) => d * totalLength);
 
 	// [x,y,v]
-	const asCoords: [number, number, number][] = asDists.map((d, i) => {
-		const angle = d / radius - quarterTurnAngle;
-		return [
-			center[0] + radius * Math.cos(angle),
-			center[1] + radius * Math.sin(angle),
-			asDecimalPercentages[(i + 1) % asDecimalPercentages.length] * totalLength,
-		];
-	});
+	const asCoords: [number, number, number][] = getCoordsForCircularCharts(
+		asDists,
+		asDecimalPercentages,
+		radius,
+		quarterTurnAngle,
+		center,
+	);
 	asDecimalPercentages.shift();
 	asCoords.pop();
 
