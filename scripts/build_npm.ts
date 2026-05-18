@@ -1,6 +1,17 @@
 import { build, emptyDir } from "@deno/dnt";
 
-const packages = [{name:'core', description: 'JGMC Core, contains loads of math used for calculations needed for various chart types.'}, {name:'vanilla', description: 'Vanilla distribution of JGMC, uses strings to create SVGs with `0` dependencies, allowing for flexible usage across various environments & frameworks.'}];
+const packages = [
+	{
+		name: "core",
+		description:
+			"JGMC Core, contains loads of math used for calculations needed for various chart types.",
+	},
+	{
+		name: "vanilla",
+		description:
+			"Vanilla distribution of JGMC, uses strings to create SVGs with `0` dependencies, allowing for flexible usage across various environments & frameworks.",
+	},
+];
 
 const shared = {
 	shims: {
@@ -22,12 +33,12 @@ const shared = {
 			"data-visualization",
 			"ssr",
 			"lightweight",
-		]
-	}
-}
+		],
+	},
+};
 
 await emptyDir("npm");
-for(const pkg of packages) {
+for (const pkg of packages) {
 	await build({
 		entryPoints: [`./packages/${pkg.name}/src/mod.ts`],
 		outDir: `./npm/${pkg.name}`,
@@ -36,7 +47,7 @@ for(const pkg of packages) {
 			name: `@jgmc/${pkg.name}`,
 			version: Deno.args[0],
 			description: pkg.description,
-			...shared.package
+			...shared.package,
 		},
 		compilerOptions: {
 			lib: ["ESNext", "DOM"],
@@ -45,8 +56,8 @@ for(const pkg of packages) {
 		postBuild() {
 			Deno.copyFileSync("LICENSE", `npm/${pkg.name}/LICENSE`);
 			Deno.copyFileSync("README.md", `npm/${pkg.name}/README.md`);
-		}
-	})
+		},
+	});
 }
 
 // await build({
