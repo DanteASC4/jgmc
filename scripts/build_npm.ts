@@ -1,4 +1,5 @@
 import { build, emptyDir } from "@deno/dnt";
+import { copySync } from "@std/fs";
 
 const packages = [
 	{
@@ -18,6 +19,7 @@ const shared = {
 		deno: true,
 	},
 	package: {
+		sideEffects: false,
 		license: "MIT",
 		repository: {
 			type: "git",
@@ -43,6 +45,10 @@ for (const pkg of packages) {
 		entryPoints: [`./packages/${pkg.name}/src/mod.ts`],
 		outDir: `./npm/${pkg.name}`,
 		shims: shared.shims,
+		mappings: pkg.name !== "core" ? {
+			name: "@jgmc/core",
+			version:`^${Deno.args[0]}`,
+		} : undefined,
 		package: {
 			name: `@jgmc/${pkg.name}`,
 			version: Deno.args[0],
@@ -55,7 +61,8 @@ for (const pkg of packages) {
 		rootTestDir: `./packages/${pkg.name}/test`,
 		postBuild() {
 			Deno.copyFileSync("LICENSE", `npm/${pkg.name}/LICENSE`);
-			Deno.copyFileSync("README.md", `npm/${pkg.name}/README.md`);
+			Deno.copyFileSync(`packages/${pkg.name}/README.md`, `npm/${pkg.name}/README.md`);
+			copySync(`packages/${pkg.name}/assets`, `npm/${pkg.name}/assets`, { overwrite: true });
 		},
 	});
 }
