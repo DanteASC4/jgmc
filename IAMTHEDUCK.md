@@ -2118,3 +2118,23 @@ I also just got the idea of having `"unit"` as an option for `dataLabels`!!! Tha
 **Update**
 So I just went through & changed a bunch of stuff to actually use their respective default values. Like setting the fill color to `#ffffff`. And of course I see a bunch of ways I can improve things for the charts I've got. But now's not the time for that, if I go down that road I'll be in an infinite loop of improvement. I'll do that when I move things to framework-specific exports!!!
 
+# 5/20/2026
+
+It's been a while. I've been heads down working on the migration, and it's just been completed, woohoo!
+
+`toomanycharts` -> `@jgmc/...`  where `jgmc` is just give me charts!!!
+
+This is my first time authoring a modern lib from scratch so I've been learning loads along the way, and wow does deno handle monorepos nicely! I've been using deno since way before it was at v1, back when it was more of an 'enthusiast' sort of thing in it's early stages. For a while now I've just defaulted to deno over `node` and have looked back less and less.
+
+Thanks to deno the directory structure is actually quite straightforward. Instead of just one package, where everything is under `/src` & I build that and publish to npm, it's now `/packages/package_name`. Additionally, I've split things up!
+
+- `/packages/core` is the overarching 'dependency' utilized by the sub-packges. It now contains basically only math, and types.
+- `/packages/vanilla` is the vanilla implementation of what `toomanycharts` did with linkedom. Now rendering is done via strings, allowing for `0` dependencies, flexible usage, and even more performance gains.
+
+Soon I'll be working on `react` & `svelte` sub-packges!!! Before that though I need to update the docs & readmes. I did test a bunch of course but I will also be verfiying outputs and whatnot along the way.
+
+Soooooooo here's a short todo:
+
+- [ ] docs site overhauled for new scope based flow
+- [ ] readmes further updated
+- [ ] delete the old `/src` directory
