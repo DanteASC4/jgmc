@@ -1,14 +1,15 @@
-# toomanycharts
+# Just Give Me Charts!
 
 <p align="center">
  <img height="250" width="250" src="./extras/dalogo.png" />
 </p>
 
-The portable, lightweight, performant library for basic SVG charting needs.
+Flexible, straightforward charts at the speed of data.
 
-Have you ever wanted a quick and simple bar or line chart without installing any heavy dependencies or reading through loads of docs? Well look no further as you can SVG bar charts in `<1ms` with only **3 lines** of code. 
+⚠️ This README is an overview of this monorepo ⚠️
 
-This README is a more of an overview, the [Docs Website](https://danteasc4.github.io/toomanycharts/docs) has additional details & examples!
+- If you're looking for package specific README with see the `/packages` directory.
+- If you're looking for the "how-to" for `@jgmc` check out the [Docs Website](https://danteasc4.github.io/toomanycharts/docs)
 
 More links:
 - ["Why make or use this lib"](https://danteasc4.github.io/toomanycharts/docs/why-toomanycharts)
@@ -35,49 +36,14 @@ More links:
         - Literal, percentage, images
     - Dataset labels
 - SSR!
-    - If called in a server environment will draw on the single dependency of this project `linkedom` to build SVG elements, otherwise will use available DOM APIs. 
+    - If called in a server environment will draw on the single dependency of this project `linkedom` to build SVG elements, otherwise will use available DOM APIs.
 
-![](./extras/hsep.png)
-
-## Installation
-
-```sh
-npm i toomanycharts 
-```
-
-```sh
-pnpm i toomanycharts 
-```
-
-```sh
-bun i toomanycharts 
-```
-
-```sh
-deno i npm:toomanycharts 
-```
-
-![](./extras/hsep.png)
-
-## Quick start
-
-```ts
-import {barchart} from 'toomanycharts';
-
-// `barchart` will return an SVG Element
-const myFirstChart = barchart({
-    data: [50, 100, 30],
-});
-
-// Simply add it to the DOM
-document.body.appendChild(myFirstChart);
-```
 
 ![](./extras/hsep.png)
 
 ## Documentation
 
-[Docs Website](https://danteasc4.github.io/toomanycharts/docs)
+ToDo!
 
 ## Development & Contributing
 
@@ -90,9 +56,9 @@ That being said there are a couple dev dependencies!
     - This is for running both unit tests **&** the gallery at the same time, and re-run on change. This is useful as tests should be passing, but also when working on charts the visual output is critical. The gallery builds all charts specified at the end of test files & spits them out locally in a super fast easy to view webpage.
     - Deno's task runner provides the `recursive` flag which is awesome as it enables running multiple projects at once (tests & gallery here) but the `--watch` flag seemed to not pick up changes made to the gallery & so instead of toiling with it I just settled on using `watchexec` as it was an easy fix and has potential other useful functionality.
 
-###
+### Project Structure
 
-Project Structure
+NEEDS UPDATING!
 
 ```
  toomanycharts
@@ -125,7 +91,9 @@ Project Structure
  └─ docs
 ```
 
-Dir Breakdown
+### Dir Breakdown
+
+NEEDS UPDATING!
 
 - `/tests`
     - Deno powered unit testing!
