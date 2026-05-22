@@ -12,7 +12,7 @@ Just realized I'm not really using min/max at all lol. I guess for now that's ok
 
 Maybe not using it and just always having things be based on the height / width would be best to keep things as simple as possible for users.
 
-Also just thought of labels being on the inside or outside. But that would mean viewbox padding if it were outside and not at the 'end' of each bar, since the start of each would be out of the viewBox. Though this wouldn't be too difficult to implement with a bit of exterior padding to the viewbox when labels are set to 'outside.' Unless that would throw off all the x/y caclulations...
+Also just thought of labels being on the inside or outside. But that would mean viewbox padding if it were outside and not at the 'end' of each bar, since the start of each would be out of the viewBox. Though this wouldn't be too difficult to implement with a bit of exterior padding to the viewbox when labels are set to 'outside.' Unless that would throw off all the x/y calculations...
 
 ## Same Day Later Thoughts...
 
@@ -91,7 +91,7 @@ I could probably just make a nushell script for it or something, or `watch-exec`
 
 Ok so it's the next day, I've finished the first implementation of the new method! And I was considering my options with the whole `deno-dom` reporting that the namespace is unimplemented. But I had the thought of just trying it with `createElement` and that works!
 
-I'm sure thre will be some caveats, but I'll do my best to keep in mind that any weird issues later on could be from this.
+I'm sure there will be some caveats, but I'll do my best to keep in mind that any weird issues later on could be from this.
 
 ## Scales & More?
 
@@ -131,14 +131,14 @@ But you can control some things via CSS, that I knew already. Like fill & some o
 
 I think the best thing to do here, is to do labels how I originally was going to, and then later on it can be improved, and I'll I'll also aim to make a 'legend' plugin as I think this would be another viable option.
 
-I'll just rotatate it a bit as needed for each placement option.
+I'll just rotate it a bit as needed for each placement option.
 
 **Mini update**
-Luckily that part was pretty simple now, just used the bar coords with offsets as needed. But when the bars are on the right, placing the text becomes complicated - since everything is placed via top-left coordinates the same logic leads to overlap since text is added naturally from the left to the right, and in this case the bars are to the right. If there was a way to like "right-align" text so that when text is added, it's auto-shifted to the right that would be most ideal, or it could be placed via top-right coordinate instead of top-left. I think those both might be possile, but again, I don't feel like going down a text positioning rabbit hole right now.
+Luckily that part was pretty simple now, just used the bar coords with offsets as needed. But when the bars are on the right, placing the text becomes complicated - since everything is placed via top-left coordinates the same logic leads to overlap since text is added naturally from the left to the right, and in this case the bars are to the right. If there was a way to like "right-align" text so that when text is added, it's auto-shifted to the right that would be most ideal, or it could be placed via top-right coordinate instead of top-left. I think those both might be possible, but again, I don't feel like going down a text positioning rabbit hole right now.
 
-I had also considered allowing the labels to have a placement mode of "outside" but nah, that's another rabbit hole of now needig to expand the viewbox according to font size & text length and whatnot. I think aligning some labels manually with CSS would be simpler and more reliable. I'll include many examples of doing additional stuff like this (CSS external labels) later. Because again I don't want to get crazy with capabilities - this is meant to be simple & plug-n-play friendly.
+I had also considered allowing the labels to have a placement mode of "outside" but nah, that's another rabbit hole of now needing to expand the viewbox according to font size & text length and whatnot. I think aligning some labels manually with CSS would be simpler and more reliable. I'll include many examples of doing additional stuff like this (CSS external labels) later. Because again I don't want to get crazy with capabilities - this is meant to be simple & plug-n-play friendly.
 
-One thing I will do though, before pushing this is allow no labels. I think it's time to allow labels to be empty. I'll just have it default to an empty array. As external labels, a legend, or otherwise could be used in place of labels to potientially better effect.
+One thing I will do though, before pushing this is allow no labels. I think it's time to allow labels to be empty. I'll just have it default to an empty array. As external labels, a legend, or otherwise could be used in place of labels to potentially better effect.
 
 Additionally though later on, I'd like to support image labels. I think a small image could be a great way of using labels.
 
@@ -195,7 +195,7 @@ Got distracted and did a couple chore type things.
 - I've added a "philosophy" section to the readme, where later I'll elaborate on some decisions (like no min/max). But I'll get to that later.
 - Updated the readme to have a better checklist of pre-0.1.0 things
 
-Damn it I just remembered I left `barWidth` in the parameters. Prety sure that'd throw off the spacing.
+Damn it I just remembered I left `barWidth` in the parameters. Pretty sure that'd throw off the spacing.
 Tested it and yep. Of course. Ok well luckily - I can just use the proper width for calculating coords, and then offset the result by the bar width (if it's different).
 
 Surely it will be simple to implement.
@@ -333,7 +333,7 @@ I'm leaning towards either `c` or `b`. Deno is awesome, and iirc one of the thin
 
 #### `c`
 
-So if I could find a library compatible, in any language I could potentially use it. What I'm worried about that though is **bundle-size.** Since I really want to keep this lib lightweight. I'll have to research that more, but it sounds both intersting, and potentially very viable as languages apart from js/ts could be significantly faster.
+So if I could find a library compatible, in any language I could potentially use it. What I'm worried about that though is **bundle-size.** Since I really want to keep this lib lightweight. I'll have to research that more, but it sounds both interesting, and potentially very viable as languages apart from js/ts could be significantly faster.
 
 #### `b`
 
@@ -475,7 +475,7 @@ But that's for later.
 
 # 7/29/2025
 
-Continuing work on the stacked bar chart, & test coverage - I noticed some bad parameter naming. I had named the paramter for adding a class to the labels elements `textClass`... The "label" class param is called "textClass" which felt wrong so!
+Continuing work on the stacked bar chart, & test coverage - I noticed some bad parameter naming. I had named the parameter for adding a class to the labels elements `textClass`... The "label" class param is called "textClass" which felt wrong so!
 - `textClass` -> `labelClass`
 
 Then while I was doing a bit of work on test coverage - I realized I forgot about `textGroupClass`. So!
@@ -535,7 +535,7 @@ So I've begun work on the linechart, and I've already got a bunch of thoughts / 
 
 Was thinking I'd do a `linechartMulti` for drawing multiple lines. But then I thought I might just allow the `data` to be `number[]` or `number[][]` instead of two separate functions.
 
-Except that would go against how it was done for bar chart stacked. I think I'll make a separate function to keep things consistent, and beccause it would be better for bundling to split things up.
+Except that would go against how it was done for bar chart stacked. I think I'll make a separate function to keep things consistent, and because it would be better for bundling to split things up.
 
 ## Scales?
 
@@ -774,7 +774,7 @@ So my first step in standardization of things is making sure the parameter types
 
 Long ago I removed `min` for barcharts, since negative values aren't visible in a barchart, and I don't see how a min other than 0 would work anyway. I think that this is still the correct move.
 
-But upon rexamination of `barchart` I realize that `max` doesn't really do anything either 🫠, which is pretty simple to fix. I think I'll make it so that `max`, when set will override the viewBox's height or width (depending on placement).
+But upon reexamination of `barchart` I realize that `max` doesn't really do anything either 🫠, which is pretty simple to fix. I think I'll make it so that `max`, when set will override the viewBox's height or width (depending on placement).
 
 Which brings me to my next consideration. `height` and `width`. Right now this is used for both the `viewBox` *and* the actual `height/width` attributes. But those both do different things...
 
@@ -826,7 +826,7 @@ Any way, I've gone and done the separation of things, tests looking good. Except
 Time to see what other options I got.
 
 **Update**
-Just as I was about to go digging for the source impllementation for `getBBox` or `getBoundingClientRect` a thought hit me - can't I just 'center-align' the text instead of having it left aligned????............ Yes....
+Just as I was about to go digging for the source implementation for `getBBox` or `getBoundingClientRect` a thought hit me - can't I just 'center-align' the text instead of having it left aligned????............ Yes....
 
 Enter: `text-anchor`! So this is going to need another parameter for choosing either `start`, `middle`, or `end`. But that's a simple one. I was also considering a potential parameter for placing the labels, similar to that of the bars in barchart. Something like `left`,`above`,`right`,`below` which I might end up doing. Would need a 'smart' option for linecharts that checks the previous point to avoid overlapping with the line, unless you give the text a background so it's always visible.
 
@@ -845,24 +845,24 @@ So I haven't written here in a while, but I *have* worked on the lib more recent
 
 Going back to the roadmap in the docs site, after the labelling overhaul the next thing on the list is 'framework-specific imports' which I think is mainly the TSX side of things as this lib generates inline SVGs for use in pages & I'm not sure making it a component that you can pass values to via props or attributes has much value. In fact I think that would add another step of work as now it would also need to be taken care of by the framework itself as opposed to the universal inlining. But I'll need to do more research on that & whether that thought is accurate as I'm not opposed to making a framework specific component if it really adds value. Like for svelte, maybe then you can take advantage of the `transition:` syntax. We'll see!
 
-Before that though I think I need to do some more chore / cleaning & standards / bigger picture decisioning. Since I've not worked on this project for a bit I have a fresh lens for making sure I'm makign the right decisions with how I'm doing things. 
+Before that though I think I need to do some more chore / cleaning & standards / bigger picture decisioning. Since I've not worked on this project for a bit I have a fresh lens for making sure I'm makign the right decisions with how I'm doing things.
 
 It's essential that prior to continuing to add new features and functionality I vet my foundation, otherwise continuing to build on top will lead to what I've built crumbling! Of course that's being a bit dramatic but basically the better things are for the foundation, the better everything built on top will be!
 
-So now I'm going to go through & do a bit of reflection on decisions, identify a list of "foundation strengthing todos" and that will be my next task before moving onto the next feature!
+So now I'm going to go through & do a bit of reflection on decisions, identify a list of "foundation strengthening todos" and that will be my next task before moving onto the next feature!
 
 ## Ultimate goal(s) & Lib Intention
 
 So one important question that I must be confident in, is "why am I making this library?"
 
-For that, I think I have a pretty great answer for. The bottom line for this is to make an **intuitive, low footprint library for making charts.** 
+For that, I think I have a pretty great answer for. The bottom line for this is to make an **intuitive, low footprint library for making charts.**
 I want to save developers (and maybe anyone trying to make charts) time.
 
 ### Learning curve
 
 Making charts should be intuitive and easy, users should be able to install the library and have a chart rendered on their webpage with as few lines of code as possible.
 
-Developers ideally wouldn't need to worry about tons of config to get charts to show up, to have them be responsive, or to render properly with minimal performance overhead. 
+Developers ideally wouldn't need to worry about tons of config to get charts to show up, to have them be responsive, or to render properly with minimal performance overhead.
 
 The goal is to have this philosophy of ease of use with minimal drawbacks to output effectiveness should always remain true!
 
@@ -885,7 +885,7 @@ Here's a current benchmark result (see `tests/speed.bench.ts`) which is mostly a
 
 ## Styling
 
-So this is something that I'd been constantly thinking about, "should I make this colorable?" "should I add an option here for this attribute?" 
+So this is something that I'd been constantly thinking about, "should I make this colorable?" "should I add an option here for this attribute?"
 
 And while I so far I've done a good job of deciding on that, I'm going to set in stone a stance on what should and shouldn't be styled.
 
@@ -899,14 +899,14 @@ For example; alternating colors. To get alternating colors with CSS you'd need s
 
 ```css
 .target:nth-child(odd) {
-  fill: #ff0000; 
+  fill: #ff0000;
 }
 .barchart:nth-child(even) {
   fill: #00ff00;
 }
 ```
 
-Which isn't that huge of a task, but now you need to write that, targetting the correct bar chart, and you may need to re-write this targetting a different charrt for that to have separate alternating colors. But as an option:
+Which isn't that huge of a task, but now you need to write that, targetting the correct bar chart, and you may need to re-write this targetting a different chart for that to have separate alternating colors. But as an option:
 
 ```ts
 barchart({
@@ -915,9 +915,9 @@ barchart({
 });
 ```
 
-That's much less to write, especially when not counting the rest of the function invokation that would be written anyway.
+That's much less to write, especially when not counting the rest of the function invocation that would be written anyway.
 
-Stuff like this are integral to appearance, any of which would be more work to write manually. So all basic styling *should* be doable easily in the place that the chart is initally created. It would suck if to get a red bar chart if that's all I wanted I need to set a specific class on the barchart I'm making & then add a new style tag or stylesheet that I might not have had otherwise.
+Stuff like this are integral to appearance, any of which would be more work to write manually. So all basic styling *should* be doable easily in the place that the chart is initially created. It would suck if to get a red bar chart if that's all I wanted I need to set a specific class on the barchart I'm making & then add a new style tag or stylesheet that I might not have had otherwise.
 
 But users *should* be able to do that if they want.
 
@@ -943,7 +943,7 @@ barchart({
     'oklch(0.9054 0.15455 194.769)',
     ],
     gradientDirection: 'top-to-bottom',
-    gradientMode: 'continuous', 
+    gradientMode: 'continuous',
     dataLabels: "percentage",
     labels: ["A", "B", "C"],
     barClass: 'chart1-bar',
@@ -967,12 +967,12 @@ barchart({
 })
 ```
 
-Or it could be top-level in the stlyes but then you'd still be typing more for the same param name. Etc.
+Or it could be top-level in the styles but then you'd still be typing more for the same param name. Etc.
 I think for now just classes can be nested.
 
 Anyway, that's one bit of naming the other half though is finding that balance between accuracy & verbosity.
 
-Coming back to this project after taking a break, I'm seeing some issues with some names. One that sticks out to me is `"colors"`. 
+Coming back to this project after taking a break, I'm seeing some issues with some names. One that sticks out to me is `"colors"`.
 
 ```ts
 barchart({
@@ -981,7 +981,7 @@ barchart({
 });
 ```
 
-Seeing that on it's own, you wouldn't know what those colors are doing! IASHdijwqjdqwjiowdjiowqdijoq damn. Now I need to change this in a ton of places. 
+Seeing that on it's own, you wouldn't know what those colors are doing! IASHdijwqjdqwjiowdjiowqdijoq damn. Now I need to change this in a ton of places.
 
 The only silver lining here is that this would be way worse to change later on.
 
@@ -1004,7 +1004,7 @@ So I'm back with more naming thoughts.
 
 I renamed `"colors"` for barcharts to `"fillColors"`, and I added both `"borderColors"` & `"borderWidths"`... But then I realized, it should be 'stroke.' So I'm going to change those to `"strokeColors"` & `"strokeWidths"` for accuracy. I think most people might think to look for "border" over "stroke" so I'm considering adding both, and using whichever is present but that's additional logic for something small.
 
-I think a better solution is robust documentation, maybe with a visual guide pointing out what each part of a barchart is reffered to in the params. Oh I'm also going to add a way to customize whether corners are rounded, I think that'd be linecaps maybe or some sort of corner radius.
+I think a better solution is robust documentation, maybe with a visual guide pointing out what each part of a barchart is referred to in the params. Oh I'm also going to add a way to customize whether corners are rounded, I think that'd be linecaps maybe or some sort of corner radius.
 
 I also ran into one other parameter that I think needs updating, which leads me to another slightly bigger conversation.
 
@@ -1014,11 +1014,11 @@ Currently the max is auto-set to the highest value in the given dataset rounded 
 
 Changing this to `"maxValue"` is simple and something I'll do.
 
-But then I also thought about other basic chart features, like a grid, with scales & step amount. Now I want to keep config as simple as possibe, because I stand by the notion that even a simple chart of only bars, shows something. Labels also add greatly to information conveyed. And now I'm thinking about how much showing scales adds to a chart.
+But then I also thought about other basic chart features, like a grid, with scales & step amount. Now I want to keep config as simple as possible, because I stand by the notion that even a simple chart of only bars, shows something. Labels also add greatly to information conveyed. And now I'm thinking about how much showing scales adds to a chart.
 
 On one hand I think it does add to information conveyed, but it also steps into potentially "extra" territory. Hmm I need to think about this more.
 
-Then there's other features, like axis titles, hover functionality, and more. I think an axis title would be easy to add, just manually wherever you actually place the chart with the power of flex or grid positioning, but this could be 'nice to have.' 
+Then there's other features, like axis titles, hover functionality, and more. I think an axis title would be easy to add, just manually wherever you actually place the chart with the power of flex or grid positioning, but this could be 'nice to have.'
 
 The thing is though, that then, every chart after this would need some form of a title. And adding this to the charts is definitely non-trivial. I think I'd go about it by nesting the SVG of the bars within another. But I'd have to be careful of how that affects things like the viewbox. Time to do some testing & thinking!
 
@@ -1089,7 +1089,7 @@ I'll probably revisit this, but I wanted to break things down to narrow performa
 
 ## Getting Granular
 
-Ok so I made the `speed` folder to allow me to setup additional benchmarking. I was thinking of figuring out the big O of the `barchart` function to start, but I figured some individual benchmarks would be helpful to see beforehand. 
+Ok so I made the `speed` folder to allow me to setup additional benchmarking. I was thinking of figuring out the big O of the `barchart` function to start, but I figured some individual benchmarks would be helpful to see beforehand.
 
 I went about setting up a series of `Deno.bench` tests, with the length of datasets increasing, first the datasets would be only have 3 values, then 5, then 10, 20, 50, and finally 100.
 
@@ -1163,7 +1163,7 @@ This *one* test is what gave me my idea. Do you see the issue here?
 
 Look at that min vs max... The min `361.8 µs` (or `.3ms`) is excellent. But look at the max! `227.9ms` is about `600x` worse, that points to some sort of **edge case / outlier being the bottleneck!** Unless I'm thinking about things entirely wrong which *is* possible.
 
-So I've got to setup some even more granular tests, with logging out ouputs and per-run timing.
+So I've got to setup some even more granular tests, with logging out outputs and per-run timing.
 
 Funnily enough this is a perfect use-case for scatter plots which I don't have implemented, but now that I'm thinking would be similar to a linechart & probably worth adding later.
 
@@ -1240,7 +1240,7 @@ Ok, so there's some sort of 'cold start' kind of first run thing with Deno maybe
 
 But before doing so, I thought about the other case, when I tried with a thousand values. Now at this point I can't just read the console, I need a chart! So I setup my basic test to output the values altogether after all 1000 were tested, and pasted them into google sheets to look at in a scatter plot.
 
-And the chart makes things *even more confusing.* 
+And the chart makes things *even more confusing.*
 
 ![](./extras/runtime_weirdness.png.png)
 
@@ -1276,7 +1276,7 @@ That being said, I think I've found the culprit. And it actually does look to be
 
 But here's some screenshots of the flamegraph output for a run in which a call to `barchart` took over `5ms`.
 
-![](./extras/exhibitA.webp) ![](./extras/exhibitB.webp) ![](./extras/exhibitC.webp) ![](./extras/exhibitD.webp) 
+![](./extras/exhibitA.webp) ![](./extras/exhibitB.webp) ![](./extras/exhibitC.webp) ![](./extras/exhibitD.webp)
 
 So you can see in the first 3 screenshots, stuff from the `linkedom` library *appear* to have unusually long "Self time" durations.
 In the last screenshot, you can see the `createBar` function has `0` (which means less than 1ms).
@@ -1298,7 +1298,7 @@ Of course upon digging into things I'm met with *instant confusion* I tried visi
 
 ![](./extras/confusion.webp)
 
-almost ***20ms*** self time??? Funny though because actually as I was writing this, I think this is once again due to the "overall timing." The flame graph is only **one** of the **1k** random tests, so this timing discrepency is likely acctually accumulated time.
+almost ***20ms*** self time??? Funny though because actually as I was writing this, I think this is once again due to the "overall timing." The flame graph is only **one** of the **1k** random tests, so this timing discrepancy is likely actually accumulated time.
 
 Anyway back to digging into things.
 
@@ -1331,7 +1331,7 @@ export const createElement = (tag: string) => {
 			`<!doctype html><html><head></head><body></body></html>`,
 		);
 		return document.createElement(tag);
-	} 
+	}
 };
 ```
 
@@ -1393,7 +1393,7 @@ But I'm not done. I'm sure I can improve the speed even more. This time by exami
 
 # 11/7/2025
 
-Ok so nevermind I guess! 
+Ok so nevermind I guess!
 
 The first thing I wanted to do to continue improving performance was potentially determine the Big O of things, and I figured a good way of doing that would be basically an even more granular version of the different "size" tests I did prior.
 
@@ -1453,7 +1453,7 @@ It doesn't make the most sense, but it gets me excited. In the roadmap I describ
 
 That being said I think having ASCII output as an option would fill a fairly unique niche, and just sounds like a fun thing to jump on. So that's next now that I've finished loads of cleanup.
 
-I have a few ideas for things that I'm going to jot here before I forget. 
+I have a few ideas for things that I'm going to jot here before I forget.
 - Phase 1: ASCII
     - New chart functions:
         - `asciiBarchart`
@@ -1466,7 +1466,7 @@ I have a few ideas for things that I'm going to jot here before I forget.
         - Placement
         - Colors
             - Applies to
-                - Bars 
+                - Bars
                 - Title
                 - Axis titles?
             - Need to research how to detect truecolor support
@@ -1658,7 +1658,7 @@ Here's some examples:
 
 Still plenty more to do but I'm quite happy with day one progress.
 
-I'm also thinking that data labels are going to be key here. 
+I'm also thinking that data labels are going to be key here.
 
 For instance, take the following paramets:
 ```ts
@@ -1714,7 +1714,7 @@ Which looks good but there's plenty of space to add some data labels, which I th
 
 So I think it's safe to say that datalabels are essential here & because we don't need to be worried about font size as it's all uniform in the terminal it can be automatic!
 
-I can also truncate things by checking if the value as a string would go beyond the bar width. E.g. for a `barWidth` of `5` there's `3` characters that can fit in the center. 
+I can also truncate things by checking if the value as a string would go beyond the bar width. E.g. for a `barWidth` of `5` there's `3` characters that can fit in the center.
 
 But should I left align them to get 5 characters? Hmmm... Lemme see how that looks.
 
@@ -1852,7 +1852,7 @@ Now you might be thinking "but the left/right" placements look completely differ
 
 Afaik that "solid" block I'm using to build the bar is the only character that properly visually 'joins' (aside from the other shades). And for whatever reason despite looking like a square it is rendered as a vertical bar, I think this is due to the nature of monospace fonts making width uniform.
 
-This character is called "Full Block" and is part of block characters. You can [see here](https://www.compart.com/en/unicode/block/U+2580) the 'left seven-eigths' and 'right seven-eigths' blocks appear wider than the 'full block' but if you console log them there's a gap. And they're drawn as rectangles with a monospaced font.
+This character is called "Full Block" and is part of block characters. You can [see here](https://www.compart.com/en/unicode/block/U+2580) the 'left seven-eighths' and 'right seven-eigths' blocks appear wider than the 'full block' but if you console log them there's a gap. And they're drawn as rectangles with a monospaced font.
 
 So the left & right chart orientations look kind of 'unproportional' despite being correct. At least that should be the case.
 
@@ -1964,7 +1964,7 @@ Wow this is far from simple..... Time for some mathing & learning!
 
 # 4/23/2026
 
-Well that was difficult! Math is cool, that was unexpectedly more complicated than I imagine, but in a fascinating way. Centroids! One small issue is that for pie slices greater than 50% of the pie, the centroid gets closer to the center, as the arc passes 180 deg. So I will likely have to figure out how to offset it directionally away from the center of the pie, in the direction that would be halfway through the large arc... Back to tinkering! 
+Well that was difficult! Math is cool, that was unexpectedly more complicated than I imagine, but in a fascinating way. Centroids! One small issue is that for pie slices greater than 50% of the pie, the centroid gets closer to the center, as the arc passes 180 deg. So I will likely have to figure out how to offset it directionally away from the center of the pie, in the direction that would be halfway through the large arc... Back to tinkering!
 
 **Update**
 
@@ -1972,7 +1972,7 @@ As I was continuing on the implementation for the `piechart` function, I ran int
 - I'm not sure how they'll look as a fill color, in terms of placement. I wonder if I would need to align them coordinate wise to where the slice is... Which'd be annoying.
 - Right now I only have linear gradients implemented, and this is for a circular chart. Time to add radial gradients to the to-do list!
 
-It'll probably take a bit before I get to radial graidents because I think gradients themselves are yet another (fun) rabbit hole. I quite like how I've implemented them currently as well so I'm not rushing to change that greatly.
+It'll probably take a bit before I get to radial gradients because I think gradients themselves are yet another (fun) rabbit hole. I quite like how I've implemented them currently as well so I'm not rushing to change that greatly.
 
 That being said I think my current plan of action is roughly as follows:
 - implement `piechart` & options
@@ -1987,15 +1987,15 @@ Then from there I think I will go and do some refinement + make the library as a
 
 So as I was continuing with the `piechart` implementation I ran into another thing to consider. That being that in my current setup for creating slices I use an SVG circle element. I wonder if there's a way to do things without needing an SVG circle.
 
-It's used in two parts of the calculation process 
+It's used in two parts of the calculation process
 - getting the total circle length (that all  slices would take up) `circle.getTotalLength()`
-- getting points along that cirlce for cutting into slices `circle.getPointAtLength()`
+- getting points along that circle for cutting into slices `circle.getPointAtLength()`
 
 It would be a bit of work but would save on having to create this alignment circle that is only used for calculations and not actually part of the final chart.
 
 One thing I need to be mindful of is mixing of units. But this sounds like something that should be math-able...
 
-Ok yeah a few quick google searchs later & the circumference has more than one simple formula. The `getTotalLength` method is also not just for circles, it's use lies in that it can be used for any `<path>` like element. But for this case, since we'll always be working with a perfect circle I think we can calculate it manually.
+Ok yeah a few quick google searches later & the circumference has more than one simple formula. The `getTotalLength` method is also not just for circles, it's use lies in that it can be used for any `<path>` like element. But for this case, since we'll always be working with a perfect circle I think we can calculate it manually.
 
 Formulas:
 - `C = πd`
@@ -2011,7 +2011,7 @@ One minor note to myself - I tried logging the calculation result of `2πr` & it
 
 **Update**
 
-A math only version was actually really straightforward to implement! It was really just the two places I was using those methods, and the result is visually identical. 
+A math only version was actually really straightforward to implement! It was really just the two places I was using those methods, and the result is visually identical.
 
 Back to the implementation!
 
@@ -2029,13 +2029,13 @@ One other thing so I don't forget!
 These two charts have another option unique to them - true center label! What's that mean? Well I've already prepared the stuff needed for data labels on the slices themselves, but I mean the literal center of the pie/donut! Like this:
 
 ```
-    * * *      
-  *        *  
+    * * *
+  *        *
  *          *
  *     #    *
  *          *
   *        *
-    * * *  
+    * * *
 ```
 
 That seems like it'd be quite useful if you wanted to show like a 'grand total' or some other thing! Will add!
@@ -2077,7 +2077,7 @@ But I think there's a good solution to satisfy consistency & naming. I actually 
 
 **Update**
 
-So I've updated the `ToDo` and separated some more 'idealike' & low priority items. One thing I've been thinking of as I do things is the whole classes part. It's currently something I don't really like how I'm doing & I'm not sure I will. 
+So I've updated the `ToDo` and separated some more 'idealike' & low priority items. One thing I've been thinking of as I do things is the whole classes part. It's currently something I don't really like how I'm doing & I'm not sure I will.
 
 I think it's overly verbose no matter how you spin it. One thing I did today was move chart 'defaults' into each respective file, to keep things more neat & have less imports since they're small.
 
@@ -2093,16 +2093,16 @@ So that is not quite as simple as I had initially thought it might be. At least 
 
 Which yes would mean moving the package's publish install! Which is a big shift, but I think something like that makes complete sense earlier on where there is less to move.
 
-Except, I am unsure of the new name. `@tmc` is taken & `@toomanycharts` feels a bit long, but may end up being what I go with. Maybe someone reading this picked up on it but the name "too many charts" is something I thought of from the famous minecraft mod "too many items"! And I've checked, both `@nec` & `@jec` are taken (not enough charts & just enough charts). 
+Except, I am unsure of the new name. `@tmc` is taken & `@toomanycharts` feels a bit long, but may end up being what I go with. Maybe someone reading this picked up on it but the name "too many charts" is something I thought of from the famous minecraft mod "too many items"! And I've checked, both `@nec` & `@jec` are taken (not enough charts & just enough charts).
 
 My next idea was `@dtmc`, "dante's too many charts" which I can use! Except, I don't know about using my own name in the name of it & I'm not sure I really like how it feels.
 
 So the name remains undecided since I still need to do the refinement & current todos. But it's something I'll be revisiting soon!
 
 
-**Update** 
+**Update**
 
-So I've gone ahead and remove the `classes` option from all charts. I already am happy with that decision! Next up I will need to do some inspecting of chart outputs to ensure I'm providing sensible built-in classes for all the charts so easy styling is enabled via css. 
+So I've gone ahead and remove the `classes` option from all charts. I already am happy with that decision! Next up I will need to do some inspecting of chart outputs to ensure I'm providing sensible built-in classes for all the charts so easy styling is enabled via css.
 
 I think as a rule of thumb for 'where' I will do common classes vs special classes is something like:
 - Unique chart items can get classes in-place
@@ -2128,13 +2128,25 @@ This is my first time authoring a modern lib from scratch so I've been learning 
 
 Thanks to deno the directory structure is actually quite straightforward. Instead of just one package, where everything is under `/src` & I build that and publish to npm, it's now `/packages/package_name`. Additionally, I've split things up!
 
-- `/packages/core` is the overarching 'dependency' utilized by the sub-packges. It now contains basically only math, and types.
+- `/packages/core` is the overarching 'dependency' utilized by the sub-packages. It now contains basically only math, and types.
 - `/packages/vanilla` is the vanilla implementation of what `toomanycharts` did with linkedom. Now rendering is done via strings, allowing for `0` dependencies, flexible usage, and even more performance gains.
 
-Soon I'll be working on `react` & `svelte` sub-packges!!! Before that though I need to update the docs & readmes. I did test a bunch of course but I will also be verfiying outputs and whatnot along the way.
+Soon I'll be working on `react` & `svelte` sub-packages!!! Before that though I need to update the docs & readmes. I did test a bunch of course but I will also be verifying outputs and whatnot along the way.
 
 Soooooooo here's a short todo:
 
-- [ ] docs site overhauled for new scope based flow
-- [ ] readmes further updated
-- [ ] delete the old `/src` directory
+- [x] docs site overhauled for new scope based flow
+- [x] readmes further updated
+- [x] delete the old `/src` directory
+
+# 5/22/2026
+
+I just got done updating the docs. Fumadocs is awesome! I've got live working pre-rendered previews now so I don't need to save the chart outputs & then reference them in the doc pages. Big annoyance gone.
+
+Things are in great shape overall.
+
+And I've been doing some thinking about how I'm going to stay organized, because with this new migration the scope of things has been broadened pretty significantly. So staying organized is important.
+
+I was considering using github projects, as I quite like em & what you can do there, but I think since it's still just me I don't want to spend too much time setting things up there & formatting things & making templates and all that.
+
+I think I've decided I'll continue using the `TODO.md` file as there's great power in the simplicity it provides. I'll just make sure to clean it up & organize things!
