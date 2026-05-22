@@ -10,6 +10,8 @@ This package `core` exports various math used in the framework specific packages
 
 That means this package is meant mainly for use by those packages, though if you want to implement your own rendering logic this package is for you!
 
+Otherwise check out the [Docs Website](https://danteasc4.github.io/jgmc/docs)!
+
 ![](./extras/hsep.png)
 
 ## Currently Supported Charts
