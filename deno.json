@@ -12,7 +12,7 @@
     },
     "dev": "deno test --allow-write --allow-read --allow-env tests",
     "dev:one": {
-      "command": "deno test --watch --allow-write --allow-read --allow-env packages/core/tests/generaloperations.test.ts",
+      "command": "deno test --watch --allow-write --allow-read --allow-env packages/vanilla/tests/barchart.test.ts",
       "description": "Runs a single test file in watch mode"
     },
     "test:one": {

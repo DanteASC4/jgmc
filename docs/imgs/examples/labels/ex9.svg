@@ -20,19 +20,19 @@
   <g class="tmc-image-label-group">
     <g transform="translate(345, 250)" class="tmc-image-label-group"><text alignment-baseline="middle"
         text-anchor="middle" title="Bar label Top" y="-20" x="0" fill="#ffffff">Top</text>
-      <image class="tmc-image-label" y="-12.5" x="-12.5" height="25" width="25" alt="Skull" href="/toomanycharts/imgs/misc/test.jpg">
+      <image class="tmc-image-label" y="-12.5" x="-12.5" height="25" width="25" alt="Skull" href="/jgmc/imgs/misc/test.jpg">
       </image><text alignment-baseline="middle" text-anchor="middle" title="Bar label " y="20" x="0"
         fill="#ffffff"></text>
     </g>
     <g transform="translate(345, 185)" class="tmc-image-label-group"><text alignment-baseline="middle"
         text-anchor="middle" title="Bar label " y="-20" x="0" fill="#ffffff"></text>
-      <image class="tmc-image-label" y="-12.5" x="-12.5" height="25" width="25" alt="Skull" href="/toomanycharts/imgs/misc/test.jpg">
+      <image class="tmc-image-label" y="-12.5" x="-12.5" height="25" width="25" alt="Skull" href="/jgmc/imgs/misc/test.jpg">
       </image><text alignment-baseline="middle" text-anchor="middle" title="Bar label Bottom" y="20" x="0"
         fill="#ffffff">Bottom</text>
     </g>
     <g transform="translate(345, 35)" class="tmc-image-label-group"><text alignment-baseline="middle"
         text-anchor="middle" title="Bar label Top" y="-20" x="0" fill="#ffffff">Top</text>
-      <image class="tmc-image-label" y="-12.5" x="-12.5" height="25" width="25" alt="Skull" href="/toomanycharts/imgs/misc/test.jpg">
+      <image class="tmc-image-label" y="-12.5" x="-12.5" height="25" width="25" alt="Skull" href="/jgmc/imgs/misc/test.jpg">
       </image><text alignment-baseline="middle" text-anchor="middle" title="Bar label Bottom" y="20" x="0"
         fill="#ffffff">Bottom</text>
     </g>

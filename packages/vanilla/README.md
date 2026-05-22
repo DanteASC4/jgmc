@@ -1,4 +1,4 @@
-# toomanycharts
+# Just Give Me Charts!
 
 <p align="center">
  <img height="250" width="250" src="./extras/dalogo.png" />
@@ -8,12 +8,12 @@ Flexible, straightforward charts at the speed of data.
 
 Have you ever wanted a quick and simple bar or line chart without installing any heavy dependencies or reading through loads of docs? Well look no further as you can SVG bar charts in `<1ms` with only **3 lines** of code!
 
-This README is a more of an overview, the [Docs Website](https://danteasc4.github.io/toomanycharts/docs) is everything you need to know for using this lib!
+This README is a more of an overview, the [Docs Website](https://danteasc4.github.io/jgmc/docs) is everything you need to know for using this lib!
 
 More links:
-- ["Why make or use this lib"](https://danteasc4.github.io/toomanycharts/docs/why-toomanycharts)
-- [Changelog](https://danteasc4.github.io/toomanycharts/docs/changelog)
-- [Roadmap](https://danteasc4.github.io/toomanycharts/docs/roadmap)
+- ["Why make or use this lib"](https://danteasc4.github.io/jgmc/docs/why-jgmc)
+- [Changelog](https://danteasc4.github.io/jgmc/docs/changelog)
+- [Roadmap](https://danteasc4.github.io/jgmc/docs/roadmap)
 
 ![](./extras/hsep.png)
 
@@ -80,7 +80,7 @@ document.body.setHTML(myFirstChart);
 
 ## Documentation
 
-[Docs Website](https://danteasc4.github.io/toomanycharts/docs)
+[Docs Website](https://danteasc4.github.io/jgmc/docs)
 
 ## Development & Contributing
 

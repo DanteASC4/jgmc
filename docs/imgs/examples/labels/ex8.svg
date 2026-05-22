@@ -6,11 +6,11 @@
     <rect height="30" width="50" y="270" x="225" fill="#ffffff"></rect>
   </g>
   <g class="tmc-image-label-group">
-    <image class="tmc-image-label" y="207.5" x="37.5" height="25" width="25" alt="Skull" href="/toomanycharts/imgs/misc/test.jpg">
+    <image class="tmc-image-label" y="207.5" x="37.5" height="25" width="25" alt="Skull" href="/jgmc/imgs/misc/test.jpg">
     </image>
-    <image class="tmc-image-label" y="157.5" x="137.5" height="25" width="25" alt="Skull" href="/toomanycharts/imgs/misc/test.jpg">
+    <image class="tmc-image-label" y="157.5" x="137.5" height="25" width="25" alt="Skull" href="/jgmc/imgs/misc/test.jpg">
     </image>
-    <image class="tmc-image-label" y="227.5" x="237.5" height="25" width="25" alt="Skull" href="/toomanycharts/imgs/misc/test.jpg">
+    <image class="tmc-image-label" y="227.5" x="237.5" height="25" width="25" alt="Skull" href="/jgmc/imgs/misc/test.jpg">
     </image>
   </g>
 </svg>

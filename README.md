@@ -9,12 +9,12 @@ Flexible, straightforward charts at the speed of data.
 ⚠️ This README is an overview of this monorepo ⚠️
 
 - If you're looking for package specific README with see the `/packages` directory.
-- If you're looking for the "how-to" for `@jgmc` check out the [Docs Website](https://danteasc4.github.io/toomanycharts/docs)
+- If you're looking for the "how-to" for `@jgmc` check out the [Docs Website](https://danteasc4.github.io/jgmc/docs)
 
 More links:
-- ["Why make or use this lib"](https://danteasc4.github.io/toomanycharts/docs/why-toomanycharts)
-- [Changelog](https://danteasc4.github.io/toomanycharts/docs/changelog)
-- [Roadmap](https://danteasc4.github.io/toomanycharts/docs/roadmap)
+- ["Why make or use this lib"](https://danteasc4.github.io/jgmc/docs/why-jgmc)
+- [Changelog](https://danteasc4.github.io/jgmc/docs/changelog)
+- [Roadmap](https://danteasc4.github.io/jgmc/docs/roadmap)
 
 ![](./extras/hsep.png)
 
