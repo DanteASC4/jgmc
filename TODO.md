@@ -64,7 +64,7 @@ This will now be a smaller list of things that aren't critical but should be don
     - [x] `BarChartNumericalOpts` -> `BarChartNumericalOptions`
     - [x] `BarChartStackedOpts` -> `BarChartStackedOptions`
   - [x] Do a once-over on type descriptions
-- [ ] Refinement things
+- [x] Refinement things
   - [x] Ensure top-level chart exported functions have a standard logic flow
     - [x] Also check that things are only happening when needed (e.g. I see in `barchart` I create a `textGroup`, `dataLabelTextGroup`, and `imageLabelGroup` element despite labels being optional!!!)
     - [x] I also have an anchor comment for `classes?.groupClass` ?!?!
