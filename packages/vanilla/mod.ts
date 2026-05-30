@@ -3,3 +3,5 @@ export * from "./src/barchartstacked.ts";
 export * from "./src/donutchart.ts";
 export * from "./src/linechart.ts";
 export * from "./src/piechart.ts";
+
+export type * from "./types.ts";

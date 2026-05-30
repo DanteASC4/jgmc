@@ -116,6 +116,6 @@ Dir Breakdown
         - DOM serialization related functions
 - `/scripts`
     - Currently houses the file used to publish a new version of the package to npm
-- `/assets`
+- `/asssets`
     - Mainly holding images for markdown referencing.
     - Also can contain other extra things not necessarily critical to lib!

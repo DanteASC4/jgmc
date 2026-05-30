@@ -19,5 +19,5 @@ Deno.test(function linechartTests() {
 });
 
 afterAll(() => {
-	buildGalleryPage("Line Chart Revamped", pairs);
+	buildGalleryPage("Vanilla Line Chart", pairs);
 });

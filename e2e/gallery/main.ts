@@ -4,6 +4,8 @@ import { html } from 'hono/html';
 
 const app = new Hono();
 
+const buildAnchor = (text: string) => html`<a href="./out/${text.toLowerCase().replace(/\s/g, '')}.html">${text}</a>`;
+
 app.use('/out/*', serveStatic({ root: './' }));
 app.get('/', (c) => {
   return c.html(html`<!DOCTYPE html>
@@ -37,35 +39,31 @@ app.get('/', (c) => {
         </style>
       </head>
       <body>
-        <a href="./out/barchart.html"> BarChart </a>
-        <a href="./out/barchartextras.html"> BarChart Extras </a>
-        <br />
+				${buildAnchor("Vanilla BarChart")}
+				${buildAnchor("Vanilla BarChart Extras")}
+				<br />
 
-        <a href="./out/barchartdocsexamples.html"> BarChart Docs Examples </a>
-        <a href="./out/labelsdocsexamples.html"> Labels Docs Examples </a>
-        <br />
+				${buildAnchor("Vanilla BarChart Stacked")}
 
-        <br />
-        <a href="./out/barchartstacked.html"> BarChartStacked </a>
-        <a href="./out/barchartstackedextras.html"> BarChartStacked Extras </a>
-        <br />
-        <a href="./out/linechart.html"> Line Chart </a>
-        <a href="./out/linechartextras.html"> Line Chart Extras </a>
-        <br />
+				${buildAnchor("Vanilla BarChart Stacked Extras")}
+				<br />
 
-        <br />
-        <a href="./out/piechartdocsexamples.html"> Pie Chart Docs Examples </a>
-        <a href="./out/piechart.html"> Pie Chart </a>
-        <br />
-        <a href="./out/donutchartdocsexamples.html"> Donut Chart Docs Examples </a>
-        <a href="./out/donutchart.html"> Donut Chart </a>
-        <br />
-        <br />
-        <br />
-        <a href="./out/barchartrevamped.html"> Bar Chart Revamped </a>
-        <a href="./out/barchartstackedrevamped.html"> Bar Chart Stacked Revamped </a>
-        <br />
-        <a href="./out/tinker.html"> Tinker </a>
+				${buildAnchor("Vanilla Line Chart")}
+				${buildAnchor("Vanilla Line Chart Extras")}
+				<br />
+
+				${buildAnchor("Vanilla Pie Chart")}
+				${buildAnchor("Vanilla Pie Chart Extras")}
+				<br />
+				${buildAnchor("Vanilla Donut Chart")}
+				${buildAnchor("Vanilla Donut Chart Extras")}
+				<br />
+				<br />
+
+				${buildAnchor("React BarChart")}
+				${buildAnchor("React BarChart Extras")}
+				<br />
+				<a href="./out/tinker.html"> Tinker </a>
       </body>
     </html>`);
 });

@@ -8,7 +8,7 @@ import { donutchart } from "../src/donutchart.ts";
 
 const pairs: SaveablePairs = [];
 
-Deno.test(function barchartTests() {
+Deno.test(function donutchartTests() {
 	// Only the data
 	const tbc0 = donutchart({
 		data: [50, 100, 30],
@@ -19,5 +19,5 @@ Deno.test(function barchartTests() {
 });
 
 afterAll(() => {
-	buildGalleryPage("Donut Chart Revamped", pairs);
+	buildGalleryPage("Vanilla Donut Chart", pairs);
 });

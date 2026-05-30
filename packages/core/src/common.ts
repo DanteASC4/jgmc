@@ -1,3 +1,6 @@
+import type { BarChartOptionsBase } from "@jgmc/core";
+import type { Labels } from "$types";
+
 /**
  * Utility function to calculate an automatic gap size between items based on the length of the surface and the number of items.
  * @param surfaceLength - length of the surface the items are being placed on (e.g. width of a bar chart)
@@ -120,3 +123,55 @@ export const sumPrevAngleRads = (
 		.slice(0, i)
 		.map((_, idx) => (totalLength * asPercentages[idx]) / radius)
 		.reduce((curr, prev) => prev + curr, 0);
+
+/**
+ * Creates datalabel text based on datalabel choice
+ * @param datalabelChoice - The type of data label to generate, either "literal" for the actual data point value or "percentage" for the percentage representation of the data point relative to the sum of all data points.
+ * @param dataPoint - The individual data point value for which the label text is being generated.
+ * @param sum - Sum of all data points
+ * @returns The generated data label text
+ */
+export const getDataLabelText = (
+	datalabelChoice: Labels["dataLabels"],
+	dataPoint: number,
+	sum: number,
+) =>
+	datalabelChoice === "literal"
+		? `${dataPoint}`
+		: `${asPercent(dataPoint, sum).toFixed(1)}%`;
+
+/**
+ * Calculates the x and y offsets for image labels based on the specified placement of bars in a chart.
+ * The offsets shift the image labels slightly away from the bars to avoid overlap.
+ * @param placement - The placement of bars in the chart, which can be "top", "bottom", "left", or "right".
+ * @returns A tuple containing the x and y offsets for image labels based on the specified placement.
+ */
+export const calcImageLabelOffset = (
+	placement: BarChartOptionsBase["placement"],
+) => {
+	const xOffset =
+		placement === "top" || placement === "bottom"
+			? 0
+			: placement === "left"
+				? 15
+				: -15;
+	const yOffset =
+		placement === "left" || placement === "right"
+			? 0
+			: placement === "top"
+				? 15
+				: -15;
+
+	return [xOffset, yOffset] as const;
+};
+
+export const classNames = {
+	labelTextEle: "jgmc-text",
+	imageLabelGroupEle: "jgmc-image-label-group",
+	imageLabelEle: "jgmc-image-label",
+	centerLabelEle: "jgmc-center-label",
+	rectEle: "jgmc-rect",
+	groupEle: "jgmc-group",
+	svgEle: "jgmc-svg",
+	pathEle: "jgmc-path",
+} as const;

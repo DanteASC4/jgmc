@@ -3,15 +3,15 @@ import { copySync } from "@std/fs";
 
 const packages = [
 	{
-		name: "core",
-		description:
-			"JGMC Core, contains loads of math used for calculations needed for various chart types.",
-	},
-	{
 		name: "vanilla",
 		description:
 			"Vanilla distribution of JGMC, uses strings to create SVGs with `0` dependencies, allowing for flexible usage across various environments & frameworks.",
 	},
+	{
+		name: "react",
+		description:
+			"React distribution of JGMC, uses React elements to create SVGs, allowing for easy integration with React projects and leveraging React's rendering capabilities.",
+	}
 ];
 
 const shared = {

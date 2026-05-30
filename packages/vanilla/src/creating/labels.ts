@@ -1,6 +1,5 @@
-import { esc, type ImageLabel } from "@jgmc/core";
+import { classNames, esc, type ImageLabel } from "@jgmc/core";
 import type { GroupAttrs, ImageAttrs, TextAttrs, TextAttrsArr } from "$types";
-import { classNames } from "../constants.ts";
 import { combineAttrs } from "./common.ts";
 
 export const createTextLabel = (

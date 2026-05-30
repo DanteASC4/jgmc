@@ -5,6 +5,8 @@ TODOs & other task tracking / organizing things relevant to the `@jgmc/core` pac
 ## ToDos
 
 - [ ] Finish up writing about the dir structure / project overview bit.
+- [ ] research a11y for svg elements
+- move chart defaults to core?
 
 ## Ideas or Tabled
 
@@ -37,6 +39,7 @@ TODOs & other task tracking / organizing things relevant to the `@jgmc/react` pa
 ## ToDos
 
 - [ ] get started!
+- [ ] make sure to not bundle react & react dom
 
 ## Ideas or Tabled
 
@@ -79,7 +82,9 @@ Anything else!!
 ## ToDos
 
 - [ ] Expand on & update the `e2e` tests folder!
+- [ ] Gotta fix up build flow somehow
+  - Because all sub-packages use `@jgmc/core` building new versions means that always needs to be published first
 
 ## Ideas or Tabled
 
-- !
+- Reduce some manual

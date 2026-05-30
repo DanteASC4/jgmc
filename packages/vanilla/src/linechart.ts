@@ -1,11 +1,12 @@
 import {
-	asPercent,
 	autoMaxNumerical,
 	autoMinNumerical,
 	autoOffset,
 	calcSmoothControlPoints,
 	genCoordsStraight,
+	getDataLabelText,
 	getOnlyItemOrWrap,
+	LineChartDefaults,
 	type LineChartOptions,
 	randId,
 	roundUpTo100,
@@ -16,17 +17,6 @@ import {
 } from "./creating/gradients.ts";
 import { createImageLabel, createTextLabel } from "./creating/labels.ts";
 import { createPath, createSvg } from "./creating/svg.ts";
-
-export const LineChartDefaults = {
-	min: 0,
-	height: 200,
-	width: 300,
-	lineType: "straight",
-	colors: "#ffffff",
-	labelColors: "#ffffff",
-	fullWidthLine: false,
-	cap: "round",
-} satisfies { [K in keyof LineChartOptions]?: LineChartOptions[K] };
 
 export function linechart({
 	data,
@@ -195,10 +185,7 @@ export function linechart({
 			if (dataLabels) {
 				const lastCoord = coords[coords.length - 1];
 				const dataLabel = data[i][data[i].length - 1];
-				const dataLabelText =
-					dataLabels === "literal"
-						? `${dataLabel}`
-						: `${asPercent(dataLabel, sum).toFixed(1)}%`;
+				const dataLabelText = getDataLabelText(dataLabels, dataLabel, sum);
 				createdDataLabels.push(
 					createTextLabel(
 						dataLabelText,

@@ -1,6 +1,7 @@
 export * from "./src/barchart.ts";
 export * from "./src/circularcharts.ts";
 export * from "./src/common.ts";
+export * from "./src/defaults.ts";
 export * from "./src/donutchart.ts";
 export * from "./src/labels.ts";
 export * from "./src/linechart.ts";

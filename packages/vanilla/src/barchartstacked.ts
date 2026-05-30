@@ -1,15 +1,17 @@
 import {
-	asPercent,
 	autoBarWidth,
 	autoGap,
 	autoMaxNumerical,
+	BarChartStackedDefaults,
 	type BarChartStackedOptions,
 	calcBarCoords,
 	calcBarDims,
 	calcBarLabelCoords,
 	calcDataLabelCoords,
+	calcImageLabelOffset,
 	fillEmptyArray,
 	fillStrings,
+	getDataLabelText,
 	getOnlyItemOrWrap,
 	randId,
 	type StringOrNumber,
@@ -21,15 +23,6 @@ import {
 } from "./creating/gradients.ts";
 import { createImageLabel, createTextLabel } from "./creating/labels.ts";
 import { createRect, createSvg } from "./creating/svg.ts";
-
-export const BarChartStackedDefaults = {
-	height: 300,
-	width: 300,
-	gap: 3,
-	placement: "bottom",
-	fillColors: ["#ffffff", "#aaaaaa"],
-	labelColors: "#ffffff",
-} satisfies { [K in keyof BarChartStackedOptions]?: BarChartStackedOptions[K] };
 
 export function barchartStacked({
 	data,
@@ -234,18 +227,7 @@ export function barchartStacked({
 					trueBarHeight,
 				);
 				const imageLabel = imageLabels[i];
-				const xOffset =
-					placement === "top" || placement === "bottom"
-						? 0
-						: placement === "left"
-							? 15
-							: -15;
-				const yOffset =
-					placement === "left" || placement === "right"
-						? 0
-						: placement === "top"
-							? 15
-							: -15;
+				const [xOffset, yOffset] = calcImageLabelOffset(placement);
 
 				createdLabels.push(
 					createImageLabel(
@@ -276,10 +258,8 @@ export function barchartStacked({
 					trueBarWidth,
 					trueBarHeight,
 				);
-				const dataLabelText =
-					dataLabels === "literal"
-						? `${datap}`
-						: `${asPercent(datapNum, sum).toFixed(1)}%`;
+				const dataLabelText = getDataLabelText(dataLabels, datapNum, sum);
+
 				const dataLabel = createTextLabel(
 					dataLabelText,
 					dataLabelX,

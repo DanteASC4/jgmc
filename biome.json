@@ -11,6 +11,7 @@
 			"src/**/*.ts",
 			"tests/**/*.ts",
 			"packages/**/*.ts",
+			"packages/**/*.tsx",
 			"scripts/**/*.ts"
 		]
 	},
@@ -39,5 +40,24 @@
 				"organizeImports": "on"
 			}
 		}
-	}
+	},
+	"overrides": [
+		{
+			"includes": ["packages/react/**/*.ts", "packages/react/**/*.tsx"],
+			"javascript": {
+				"jsxRuntime": "transparent",
+				"formatter": {
+					"jsxQuoteStyle": "double"
+				}
+			},
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedVariables": "warn",
+						"noUnusedImports": "warn"
+					}
+				}
+			}
+		}
+	]
 }

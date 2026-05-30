@@ -1,9 +1,10 @@
 import {
-	asPercent,
 	calcDonutSliceCentroidCoords,
+	DonutChartDefaults,
 	type DonutChartOptions,
 	decimalPercentsToStarts,
 	getCoordsForCircularCharts,
+	getDataLabelText,
 	getOnlyItemOrWrap,
 	midpoint,
 	randId,
@@ -17,17 +18,6 @@ import {
 } from "./creating/gradients.ts";
 import { createImageLabel, createTextLabel } from "./creating/labels.ts";
 import { createPath, createSvg } from "./creating/svg.ts";
-
-export const DonutChartDefaults = {
-	size: 300,
-	padding: 15,
-	centerLabelFontSize: 32,
-	centerLabelFontWeight: "bold",
-	centerLabelFontFamily: "monospace",
-	centerLabelColor: "#000000",
-	fillColors: "#ffffff",
-	labelColors: "#000000",
-} satisfies { [K in keyof DonutChartOptions]?: DonutChartOptions[K] };
 
 export function donutchart({
 	data,
@@ -176,10 +166,8 @@ export function donutchart({
 					),
 				);
 			} else if (dataLabels) {
-				const dataLabelText =
-					dataLabels === "literal"
-						? `${data[i]}`
-						: `${asPercent(data[i], sum)}%`;
+				const dataLabelText = getDataLabelText(dataLabels, data[i], sum);
+
 				createdDataLabels.push(
 					createTextLabel(
 						dataLabelText,

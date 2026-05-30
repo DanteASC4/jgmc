@@ -19,5 +19,5 @@ Deno.test(function barchartTests() {
 });
 
 afterAll(() => {
-	buildGalleryPage("Bar Chart Revamped", pairs);
+	buildGalleryPage("Vanilla Bar Chart", pairs);
 });

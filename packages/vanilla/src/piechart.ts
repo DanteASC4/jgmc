@@ -1,9 +1,10 @@
 import {
-	asPercent,
 	calcPieSliceCentroidCoords,
 	decimalPercentsToStarts,
 	getCoordsForCircularCharts,
+	getDataLabelText,
 	getOnlyItemOrWrap,
+	PieChartDefaults,
 	type PieChartOptions,
 	randId,
 	sumArray,
@@ -16,17 +17,6 @@ import {
 } from "./creating/gradients.ts";
 import { createImageLabel, createTextLabel } from "./creating/labels.ts";
 import { createPath, createSvg } from "./creating/svg.ts";
-
-export const PieChartDefaults = {
-	size: 300,
-	padding: 15,
-	centerLabelFontSize: 32,
-	centerLabelFontWeight: "bold",
-	centerLabelFontFamily: "monospace",
-	centerLabelColor: "#000000",
-	fillColors: "#ffffff",
-	labelColors: "#000000", // Labels are on top of slices here
-} satisfies { [K in keyof PieChartOptions]?: PieChartOptions[K] };
 
 export function piechart({
 	data,
@@ -175,10 +165,7 @@ export function piechart({
 					),
 				);
 			} else if (dataLabels) {
-				const dataLabelText =
-					dataLabels === "literal"
-						? `${data[i]}`
-						: `${asPercent(data[i], sum)}%`;
+				const dataLabelText = getDataLabelText(dataLabels, data[i], sum);
 				createdDataLabels.push(
 					createTextLabel(
 						dataLabelText,

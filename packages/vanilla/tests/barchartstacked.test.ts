@@ -23,5 +23,5 @@ Deno.test(function barchartStackedTests() {
 });
 
 afterAll(() => {
-	buildGalleryPage("Bar Chart Stacked Revamped", pairs);
+	buildGalleryPage("Vanilla Bar Chart Stacked", pairs);
 });

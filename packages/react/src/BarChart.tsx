@@ -3,26 +3,28 @@ import {
 	autoGap,
 	autoMaxNumerical,
 	BarChartDefaults,
-	type BarChartNumericalOptions,
 	calcBarCoords,
 	calcBarDims,
 	calcBarLabelCoords,
 	calcDataLabelCoords,
 	calcImageLabelOffset,
+	classNames,
 	fillZeros,
 	getDataLabelText,
 	getOnlyItemOrWrap,
 	randId,
 	type StringOrNumber,
 } from "@jgmc/core";
+import React, { type JSX, memo } from "react";
+import type { BarChartProps } from "$types";
 import {
 	createBarChartMask,
 	createLinearGradient,
-} from "./creating/gradients.ts";
-import { createImageLabel, createTextLabel } from "./creating/labels.ts";
-import { createRect, createSvg } from "./creating/svg.ts";
+} from "./creating/Gradients.tsx";
+import { createImageLabel, createTextLabel } from "./creating/Labels.tsx";
+import { createRect } from "./creating/Svg.tsx";
 
-export function barchart({
+const barchart = ({
 	data,
 	labels,
 	labelColors = BarChartDefaults.labelColors,
@@ -42,7 +44,7 @@ export function barchart({
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-}: BarChartNumericalOptions) {
+}: BarChartProps) => {
 	const largest = autoMaxNumerical(data);
 
 	if (!vWidth) vWidth = width;
@@ -83,8 +85,8 @@ export function barchart({
 
 	let isGradient = false;
 	let gradientId: string | null = null;
-	let gradientDef: string | null = null;
-	let gradientBg: string | null = null;
+	let gradientDef: JSX.Element | null = null;
+	let gradientBg: JSX.Element | null = null;
 
 	if (gradientColors) {
 		isGradient = true;
@@ -147,12 +149,13 @@ export function barchart({
 				trueBarWidth,
 				trueBarHeight,
 				color,
+				`bar-${i}`,
 				strokeColor,
 				strokeWidth,
 			),
 		);
 
-		if (gradientMode === "continuous" && gradientId)
+		if (gradientMode === "continuous" && gradientId) {
 			createdMaskingBars.push(
 				createRect(
 					barX,
@@ -160,10 +163,10 @@ export function barchart({
 					trueBarWidth,
 					trueBarHeight,
 					"#ffffff",
-					strokeColor,
-					strokeWidth,
+					`mask-bar-${i}`,
 				),
 			);
+		}
 
 		if (hasLabels) {
 			if (imageLabels?.[i]) {
@@ -174,6 +177,7 @@ export function barchart({
 					trueBarWidth,
 					trueBarHeight,
 				);
+
 				const imageLabel = imageLabels[i];
 				const [xOffset, yOffset] = calcImageLabelOffset(placement);
 
@@ -195,7 +199,9 @@ export function barchart({
 					trueBarWidth,
 					trueBarHeight,
 				);
-				createdLabels.push(createTextLabel(label, labelX, labelY, labelColor));
+				createdLabels.push(
+					createTextLabel(label, labelX, labelY, labelColor, `label-${i}`),
+				);
 			}
 
 			if (dataLabels) {
@@ -207,14 +213,15 @@ export function barchart({
 					trueBarHeight,
 				);
 				const dataLabelText = getDataLabelText(dataLabels, datap, sum);
-
-				const dataLabel = createTextLabel(
-					dataLabelText,
-					dataLabelX,
-					dataLabelY,
-					dataLabelColor,
+				createdDataLabels.push(
+					createTextLabel(
+						dataLabelText,
+						dataLabelX,
+						dataLabelY,
+						dataLabelColor,
+						`data-label-${i}`,
+					),
 				);
-				createdDataLabels.push(dataLabel);
 			}
 		}
 	}
@@ -227,6 +234,7 @@ export function barchart({
 				gradientMode,
 				gradientId,
 			);
+
 			gradientDef = gradDef;
 			gradientBg = gradBg;
 		} else if (gradientMode === "continuous") {
@@ -239,20 +247,29 @@ export function barchart({
 				theMask,
 				maskId,
 			);
+
 			gradientDef = gradDef;
 			gradientBg = gradBg;
 		}
 	}
 
-	let svgBody = "";
+	return (
+		<svg
+			xmlnsXlink="http://www.w3.org/1999/xlink"
+			xmlns="http://www.w3.org/2000/svg"
+			width={width}
+			height={height}
+			viewBox={`0 0 ${trueVWidth} ${trueVHeight}`}
+			className={classNames.svgEle}
+		>
+			<title>Bar Chart</title>
+			{gradientDef}
+			{gradientBg}
+			{createdBars}
+			{createdLabels}
+			{createdDataLabels}
+		</svg>
+	);
+};
 
-	if (gradientDef) svgBody += gradientDef;
-	if (gradientBg) svgBody += gradientBg;
-	svgBody += createdBars.join("");
-	if (hasLabels) svgBody += createdLabels.join("");
-	if (dataLabels) svgBody += createdDataLabels.join("");
-
-	const svg = createSvg(trueVWidth, trueVHeight, width, height, svgBody);
-
-	return svg;
-}
+export const BarChart = memo(barchart);

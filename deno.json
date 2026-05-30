@@ -1,7 +1,9 @@
 {
+  "nodeModulesDir": "auto",
   "workspace": [
     "packages/core",
     "packages/vanilla",
+    "packages/react",
     "e2e/gallery"
   ],
   "tasks": {
@@ -12,11 +14,11 @@
     },
     "dev": "deno test --allow-write --allow-read --allow-env tests",
     "dev:one": {
-      "command": "deno test --watch --allow-write --allow-read --allow-env packages/vanilla/tests/barchart.test.ts",
+      "command": "deno test --watch --allow-write --allow-read --allow-env packages/react/tests/barchart.test.tsx",
       "description": "Runs a single test file in watch mode"
     },
     "test:one": {
-      "command": "deno test --allow-write --allow-read --allow-env packages/vanilla/tests/barchartstacked.test.ts",
+      "command": "deno test --allow-write --allow-read --allow-env packages/react/tests/barchart.test.tsx",
       "description": "Runs a single test file once"
     },
     "cov": "deno test tests/ --allow-env --allow-write --allow-read --coverage=coverage",

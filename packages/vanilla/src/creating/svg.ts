@@ -1,4 +1,4 @@
-import type { LineCaps, StringOrNumber } from "@jgmc/core";
+import { classNames, type LineCaps, type StringOrNumber } from "@jgmc/core";
 import type {
 	GroupAttrs,
 	GroupAttrsArr,
@@ -7,7 +7,6 @@ import type {
 	RectAttrs,
 	SvgAttrs,
 } from "$types";
-import { classNames } from "../constants.ts";
 import { combineAttrs } from "./common.ts";
 
 export const createGroup = (content: string, attrs?: GroupAttrsArr) => {
