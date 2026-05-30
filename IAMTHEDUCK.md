@@ -2150,3 +2150,17 @@ And I've been doing some thinking about how I'm going to stay organized, because
 I was considering using github projects, as I quite like em & what you can do there, but I think since it's still just me I don't want to spend too much time setting things up there & formatting things & making templates and all that.
 
 I think I've decided I'll continue using the `TODO.md` file as there's great power in the simplicity it provides. I'll just make sure to clean it up & organize things!
+
+# 5/30/2026
+
+More great progress! First pass at doing a react `BarChart` component is in place. I've cleaned up loads of stuff & more.
+
+But I've arrived at an issue. One I had before actually. Way back when I started I setup the gallery to run concurrently with `watchexec` because the `deno task --recursive` would 'wait' for the `dev` command in gallery to finish before running the dev tests so it would never run all the `dev` commands since that was just a web server that would run until stopped & it didn't pick up changes to the output directory.
+
+I've now run into the same thing, and I can't get around it with watchexec since the order of the recursive command would start with the recursive dev command which would run root-level `dev` for `root-level` tests which I've moved away from in favor of tests under each package.
+
+I basically just need some way to start the run all the tests & *then* the gallery dev server.
+
+It also can be temporary, because I decided to look into it again & this time I found a bug report [for exactly this](https://github.com/denoland/deno/issues/27586), that was fixed **yesterday** as of writing!!! Wow!
+
+Funny odds of that happening lol.

@@ -122,6 +122,7 @@ export const autoMaxStacked = (data: number[][]) => {
 };
 
 /**
+ * @deprecated - no longer in use
  * Fills an array of strings with empty strings until it reaches the desired amount. **Mutates the original array.**
  *
  * Example:
@@ -143,6 +144,7 @@ export const fillStrings = (arr: string[], amt: number) => {
 };
 
 /**
+ * @deprecated - no longer in use
  * Fills an array of arrays with empty arrays until it reaches the desired amount. **Mutates the original array.**
  *
  * Example:
@@ -164,6 +166,7 @@ export const fillEmptyArray = (arr: number[][], amt: number) => {
 };
 
 /**
+ * @deprecated - no longer in use
  * Formats a number in ms to a string in ms, us, or ns depending on the value. If the value is less than 1, it will be formatted in us. If the value is less than 0.001, it will be formatted in ns.
  *
  * Example:

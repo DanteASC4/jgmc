@@ -45,35 +45,36 @@ More links:
 ## Installation
 
 ```sh
-npm i @jgmc/vanilla
+npm i @jgmc/react
 ```
 
 ```sh
-pnpm i @jgmc/vanilla
+pnpm i @jgmc/react
 ```
 
 ```sh
-bun i @jgmc/vanilla
+bun i @jgmc/react
 ```
 
 ```sh
-deno i npm:@jgmc/vanilla
+deno i npm:@jgmc/react
 ```
 
 ![](./extras/hsep.png)
 
 ## Quick start
 
-```ts
-import {barchart} from '@jgmc/vanilla';
+```tsx
+import {BarChart} from '@jgmc/react';
 
-// `barchart` will return an SVG Element
-const myFirstChart = barchart({
-    data: [50, 100, 30],
-});
+export default function MyApp() {
+	return (
+		<div>
+			<BarChart data={[50, 100, 30]} />
+		</div>
+	)
+}
 
-// Simply add it to the page wherever!
-document.body.setHTML(myFirstChart);
 ```
 
 ![](./extras/hsep.png)

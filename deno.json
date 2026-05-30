@@ -9,14 +9,14 @@
   "tasks": {
     "go": "deno task --recursive dev",
     "go:dev": {
-      "command": "watchexec --restart --exts ts -- deno task go",
+      "command": "watchexec --restart --exts ts -- deno task test:all",
       "description": "Uses watchexec to restart the recursive dev command running both the root-level 'dev' which runs all tests but also the gallery server for output visual inspection "
     },
-    "dev": "deno test --allow-write --allow-read --allow-env tests",
     "dev:one": {
-      "command": "deno test --watch --allow-write --allow-read --allow-env packages/react/tests/barchart.test.tsx",
+      "command": "deno test --watch --allow-write --allow-read --allow-env packages/vanilla/tests/barchart.test.ts",
       "description": "Runs a single test file in watch mode"
     },
+    "test:all": "deno task --recursive test",
     "test:one": {
       "command": "deno test --allow-write --allow-read --allow-env packages/react/tests/barchart.test.tsx",
       "description": "Runs a single test file once"

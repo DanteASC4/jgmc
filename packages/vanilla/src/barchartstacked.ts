@@ -9,8 +9,6 @@ import {
 	calcBarLabelCoords,
 	calcDataLabelCoords,
 	calcImageLabelOffset,
-	fillEmptyArray,
-	fillStrings,
 	getDataLabelText,
 	getOnlyItemOrWrap,
 	randId,
@@ -45,24 +43,38 @@ export function barchartStacked({
 	gradientMode,
 	gradientDirection,
 }: BarChartStackedOptions) {
-	const asNumerical = stackedToSummed(data);
+	const hasNormalLabels = labels && labels.length > 0;
+	const hasImageLabels = imageLabels && imageLabels.length > 0;
+	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
+
+	const dataPointsAmt = hasLabels
+		? Math.max(
+				data.length,
+				labels ? labels.length : imageLabels ? imageLabels.length : 0,
+			)
+		: data.length;
+
+	const paddedData = [...data];
+	if (paddedData.length < dataPointsAmt) {
+		const diff = dataPointsAmt - paddedData.length;
+		for (let i = 0; i < diff; i++) {
+			paddedData.push([]);
+		}
+	}
+
+	const paddedLabels = labels ? [...labels] : [];
+	if (labels && paddedLabels.length < dataPointsAmt) {
+		const diff = dataPointsAmt - paddedLabels.length;
+		for (let i = 0; i < diff; i++) {
+			paddedLabels.push("");
+		}
+	}
+
+	const asNumerical = stackedToSummed(paddedData);
 	const largest = autoMaxNumerical(asNumerical);
 	if (!vWidth) vWidth = width;
 	if (!vHeight) vHeight = height;
 
-	const padLabels = labels.length < data.length;
-	if (padLabels) {
-		const diff = Math.abs(labels.length - data.length);
-		fillStrings(labels, diff);
-	}
-	// this might need to be adjusted, as the logic behind this for stacked feels a bit different
-	const padData = data.length < labels.length;
-	if (padData) {
-		const diff = Math.abs(labels.length - data.length);
-		fillEmptyArray(data, diff);
-	}
-
-	const dataPointsAmt = asNumerical.length;
 	const evenWidth =
 		placement === "top" || placement === "bottom"
 			? autoBarWidth(width, dataPointsAmt)
@@ -90,6 +102,7 @@ export function barchartStacked({
 		if (exceedsHeight) {
 			trueVHeight = max ? max : largest;
 		}
+	} else {
 		if (exceedsWidth) {
 			trueVWidth = max ? max : largest;
 		}
@@ -105,9 +118,6 @@ export function barchartStacked({
 		gradientId = randId();
 		if (!gradientMode) gradientMode = "individual";
 	}
-	const hasNormalLabels = labels && labels.length > 0;
-	const hasImageLabels = imageLabels && imageLabels.length > 0;
-	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
@@ -119,8 +129,8 @@ export function barchartStacked({
 	const createdLabels = [];
 	const createdDataLabels = [];
 
-	for (let i = 0; i < data.length; i++) {
-		const datap = data[i];
+	for (let i = 0; i < paddedData.length; i++) {
+		const datap = paddedData[i];
 		const datapNum = asNumerical[i];
 
 		let color: string | string[] = ["#ffffff", "#aaaaaa"];
@@ -152,8 +162,8 @@ export function barchartStacked({
 			i,
 			placement,
 			gap,
-			width,
-			height,
+			trueVWidth,
+			trueVHeight,
 			evenWidth,
 			barWidth ?? evenWidth,
 			trueBarWidth,
@@ -238,8 +248,8 @@ export function barchartStacked({
 						subgrouping,
 					),
 				);
-			} else if (hasNormalLabels && labels?.[i]) {
-				const label = labels[i];
+			} else if (hasNormalLabels && paddedLabels?.[i]) {
+				const label = paddedLabels[i];
 				const [labelX, labelY] = calcBarLabelCoords(
 					placement,
 					barX,

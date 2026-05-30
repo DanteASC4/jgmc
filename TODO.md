@@ -22,6 +22,8 @@ TODOs & other task tracking / organizing things relevant to the `@jgmc/vanilla` 
 ## ToDos
 
 - [ ] Proofread readme
+- [ ] Improve testing
+  - [ ] Right now tests are pretty much purely visual. I'm sure there's a way things could be tested more properly non-visually though.
 
 ## Ideas or Tabled
 
@@ -81,6 +83,8 @@ Anything else!!
 
 ## ToDos
 
+- [ ] Clean up root level deno tasks a bit
+  - [ ] Mainly naming
 - [ ] Expand on & update the `e2e` tests folder!
 - [ ] Gotta fix up build flow somehow
   - Because all sub-packages use `@jgmc/core` building new versions means that always needs to be published first

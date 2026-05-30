@@ -10,8 +10,8 @@ export type SaveablePairs = (
 )[];
 
 const galleryP = (name: string) =>
-	resolve(join(Deno.cwd(), "e2e", "gallery", "out", `${name}.html`));
-const galleryDir = () => resolve(join(Deno.cwd(), "e2e", "gallery", "out"));
+	resolve(join(Deno.cwd(), "..","..","e2e", "gallery", "out", `${name}.html`));
+const galleryDir = () => resolve(join(Deno.cwd(), "..","..","e2e", "gallery", "out"));
 const _byteSize = (s: string) => new Blob([s]).size;
 
 export const buildGalleryPage = (

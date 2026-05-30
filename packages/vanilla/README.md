@@ -67,7 +67,7 @@ deno i npm:@jgmc/vanilla
 ```ts
 import {barchart} from '@jgmc/vanilla';
 
-// `barchart` will return an SVG Element
+// `barchart` will return an SVG Element as a string
 const myFirstChart = barchart({
     data: [50, 100, 30],
 });

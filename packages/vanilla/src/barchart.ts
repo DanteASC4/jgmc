@@ -9,7 +9,6 @@ import {
 	calcBarLabelCoords,
 	calcDataLabelCoords,
 	calcImageLabelOffset,
-	fillZeros,
 	getDataLabelText,
 	getOnlyItemOrWrap,
 	randId,
@@ -48,12 +47,17 @@ export function barchart({
 	if (!vWidth) vWidth = width;
 	if (!vHeight) vHeight = height;
 
-	const padData = labels && data.length < labels.length;
-	if (padData) {
-		const diff = Math.abs(labels.length - data.length);
-		fillZeros(data, diff);
-	}
-	const dataPointsAmt = data.length;
+	const hasNormalLabels = labels && labels.length > 0;
+	const hasImageLabels = imageLabels && imageLabels.length > 0;
+	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
+
+	const dataPointsAmt = hasLabels
+		? Math.max(
+				data.length,
+				labels ? labels.length : imageLabels ? imageLabels.length : 0,
+			)
+		: data.length;
+
 	const evenWidth =
 		placement === "top" || placement === "bottom"
 			? autoBarWidth(width, dataPointsAmt)
@@ -76,6 +80,7 @@ export function barchart({
 		if (exceedsHeight) {
 			trueVHeight = max ? max : largest;
 		}
+	} else {
 		if (exceedsWidth) {
 			trueVWidth = max ? max : largest;
 		}
@@ -91,9 +96,6 @@ export function barchart({
 		gradientId = randId();
 		if (!gradientMode) gradientMode = "individual";
 	}
-	const hasNormalLabels = labels && labels.length > 0;
-	const hasImageLabels = imageLabels && imageLabels.length > 0;
-	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
@@ -104,8 +106,8 @@ export function barchart({
 	const createdLabels = [];
 	const createdDataLabels = [];
 
-	for (let i = 0; i < data.length; i++) {
-		const datap = data[i];
+	for (let i = 0; i < dataPointsAmt; i++) {
+		const datap = data[i] ?? 0;
 		let color = getOnlyItemOrWrap(fillColors, i);
 		if (isGradient && gradientId) {
 			if (gradientMode === "continuous") color = "transparent";
@@ -132,8 +134,8 @@ export function barchart({
 			i,
 			placement,
 			gap,
-			width,
-			height,
+			trueVWidth,
+			trueVHeight,
 			evenWidth,
 			barWidth ?? evenWidth,
 			trueBarWidth,

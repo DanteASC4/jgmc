@@ -9,13 +9,11 @@ import {
 	calcDataLabelCoords,
 	calcImageLabelOffset,
 	classNames,
-	fillZeros,
 	getDataLabelText,
 	getOnlyItemOrWrap,
-	randId,
 	type StringOrNumber,
 } from "@jgmc/core";
-import React, { type JSX, memo } from "react";
+import React, { type JSX, memo, useId } from "react";
 import type { BarChartProps } from "$types";
 import {
 	createBarChartMask,
@@ -50,12 +48,17 @@ const barchart = ({
 	if (!vWidth) vWidth = width;
 	if (!vHeight) vHeight = height;
 
-	const padData = labels && data.length < labels.length;
-	if (padData) {
-		const diff = Math.abs(labels.length - data.length);
-		fillZeros(data, diff);
-	}
-	const dataPointsAmt = data.length;
+	const hasNormalLabels = labels && labels.length > 0;
+	const hasImageLabels = imageLabels && imageLabels.length > 0;
+	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
+
+	const dataPointsAmt = hasLabels
+		? Math.max(
+				data.length,
+				labels ? labels.length : imageLabels ? imageLabels.length : 0,
+			)
+		: data.length;
+
 	const evenWidth =
 		placement === "top" || placement === "bottom"
 			? autoBarWidth(width, dataPointsAmt)
@@ -78,24 +81,23 @@ const barchart = ({
 		if (exceedsHeight) {
 			trueVHeight = max ? max : largest;
 		}
+	} else {
 		if (exceedsWidth) {
 			trueVWidth = max ? max : largest;
 		}
 	}
 
 	let isGradient = false;
+	const reactId = useId();
 	let gradientId: string | null = null;
 	let gradientDef: JSX.Element | null = null;
 	let gradientBg: JSX.Element | null = null;
 
 	if (gradientColors) {
 		isGradient = true;
-		gradientId = randId();
+		gradientId = reactId;
 		if (!gradientMode) gradientMode = "individual";
 	}
-	const hasNormalLabels = labels && labels.length > 0;
-	const hasImageLabels = imageLabels && imageLabels.length > 0;
-	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
@@ -106,8 +108,8 @@ const barchart = ({
 	const createdLabels = [];
 	const createdDataLabels = [];
 
-	for (let i = 0; i < data.length; i++) {
-		const datap = data[i];
+	for (let i = 0; i < dataPointsAmt; i++) {
+		const datap = data[i] ?? 0;
 		let color = getOnlyItemOrWrap(fillColors, i);
 		if (isGradient && gradientId) {
 			if (gradientMode === "continuous") color = "transparent";
@@ -134,8 +136,8 @@ const barchart = ({
 			i,
 			placement,
 			gap,
-			width,
-			height,
+			trueVWidth,
+			trueVHeight,
 			evenWidth,
 			barWidth ?? evenWidth,
 			trueBarWidth,
