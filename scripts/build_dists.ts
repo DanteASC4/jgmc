@@ -11,7 +11,7 @@ const packages = [
 		name: "react",
 		description:
 			"React distribution of JGMC, uses React elements to create SVGs, allowing for easy integration with React projects and leveraging React's rendering capabilities.",
-	}
+	},
 ];
 
 const shared = {

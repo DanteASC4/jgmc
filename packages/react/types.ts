@@ -1,75 +1,73 @@
 import type {
-  BarChartNumericalOptions,
-  GradientColor,
-  ImageLabel,
-  LinearGradientDirection,
-  LinearGradientType,
+	BarChartNumericalOptions,
+	GradientColor,
+	ImageLabel,
+	LinearGradientDirection,
+	LinearGradientType,
 } from "@jgmc/core";
 import type * as React from "react";
 import type { Ref } from "react";
 import type { StringOrNumber } from "../core/types.ts";
 
-export type BarChartProps =
-  & BarChartNumericalOptions
-  & React.SVGProps<SVGSVGElement>
-  & {
-    ref?: Ref<SVGSVGElement>;
-  };
+export type BarChartProps = BarChartNumericalOptions &
+	React.SVGProps<SVGSVGElement> & {
+		ref?: Ref<SVGSVGElement>;
+	};
 
 //? The "custom" is added here to differentiate from the standard SVGProps
 export type SvgPropsCustom = {
-  width: number;
-  height: number;
-  vWidth: number;
-  vHeight: number;
-  children?: React.ReactNode;
+	width: number;
+	height: number;
+	vWidth: number;
+	vHeight: number;
+	children?: React.ReactNode;
 };
 
 export type RectProps = {
-  x: number;
-  y: number;
-  width: StringOrNumber;
-  height: StringOrNumber;
-  fill: string;
-  key: string;
-  stroke?: string;
-  strokeWidth?: StringOrNumber;
+	x: number;
+	y: number;
+	width: StringOrNumber;
+	height: StringOrNumber;
+	fill: string;
+	key: string;
+	stroke?: string;
+	strokeWidth?: StringOrNumber;
 };
 
 export type TextLabelProps = {
-  label: string;
-  x: number;
-  y: number;
-  labelColor: string;
-  key: string;
+	label: string;
+	x: number;
+	y: number;
+	labelColor: string;
+	key: string;
 };
 
 export type ImageLabelProps = {
-  imgLabel: ImageLabel;
-  x: number;
-  y: number;
-  labelColor: string;
-  key: string;
-  subgrouping?: boolean;
-  width?: number;
-  height?: number;
+	imgLabel: ImageLabel;
+	x: number;
+	y: number;
+	labelColor: string;
+	key: string;
+	subgrouping?: boolean;
+	width?: number;
+	height?: number;
 };
 
 export type StopProps = {
-  color: string;
-  offset: number;
+	color: string;
+	offset: number;
 };
 
 export type LinearGradientProps = {
-  colors: GradientColor[];
-  gDir: LinearGradientDirection;
-  gMode: LinearGradientType;
-  gId: string;
-  gMask?: React.ReactNode;
-  gMaskId?: string;
+	colors: GradientColor[];
+	gDir: LinearGradientDirection;
+	gMode: LinearGradientType;
+	gId: string;
+	gMask?: React.ReactNode;
+	gMaskId?: string;
 };
 
 export type BarChartMaskProps = {
-  maskId: string;
-  children: React.ReactNode[];
+	maskId: string;
+	children: React.ReactNode[];
 };
