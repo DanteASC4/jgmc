@@ -1,25 +1,18 @@
-import {
-	type GradientColor,
-	type LinearGradientDirection,
-	type LinearGradientType,
-	randId,
-} from "@jgmc/core";
-import React, { JSX } from "react";
+import React, { memo } from "react";
+import type { BarChartMaskProps, LinearGradientProps } from "$types";
 
-const createStop = (color: string, offset: number) => (<stop offset={`${offset}%`} stopColor={color} />);
-// const createStop = (color: string, offset: number) =>
-// 	`<stop offset="${offset}%" stop-color="${color}" />`;
+const createStop = (color: string, offset: number) => (
+	<stop offset={`${offset}%`} stopColor={color} />
+);
 
-export const createLinearGradient = (
-	colors: GradientColor[],
-	gDir: LinearGradientDirection = "left-to-right",
-	gMode: LinearGradientType,
-	gId: string,
-	gMask?: JSX.Element,
-	gMaskId?: string,
-) => {
-	const gid = gId;
-
+export const LinearGradientDefs = memo(function LinearGradientDefs({
+	colors,
+	gDir,
+	gMode,
+	gId,
+	gMask,
+	gMaskId,
+}: LinearGradientProps) {
 	let dist = 1 / (colors.length - 1);
 	const stops = [];
 
@@ -49,37 +42,36 @@ export const createLinearGradient = (
 	else if (gDir === "bottom-to-top") gDirection = "rotate(270,0.5,0.5)";
 	else gDirection = `rotate(${gDir},0.5,0.5)`;
 
-	if (gMode === "individual") {
-		const defs = (
+	return (
+		<>
 			<defs>
-				<linearGradient id={gid} gradientTransform={gDirection}>{stops}</linearGradient>
-			</defs>
-		);
-		return [defs, null] as const;
-	} else {
-		const defs = (
-			<defs>
-				<linearGradient id={gid} gradientTransform={gDirection}>{stops}</linearGradient>
+				<linearGradient id={gId} gradientTransform={gDirection}>
+					{stops}
+				</linearGradient>
 				{gMask}
 			</defs>
-		);
-		const bg = (
-			<rect
-				{...(gMaskId ? { mask: `url('#${gMaskId}')` } : {})}
-				x="0"
-				y="0"
-				width="100%"
-				height="100%"
-				fill={`url('#${gid}')`}
-			/>
-		);
-		return [defs, bg] as const;
-	}
-};
+			{gMode === "continuous" && (
+				<rect
+					{...(gMaskId ? { mask: `url('#${gMaskId}')` } : {})}
+					x="0"
+					y="0"
+					width="100%"
+					height="100%"
+					fill={`url('#${gId}')`}
+				/>
+			)}
+		</>
+	);
+});
 
-export const createBarChartMask = (bars: JSX.Element[]) => {
-	const maskId = randId();
-	const bg = <rect x="0" y="0" width="100%" height="100%" fill="#000000" />;
-	const mask = (<mask id={maskId}>{bg}{bars}</mask>);
-	return [maskId, mask] as const;
-}
+export const BarChartMask = memo(function BarChartMask({
+	maskId,
+	children,
+}: BarChartMaskProps) {
+	return (
+		<mask id={maskId}>
+			<rect x="0" y="0" width="100%" height="100%" fill="#000000" />
+			{children}
+		</mask>
+	);
+});

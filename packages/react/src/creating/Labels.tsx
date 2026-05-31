@@ -1,13 +1,14 @@
-import { classNames, type ImageLabel } from "@jgmc/core";
-import React, { type JSX } from "react";
+import { classNames } from "@jgmc/core";
+import React, { memo } from "react";
+import type { ImageLabelProps, TextLabelProps } from "$types";
 
-export const createTextLabel = (
-	label: string,
-	x: number,
-	y: number,
-	labelColor: string,
-	key: string,
-): JSX.Element => {
+export const TextLabel = memo(function TextLabel({
+	label,
+	x,
+	y,
+	labelColor,
+	key,
+}: TextLabelProps) {
 	return (
 		<text
 			key={key}
@@ -21,22 +22,25 @@ export const createTextLabel = (
 			{label}
 		</text>
 	);
-};
+});
 
-export const createImageLabel = (
-	imgLabel: ImageLabel,
-	textX: number,
-	textY: number,
-	labelColor: string,
+// View added here to differentiate from the `ImageLabel` type, may change at some point
+export const ImageLabelView = memo(function ImageLabel({
+	imgLabel,
+	x,
+	y,
+	labelColor,
+	key,
 	subgrouping = false,
 	width = 50,
 	height = 50,
-): JSX.Element => {
+}: ImageLabelProps) {
 	if (subgrouping) {
 		return (
 			<g
 				className={classNames.imageLabelGroupEle}
-				transform={`translate(${textX}, ${textY})`}
+				transform={`translate(${x}, ${y})`}
+				key={key}
 			>
 				{imgLabel.topText && (
 					<text
@@ -76,14 +80,15 @@ export const createImageLabel = (
 	} else {
 		return (
 			<image
+				key={key}
 				href={imgLabel.href}
 				// alt={imgLabel.alt || ""}
 				width={width}
 				height={height}
-				x={textX - width / 2}
-				y={textY - height / 2}
+				x={x - width / 2}
+				y={y - height / 2}
 				className={classNames.imageLabelEle}
 			/>
 		);
 	}
-};
+});

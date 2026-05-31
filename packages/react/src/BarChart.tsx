@@ -8,21 +8,17 @@ import {
 	calcBarLabelCoords,
 	calcDataLabelCoords,
 	calcImageLabelOffset,
-	classNames,
 	getDataLabelText,
 	getOnlyItemOrWrap,
 	type StringOrNumber,
 } from "@jgmc/core";
-import React, { type JSX, memo, useId } from "react";
+import React, { useId } from "react";
 import type { BarChartProps } from "$types";
-import {
-	createBarChartMask,
-	createLinearGradient,
-} from "./creating/Gradients.tsx";
-import { createImageLabel, createTextLabel } from "./creating/Labels.tsx";
-import { createRect } from "./creating/Svg.tsx";
+import { BarChartMask, LinearGradientDefs } from "./creating/Gradients.tsx";
+import { ImageLabelView, TextLabel } from "./creating/Labels.tsx";
+import { Rect, Svg } from "./creating/Svg.tsx";
 
-const barchart = ({
+export const BarChart = ({
 	data,
 	labels,
 	labelColors = BarChartDefaults.labelColors,
@@ -89,9 +85,8 @@ const barchart = ({
 
 	let isGradient = false;
 	const reactId = useId();
+	const maskId = useId();
 	let gradientId: string | null = null;
-	let gradientDef: JSX.Element | null = null;
-	let gradientBg: JSX.Element | null = null;
 
 	if (gradientColors) {
 		isGradient = true;
@@ -145,28 +140,28 @@ const barchart = ({
 		);
 
 		createdBars.push(
-			createRect(
-				barX,
-				barY,
-				trueBarWidth,
-				trueBarHeight,
-				color,
-				`bar-${i}`,
-				strokeColor,
-				strokeWidth,
-			),
+			<Rect
+				x={barX}
+				y={barY}
+				width={trueBarWidth}
+				height={trueBarHeight}
+				fill={color}
+				key={`bar-${i}`}
+				stroke={strokeColor}
+				strokeWidth={strokeWidth}
+			/>,
 		);
 
 		if (gradientMode === "continuous" && gradientId) {
 			createdMaskingBars.push(
-				createRect(
-					barX,
-					barY,
-					trueBarWidth,
-					trueBarHeight,
-					"#ffffff",
-					`mask-bar-${i}`,
-				),
+				<Rect
+					x={barX}
+					y={barY}
+					width={trueBarWidth}
+					height={trueBarHeight}
+					fill="#ffffff"
+					key={`mask-bar-${i}`}
+				/>,
 			);
 		}
 
@@ -184,13 +179,14 @@ const barchart = ({
 				const [xOffset, yOffset] = calcImageLabelOffset(placement);
 
 				createdLabels.push(
-					createImageLabel(
-						imageLabel,
-						labelX + xOffset,
-						labelY + yOffset,
-						labelColor,
-						subgrouping,
-					),
+					<ImageLabelView
+						imgLabel={imageLabel}
+						x={labelX + xOffset}
+						y={labelY + yOffset}
+						labelColor={labelColor}
+						subgrouping={subgrouping}
+						key={`image-label-${i}`}
+					/>,
 				);
 			} else if (hasNormalLabels && labels?.[i]) {
 				const label = labels[i];
@@ -202,7 +198,13 @@ const barchart = ({
 					trueBarHeight,
 				);
 				createdLabels.push(
-					createTextLabel(label, labelX, labelY, labelColor, `label-${i}`),
+					<TextLabel
+						label={label}
+						x={labelX}
+						y={labelY}
+						labelColor={labelColor}
+						key={`label-${i}`}
+					/>,
 				);
 			}
 
@@ -216,62 +218,51 @@ const barchart = ({
 				);
 				const dataLabelText = getDataLabelText(dataLabels, datap, sum);
 				createdDataLabels.push(
-					createTextLabel(
-						dataLabelText,
-						dataLabelX,
-						dataLabelY,
-						dataLabelColor,
-						`data-label-${i}`,
-					),
+					<TextLabel
+						label={dataLabelText}
+						x={dataLabelX}
+						y={dataLabelY}
+						labelColor={dataLabelColor}
+						key={`data-label-${i}`}
+					/>,
 				);
 			}
 		}
 	}
 
-	if (isGradient && gradientColors && gradientMode && gradientId) {
-		if (gradientMode === "individual") {
-			const [gradDef, gradBg] = createLinearGradient(
-				gradientColors,
-				gradientDirection,
-				gradientMode,
-				gradientId,
-			);
-
-			gradientDef = gradDef;
-			gradientBg = gradBg;
-		} else if (gradientMode === "continuous") {
-			const [maskId, theMask] = createBarChartMask(createdMaskingBars);
-			const [gradDef, gradBg] = createLinearGradient(
-				gradientColors,
-				gradientDirection,
-				gradientMode,
-				gradientId,
-				theMask,
-				maskId,
-			);
-
-			gradientDef = gradDef;
-			gradientBg = gradBg;
-		}
-	}
-
 	return (
-		<svg
-			xmlnsXlink="http://www.w3.org/1999/xlink"
-			xmlns="http://www.w3.org/2000/svg"
+		<Svg
 			width={width}
 			height={height}
-			viewBox={`0 0 ${trueVWidth} ${trueVHeight}`}
-			className={classNames.svgEle}
+			vWidth={trueVWidth}
+			vHeight={trueVHeight}
 		>
 			<title>Bar Chart</title>
-			{gradientDef}
-			{gradientBg}
+			{isGradient &&
+				gradientColors &&
+				gradientMode &&
+				gradientDirection &&
+				gradientId && (
+					<LinearGradientDefs
+						colors={gradientColors}
+						gDir={gradientDirection}
+						gMode={gradientMode}
+						gId={gradientId}
+						gMask={
+							gradientMode === "continuous" && maskId ? (
+								<BarChartMask maskId={maskId}>
+									{createdMaskingBars}
+								</BarChartMask>
+							) : undefined
+						}
+						gMaskId={
+							gradientMode === "continuous" && maskId ? maskId : undefined
+						}
+					/>
+				)}
 			{createdBars}
 			{createdLabels}
 			{createdDataLabels}
-		</svg>
+		</Svg>
 	);
 };
-
-export const BarChart = memo(barchart);
