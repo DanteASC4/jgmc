@@ -1,15 +1,21 @@
 import type {
 	BarChartNumericalOptions,
+	BarChartStackedOptions,
 	GradientColor,
 	ImageLabel,
 	LinearGradientDirection,
 	LinearGradientType,
 } from "@jgmc/core";
-import type * as React from "react";
+import type React from "react";
 import type { Ref } from "react";
 import type { StringOrNumber } from "../core/types.ts";
 
 export type BarChartProps = BarChartNumericalOptions &
+	React.SVGProps<SVGSVGElement> & {
+		ref?: Ref<SVGSVGElement>;
+	};
+
+export type BarChartStackedProps = BarChartStackedOptions &
 	React.SVGProps<SVGSVGElement> & {
 		ref?: Ref<SVGSVGElement>;
 	};
