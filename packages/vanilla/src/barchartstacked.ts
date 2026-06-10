@@ -246,6 +246,8 @@ export function barchartStacked({
 						labelY + yOffset,
 						labelColor,
 						subgrouping,
+						imageLabel.width,
+						imageLabel.height,
 					),
 				);
 			} else if (hasNormalLabels && paddedLabels?.[i]) {

@@ -153,7 +153,7 @@ export function piechart({
 			);
 			if (imageLabels?.[i]) {
 				const imageLabel = imageLabels[i];
-				createdDataLabels.push(
+				createdLabels.push(
 					createImageLabel(
 						imageLabel,
 						centroidCoords[0],

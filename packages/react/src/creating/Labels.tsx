@@ -8,6 +8,9 @@ export const TextLabel = memo(function TextLabel({
 	y,
 	labelColor,
 	key,
+	fontSize,
+	fontFamily,
+	fontWeight,
 }: TextLabelProps) {
 	return (
 		<text
@@ -18,6 +21,9 @@ export const TextLabel = memo(function TextLabel({
 			fill={labelColor}
 			textAnchor="middle"
 			alignmentBaseline="middle"
+			fontSize={fontSize}
+			fontFamily={fontFamily}
+			fontWeight={fontWeight}
 		>
 			{label}
 		</text>

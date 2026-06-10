@@ -40,8 +40,14 @@ TODOs & other task tracking / organizing things relevant to the `@jgmc/react` pa
 
 ## ToDos
 
-- [ ] get started!
+- [ ] Add all chart components
+	- [x] BarChart
+	- [x] BarChartStacked
+	- [ ] DonutChart
+	- [ ] PieChart
+	- [ ] LineChart
 - [ ] make sure to not bundle react & react dom
+- [ ] ensure there would be no repeat keys if multiple of same charts made
 
 ## Ideas or Tabled
 
@@ -86,8 +92,10 @@ Anything else!!
 - [ ] Clean up root level deno tasks a bit
   - [ ] Mainly naming
 - [ ] Expand on & update the `e2e` tests folder!
-- [ ] Gotta fix up build flow somehow
-  - Because all sub-packages use `@jgmc/core` building new versions means that always needs to be published first
+- [x] Gotta fix up build flow somehow
+  - Now building & publishing core separately
+- [ ] Standardize logic organization across charts
+	- Mainly just moving things around so stuff is declared in the same places chart to chart.
 
 ## Ideas or Tabled
 

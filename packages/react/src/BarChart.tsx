@@ -11,6 +11,7 @@ import {
 	getDataLabelText,
 	getOnlyItemOrWrap,
 	type StringOrNumber,
+	sumArray,
 } from "@jgmc/core";
 import React, { useId } from "react";
 import type { BarChartProps } from "$types";
@@ -84,20 +85,18 @@ export const BarChart = ({
 	}
 
 	let isGradient = false;
-	const reactId = useId();
+	const gradientId = useId();
 	const maskId = useId();
-	let gradientId: string | null = null;
 
 	if (gradientColors) {
 		isGradient = true;
-		gradientId = reactId;
 		if (!gradientMode) gradientMode = "individual";
 	}
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
 	);
-	const sum = dataLabels === "percentage" ? data.reduce((a, b) => a + b, 0) : 0;
+	const sum = sumArray(data);
 	const createdBars = [];
 	const createdMaskingBars = [];
 	const createdLabels = [];
@@ -106,7 +105,7 @@ export const BarChart = ({
 	for (let i = 0; i < dataPointsAmt; i++) {
 		const datap = data[i] ?? 0;
 		let color = getOnlyItemOrWrap(fillColors, i);
-		if (isGradient && gradientId) {
+		if (isGradient) {
 			if (gradientMode === "continuous") color = "transparent";
 			else color = `url('#${gradientId}')`;
 		}
@@ -152,7 +151,7 @@ export const BarChart = ({
 			/>,
 		);
 
-		if (gradientMode === "continuous" && gradientId) {
+		if (gradientMode === "continuous") {
 			createdMaskingBars.push(
 				<Rect
 					x={barX}
@@ -238,28 +237,20 @@ export const BarChart = ({
 			vHeight={trueVHeight}
 		>
 			<title>Bar Chart</title>
-			{isGradient &&
-				gradientColors &&
-				gradientMode &&
-				gradientDirection &&
-				gradientId && (
-					<LinearGradientDefs
-						colors={gradientColors}
-						gDir={gradientDirection}
-						gMode={gradientMode}
-						gId={gradientId}
-						gMask={
-							gradientMode === "continuous" && maskId ? (
-								<BarChartMask maskId={maskId}>
-									{createdMaskingBars}
-								</BarChartMask>
-							) : undefined
-						}
-						gMaskId={
-							gradientMode === "continuous" && maskId ? maskId : undefined
-						}
-					/>
-				)}
+			{isGradient && gradientColors && gradientMode && gradientDirection && (
+				<LinearGradientDefs
+					colors={gradientColors}
+					gDir={gradientDirection}
+					gMode={gradientMode}
+					gId={gradientId}
+					gMask={
+						gradientMode === "continuous" && maskId ? (
+							<BarChartMask maskId={maskId}>{createdMaskingBars}</BarChartMask>
+						) : undefined
+					}
+					gMaskId={gradientMode === "continuous" && maskId ? maskId : undefined}
+				/>
+			)}
 			{createdBars}
 			{createdLabels}
 			{createdDataLabels}

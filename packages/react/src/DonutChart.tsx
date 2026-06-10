@@ -7,19 +7,15 @@ import {
 	getDataLabelText,
 	getOnlyItemOrWrap,
 	midpoint,
-	randId,
 	sumArray,
 	sumPrevAngleRads,
 } from "@jgmc/core";
-import type { TextAttrsArr } from "$types";
-import {
-	createLinearGradient,
-	createPathChartMask,
-} from "./creating/gradients.ts";
-import { createImageLabel, createTextLabel } from "./creating/labels.ts";
-import { createPath, createSvg } from "./creating/svg.ts";
+import React, { useId } from "react";
+import { LinearGradientDefs, PathChartMask } from "./creating/Gradients.tsx";
+import { ImageLabelView, TextLabel } from "./creating/Labels.tsx";
+import { Path, Svg } from "./creating/Svg.tsx";
 
-export function donutchart({
+export const DonutChart = ({
 	data,
 	size = DonutChartDefaults.size,
 	padding = DonutChartDefaults.padding,
@@ -40,7 +36,7 @@ export function donutchart({
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-}: DonutChartOptions) {
+}: DonutChartOptions) => {
 	const sum = sumArray(data);
 	const asDecimalPercentages = data.map((n) => n / sum);
 
@@ -48,13 +44,11 @@ export function donutchart({
 	if (!vHeight) vHeight = size;
 
 	let isGradient = false;
-	let gradientId: string | null = null;
-	let gradientDef: string | null = null;
-	let gradientBg: string | null = null;
+	const gradientId = useId();
+	const maskId = useId();
 
 	if (gradientColors) {
 		isGradient = true;
-		gradientId = randId();
 		if (!gradientMode) gradientMode = "individual";
 	}
 	const hasNormalLabels = labels && labels.length > 0;
@@ -87,10 +81,10 @@ export function donutchart({
 	asCoords.pop();
 
 	// const centroids: [number, number][] = [];
-	const createdSlices: string[] = [];
-	const createdMaskingSlices: string[] = [];
-	const createdLabels: string[] = [];
-	const createdDataLabels: string[] = [];
+	const createdSlices = [];
+	const createdMaskingSlices = [];
+	const createdLabels = [];
+	const createdDataLabels = [];
 
 	for (let i = 0; i < asCoords.length; i++) {
 		const coord = asCoords[i];
@@ -98,10 +92,11 @@ export function donutchart({
 		const largeArcFlag = coord[2] >= halfLength ? "1" : "0";
 
 		let color = getOnlyItemOrWrap(fillColors, i);
-		if (isGradient && gradientId) {
+		if (isGradient) {
 			if (gradientMode === "continuous") color = "transparent";
 			else color = `url('#${gradientId}')`;
 		}
+
 		const strokeColor = strokeColors
 			? getOnlyItemOrWrap(strokeColors, i)
 			: undefined;
@@ -117,20 +112,18 @@ export function donutchart({
 		} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${coordTo[0]} ${coordTo[1]} L ${midpointEnd[0]} ${midpointEnd[1]} A ${radius * 0.5} ${radius * 0.5} 0 ${largeArcFlag} 0 ${midpointStart[0]} ${midpointStart[1]} L ${coord[0]} ${coord[1]} Z`;
 
 		createdSlices.push(
-			createPath(drawAttr, {
-				fill: color,
-				stroke: strokeColor,
-				strokeWidth: strokeWidth,
-			}),
+			<Path
+				key={`path-${i}`}
+				d={drawAttr}
+				fill={color}
+				stroke={strokeColor}
+				strokeWidth={strokeWidth}
+			/>,
 		);
 
-		if (gradientMode === "continuous" && gradientId) {
+		if (gradientMode === "continuous") {
 			createdMaskingSlices.push(
-				createPath(drawAttr, {
-					fill: "#ffffff",
-					stroke: undefined,
-					strokeWidth: undefined,
-				}),
+				<Path key={`path-mask-${i}`} d={drawAttr} fill="#ffffff" />,
 			);
 		}
 
@@ -152,38 +145,43 @@ export function donutchart({
 				center,
 				quarterTurnAngle,
 			);
+
 			if (imageLabels?.[i]) {
-				const imageLabel = imageLabels[i];
+				const imgLabel = imageLabels[i];
 				createdLabels.push(
-					createImageLabel(
-						imageLabel,
-						centroidCoords[0],
-						centroidCoords[1],
-						labelColor,
-						subgrouping,
-						imageLabel.width,
-						imageLabel.height,
-					),
+					<ImageLabelView
+						key={`donut-img-label-${i}`}
+						imgLabel={imgLabel}
+						x={centroidCoords[0]}
+						y={centroidCoords[1]}
+						labelColor={labelColor}
+						subgrouping={subgrouping}
+						width={imgLabel.width}
+						height={imgLabel.height}
+					/>,
 				);
 			} else if (dataLabels) {
 				const dataLabelText = getDataLabelText(dataLabels, data[i], sum);
 
 				createdDataLabels.push(
-					createTextLabel(
-						dataLabelText,
-						centroidCoords[0],
-						centroidCoords[1],
-						labelColor,
-					),
+					<TextLabel
+						key={`donut-data-label-${i}`}
+						label={dataLabelText}
+						x={centroidCoords[0]}
+						y={centroidCoords[1]}
+						labelColor={labelColor}
+					/>,
 				);
 			} else if (labels?.[i]) {
+				const labelText = labels[i];
 				createdLabels.push(
-					createTextLabel(
-						labels[i],
-						centroidCoords[0],
-						centroidCoords[1],
-						labelColor,
-					),
+					<TextLabel
+						key={`donut-label-${i}`}
+						label={labelText}
+						x={centroidCoords[0]}
+						y={centroidCoords[1]}
+						labelColor={labelColor}
+					/>,
 				);
 			}
 		}
@@ -191,62 +189,47 @@ export function donutchart({
 
 	if (centerLabel) {
 		const centerLabelText = centerLabel === "sum" ? `${sum}` : centerLabel;
-		const additionalAttrs: TextAttrsArr = [
-			["font-size", `${centerLabelFontSize}`],
-			["font-weight", `${centerLabelFontWeight}`],
-			["font-family", `${centerLabelFontFamily}`],
-		];
 		createdLabels.push(
-			createTextLabel(
-				centerLabelText,
-				center[0],
-				center[1],
-				centerLabelColor,
-				additionalAttrs,
-			),
+			<TextLabel
+				key={`donut-center-label`}
+				label={centerLabelText}
+				x={center[0]}
+				y={center[1]}
+				labelColor={centerLabelColor}
+				fontSize={centerLabelFontSize}
+				fontFamily={centerLabelFontFamily}
+				fontWeight={centerLabelFontWeight}
+			/>,
 		);
 	}
 
-	if (isGradient && gradientColors && gradientMode && gradientId) {
-		if (gradientMode === "individual") {
-			const [gradDef, gradBg] = createLinearGradient(
-				gradientColors,
-				gradientDirection,
-				gradientMode,
-				gradientId,
-			);
-			gradientDef = gradDef;
-			gradientBg = gradBg;
-		} else if (gradientMode === "continuous") {
-			const [maskId, theMask] = createPathChartMask(createdMaskingSlices);
-			const [gradDef, gradBg] = createLinearGradient(
-				gradientColors,
-				gradientDirection,
-				gradientMode,
-				gradientId,
-				theMask,
-				maskId,
-			);
-			gradientDef = gradDef;
-			gradientBg = gradBg;
-		}
-	}
-
-	let svgBody = "";
-
-	if (gradientDef) svgBody += gradientDef;
-	if (gradientBg) svgBody += gradientBg;
-	svgBody += createdSlices.join("");
-	if (hasLabels) svgBody += createdLabels.join("");
-	if (dataLabels) svgBody += createdDataLabels.join("");
-
-	const svg = createSvg(
-		vWidth + padding * 2,
-		vHeight + padding * 2,
-		size,
-		size,
-		svgBody,
+	return (
+		<Svg
+			width={size}
+			height={size}
+			vWidth={vWidth + padding * 2}
+			vHeight={vHeight + padding * 2}
+		>
+			<title>Bar Chart</title>
+			{isGradient && gradientColors && gradientMode && gradientDirection && (
+				<LinearGradientDefs
+					colors={gradientColors}
+					gDir={gradientDirection}
+					gMode={gradientMode}
+					gId={gradientId}
+					gMask={
+						gradientMode === "continuous" && maskId ? (
+							<PathChartMask maskId={maskId}>
+								{createdMaskingSlices}
+							</PathChartMask>
+						) : undefined
+					}
+					gMaskId={gradientMode === "continuous" && maskId ? maskId : undefined}
+				/>
+			)}
+			{createdSlices}
+			{createdLabels}
+			{createdDataLabels}
+		</Svg>
 	);
-
-	return svg;
-}
+};

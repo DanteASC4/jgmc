@@ -186,6 +186,8 @@ export function barchart({
 						labelY + yOffset,
 						labelColor,
 						subgrouping,
+						imageLabel.width,
+						imageLabel.height,
 					),
 				);
 			} else if (hasNormalLabels && labels?.[i]) {

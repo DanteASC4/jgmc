@@ -40,12 +40,23 @@ export type RectProps = {
 	strokeWidth?: StringOrNumber;
 };
 
+export type PathProps = {
+	d: string;
+	fill: string;
+	key: string;
+	stroke?: string;
+	strokeWidth?: StringOrNumber;
+}
+
 export type TextLabelProps = {
 	label: string;
 	x: number;
 	y: number;
 	labelColor: string;
 	key: string;
+	fontSize?: number;
+	fontFamily?: string;
+	fontWeight?: StringOrNumber;
 };
 
 export type ImageLabelProps = {
@@ -74,6 +85,11 @@ export type LinearGradientProps = {
 };
 
 export type BarChartMaskProps = {
+	maskId: string;
+	children: React.ReactNode[];
+};
+
+export type PathChartMaskProps = {
 	maskId: string;
 	children: React.ReactNode[];
 };

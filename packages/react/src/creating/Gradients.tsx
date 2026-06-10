@@ -1,5 +1,9 @@
 import React, { memo } from "react";
-import type { BarChartMaskProps, LinearGradientProps } from "$types";
+import type {
+	BarChartMaskProps,
+	LinearGradientProps,
+	PathChartMaskProps,
+} from "$types";
 
 const createStop = (color: string, offset: number) => (
 	<stop offset={`${offset}%`} stopColor={color} />
@@ -68,6 +72,18 @@ export const BarChartMask = memo(function BarChartMask({
 	maskId,
 	children,
 }: BarChartMaskProps) {
+	return (
+		<mask id={maskId}>
+			<rect x="0" y="0" width="100%" height="100%" fill="#000000" />
+			{children}
+		</mask>
+	);
+});
+
+export const PathChartMask = memo(function PathChartMask({
+	maskId,
+	children,
+}: PathChartMaskProps) {
 	return (
 		<mask id={maskId}>
 			<rect x="0" y="0" width="100%" height="100%" fill="#000000" />
