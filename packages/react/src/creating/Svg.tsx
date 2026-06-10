@@ -1,5 +1,5 @@
 import { classNames } from "@jgmc/core";
-import React, { memo } from "react";
+import { memo } from "react";
 import type { PathProps, RectProps, SvgPropsCustom } from "$types";
 
 export const Svg = memo(function Svg({
@@ -54,14 +54,19 @@ export const Path = memo(function Path({
 	key,
 	stroke,
 	strokeWidth,
+	strokeLinecap,
+	strokeLinejoin,
 }: PathProps) {
 	return (
 		<path
 			key={key}
+			className={classNames.pathEle}
 			d={d}
 			fill={fill}
 			stroke={stroke}
 			strokeWidth={strokeWidth}
+			strokeLinecap={strokeLinecap}
+			strokeLinejoin={strokeLinejoin}
 		/>
 	);
 });

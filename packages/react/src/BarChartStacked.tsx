@@ -14,7 +14,7 @@ import {
 	stackedToSummed,
 	sumArray,
 } from "@jgmc/core";
-import React, { useId } from "react";
+import { useId } from "react";
 import type { BarChartStackedProps } from "$types";
 import { BarChartMask, LinearGradientDefs } from "./creating/Gradients.tsx";
 import { ImageLabelView, TextLabel } from "./creating/Labels.tsx";

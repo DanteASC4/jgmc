@@ -1,12 +1,11 @@
 import {
-	calcDonutSliceCentroidCoords,
-	DonutChartDefaults,
-	type DonutChartOptions,
+	calcPieSliceCentroidCoords,
 	decimalPercentsToStarts,
 	getCoordsForCircularCharts,
 	getDataLabelText,
 	getOnlyItemOrWrap,
-	midpoint,
+	PieChartDefaults,
+	type PieChartOptions,
 	sumArray,
 	sumPrevAngleRads,
 } from "@jgmc/core";
@@ -15,28 +14,28 @@ import { LinearGradientDefs, PathChartMask } from "./creating/Gradients.tsx";
 import { ImageLabelView, TextLabel } from "./creating/Labels.tsx";
 import { Path, Svg } from "./creating/Svg.tsx";
 
-export const DonutChart = ({
+export const PieChart = ({
 	data,
-	size = DonutChartDefaults.size,
-	padding = DonutChartDefaults.padding,
+	size = PieChartDefaults.size,
+	padding = PieChartDefaults.padding,
 	labels,
-	labelColors = DonutChartDefaults.labelColors,
+	labelColors = PieChartDefaults.labelColors,
 	dataLabels,
 	imageLabels,
 	centerLabel,
-	centerLabelColor = DonutChartDefaults.centerLabelColor,
-	centerLabelFontSize = DonutChartDefaults.centerLabelFontSize,
-	centerLabelFontWeight = DonutChartDefaults.centerLabelFontWeight,
-	centerLabelFontFamily = DonutChartDefaults.centerLabelFontFamily,
+	centerLabelColor = PieChartDefaults.centerLabelColor,
+	centerLabelFontSize = PieChartDefaults.centerLabelFontSize,
+	centerLabelFontWeight = PieChartDefaults.centerLabelFontWeight,
+	centerLabelFontFamily = PieChartDefaults.centerLabelFontFamily,
 	vWidth,
 	vHeight,
-	fillColors = DonutChartDefaults.fillColors,
+	fillColors = PieChartDefaults.fillColors,
 	strokeColors,
 	strokeWidths,
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-}: DonutChartOptions) => {
+}: PieChartOptions) => {
 	const sum = sumArray(data);
 	const asDecimalPercentages = data.map((n) => n / sum);
 
@@ -58,6 +57,7 @@ export const DonutChart = ({
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
 	);
+
 	const quarterTurnAngle = 0.25 * (Math.PI * 2);
 	const radius = size / 2;
 	const totalLength = 2 * Math.PI * radius;
@@ -80,7 +80,6 @@ export const DonutChart = ({
 	asDecimalPercentages.shift();
 	asCoords.pop();
 
-	// const centroids: [number, number][] = [];
 	const createdSlices = [];
 	const createdMaskingSlices = [];
 	const createdLabels = [];
@@ -96,7 +95,6 @@ export const DonutChart = ({
 			if (gradientMode === "continuous") color = "transparent";
 			else color = `url('#${gradientId}')`;
 		}
-
 		const strokeColor = strokeColors
 			? getOnlyItemOrWrap(strokeColors, i)
 			: undefined;
@@ -104,16 +102,15 @@ export const DonutChart = ({
 			? getOnlyItemOrWrap(strokeWidths, i)
 			: undefined;
 
-		const midpointStart = midpoint(coord[0], coord[1], center[0], center[1]);
-		const midpointEnd = midpoint(coordTo[0], coordTo[1], center[0], center[1]);
-
 		const drawAttr = `M ${coord[0]} ${
 			coord[1]
-		} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${coordTo[0]} ${coordTo[1]} L ${midpointEnd[0]} ${midpointEnd[1]} A ${radius * 0.5} ${radius * 0.5} 0 ${largeArcFlag} 0 ${midpointStart[0]} ${midpointStart[1]} L ${coord[0]} ${coord[1]} Z`;
+		} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${coordTo[0]} ${coordTo[1]} L ${
+			center[0]
+		} ${center[1]} Z`;
 
 		createdSlices.push(
 			<Path
-				key={`path-${i}`}
+				key={`pie-path-${i}`}
 				d={drawAttr}
 				fill={color}
 				stroke={strokeColor}
@@ -123,7 +120,7 @@ export const DonutChart = ({
 
 		if (gradientMode === "continuous") {
 			createdMaskingSlices.push(
-				<Path key={`path-mask-${i}`} d={drawAttr} fill="#ffffff" />,
+				<Path key={`pie-path-mask-${i}`} d={drawAttr} fill="#ffffff" />,
 			);
 		}
 
@@ -138,34 +135,32 @@ export const DonutChart = ({
 				radius,
 			);
 
-			const centroidCoords = calcDonutSliceCentroidCoords(
+			const centroidCoords = calcPieSliceCentroidCoords(
 				arcLength,
 				prevAngleRads,
 				radius,
 				center,
 				quarterTurnAngle,
 			);
-
 			if (imageLabels?.[i]) {
-				const imgLabel = imageLabels[i];
+				const imageLabel = imageLabels[i];
 				createdLabels.push(
 					<ImageLabelView
-						key={`donut-img-label-${i}`}
-						imgLabel={imgLabel}
+						key={`pie-img-label-${i}`}
+						imgLabel={imageLabel}
 						x={centroidCoords[0]}
 						y={centroidCoords[1]}
 						labelColor={labelColor}
 						subgrouping={subgrouping}
-						width={imgLabel.width}
-						height={imgLabel.height}
+						width={imageLabel.width}
+						height={imageLabel.height}
 					/>,
 				);
 			} else if (dataLabels) {
 				const dataLabelText = getDataLabelText(dataLabels, data[i], sum);
-
 				createdDataLabels.push(
 					<TextLabel
-						key={`donut-data-label-${i}`}
+						key={`pie-data-label-${i}`}
 						label={dataLabelText}
 						x={centroidCoords[0]}
 						y={centroidCoords[1]}
@@ -173,11 +168,10 @@ export const DonutChart = ({
 					/>,
 				);
 			} else if (labels?.[i]) {
-				const labelText = labels[i];
 				createdLabels.push(
 					<TextLabel
-						key={`donut-label-${i}`}
-						label={labelText}
+						key={`pie-label-${i}`}
+						label={labels[i]}
 						x={centroidCoords[0]}
 						y={centroidCoords[1]}
 						labelColor={labelColor}
@@ -191,7 +185,7 @@ export const DonutChart = ({
 		const centerLabelText = centerLabel === "sum" ? `${sum}` : centerLabel;
 		createdLabels.push(
 			<TextLabel
-				key={`donut-center-label`}
+				key={`pie-center-label`}
 				label={centerLabelText}
 				x={center[0]}
 				y={center[1]}
@@ -210,7 +204,7 @@ export const DonutChart = ({
 			vWidth={vWidth + padding * 2}
 			vHeight={vHeight + padding * 2}
 		>
-			<title>Bar Chart</title>
+			<title>Pie Chart</title>
 			{isGradient && gradientColors && gradientMode && gradientDirection && (
 				<LinearGradientDefs
 					colors={gradientColors}

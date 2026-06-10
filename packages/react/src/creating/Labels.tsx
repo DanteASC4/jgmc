@@ -1,5 +1,5 @@
 import { classNames } from "@jgmc/core";
-import React, { memo } from "react";
+import { memo } from "react";
 import type { ImageLabelProps, TextLabelProps } from "$types";
 
 export const TextLabel = memo(function TextLabel({

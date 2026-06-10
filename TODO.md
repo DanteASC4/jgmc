@@ -43,9 +43,9 @@ TODOs & other task tracking / organizing things relevant to the `@jgmc/react` pa
 - [ ] Add all chart components
 	- [x] BarChart
 	- [x] BarChartStacked
-	- [ ] DonutChart
-	- [ ] PieChart
-	- [ ] LineChart
+	- [x] DonutChart
+	- [x] PieChart
+	- [x] LineChart
 - [ ] make sure to not bundle react & react dom
 - [ ] ensure there would be no repeat keys if multiple of same charts made
 

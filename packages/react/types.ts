@@ -40,13 +40,13 @@ export type RectProps = {
 	strokeWidth?: StringOrNumber;
 };
 
-export type PathProps = {
+export type PathProps = Omit<React.SVGProps<SVGPathElement>, "strokeWidth"> & {
 	d: string;
-	fill: string;
+	fill?: string;
 	key: string;
 	stroke?: string;
 	strokeWidth?: StringOrNumber;
-}
+};
 
 export type TextLabelProps = {
 	label: string;
