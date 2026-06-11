@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { memo } from "react";
 import type {
 	BarChartMaskProps,

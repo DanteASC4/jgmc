@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { classNames } from "@jgmc/core";
 import { memo } from "react";
 import type { ImageLabelProps, TextLabelProps } from "$types";
