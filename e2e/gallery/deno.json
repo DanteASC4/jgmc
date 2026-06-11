@@ -1,7 +1,8 @@
 {
   "name": "@jgmc/gallery",
   "tasks": {
-    "dev": "deno run --allow-read --allow-net main.ts",
+    "dev": "deno run --watch --allow-read --allow-net main.ts",
+		"test": "deno run --watch --allow-read --allow-net main.ts",
 		"go": "watchexec --restart --exts ts,html -- deno task dev"
   },
   "imports": {

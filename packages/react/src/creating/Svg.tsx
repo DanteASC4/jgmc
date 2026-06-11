@@ -29,13 +29,11 @@ export const Rect = memo(function Rect({
 	width,
 	height,
 	fill,
-	key,
 	stroke,
 	strokeWidth,
 }: RectProps) {
 	return (
 		<rect
-			key={key}
 			className={classNames.rectEle}
 			x={x}
 			y={y}
@@ -51,7 +49,6 @@ export const Rect = memo(function Rect({
 export const Path = memo(function Path({
 	d,
 	fill,
-	key,
 	stroke,
 	strokeWidth,
 	strokeLinecap,
@@ -59,7 +56,6 @@ export const Path = memo(function Path({
 }: PathProps) {
 	return (
 		<path
-			key={key}
 			className={classNames.pathEle}
 			d={d}
 			fill={fill}

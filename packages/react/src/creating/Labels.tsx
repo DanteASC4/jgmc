@@ -7,14 +7,12 @@ export const TextLabel = memo(function TextLabel({
 	x,
 	y,
 	labelColor,
-	key,
 	fontSize,
 	fontFamily,
 	fontWeight,
 }: TextLabelProps) {
 	return (
 		<text
-			key={key}
 			className={classNames.labelTextEle}
 			x={x}
 			y={y}
@@ -36,7 +34,6 @@ export const ImageLabelView = memo(function ImageLabel({
 	x,
 	y,
 	labelColor,
-	key,
 	subgrouping = false,
 	width = 50,
 	height = 50,
@@ -46,7 +43,6 @@ export const ImageLabelView = memo(function ImageLabel({
 			<g
 				className={classNames.imageLabelGroupEle}
 				transform={`translate(${x}, ${y})`}
-				key={key}
 			>
 				{imgLabel.topText && (
 					<text
@@ -86,7 +82,6 @@ export const ImageLabelView = memo(function ImageLabel({
 	} else {
 		return (
 			<image
-				key={key}
 				href={imgLabel.href}
 				// alt={imgLabel.alt || ""}
 				width={width}

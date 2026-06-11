@@ -35,7 +35,6 @@ export type RectProps = {
 	width: StringOrNumber;
 	height: StringOrNumber;
 	fill: string;
-	key: string;
 	stroke?: string;
 	strokeWidth?: StringOrNumber;
 };
@@ -43,7 +42,6 @@ export type RectProps = {
 export type PathProps = Omit<React.SVGProps<SVGPathElement>, "strokeWidth"> & {
 	d: string;
 	fill?: string;
-	key: string;
 	stroke?: string;
 	strokeWidth?: StringOrNumber;
 };
@@ -53,7 +51,6 @@ export type TextLabelProps = {
 	x: number;
 	y: number;
 	labelColor: string;
-	key: string;
 	fontSize?: number;
 	fontFamily?: string;
 	fontWeight?: StringOrNumber;
@@ -64,7 +61,6 @@ export type ImageLabelProps = {
 	x: number;
 	y: number;
 	labelColor: string;
-	key: string;
 	subgrouping?: boolean;
 	width?: number;
 	height?: number;
