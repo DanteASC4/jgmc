@@ -80,6 +80,7 @@ TODOs & other task tracking / organizing things relevant to the docs website.
 - [ ] fix the `<LiveChart />` component
   - seems to be ignoring given css?
 - [ ] should probably make the `changelog` page's styling of 'new', 'fix', and the likes into components
+- [ ] Move site to standalone site!
 
 
 ## Ideas or Tabled
