@@ -40,14 +40,16 @@ TODOs & other task tracking / organizing things relevant to the `@jgmc/react` pa
 
 ## ToDos
 
-- [ ] Add all chart components
+- [x] Add all chart components
 	- [x] BarChart
 	- [x] BarChartStacked
 	- [x] DonutChart
 	- [x] PieChart
 	- [x] LineChart
-- [ ] make sure to not bundle react & react dom
-- [ ] ensure there would be no repeat keys if multiple of same charts made
+- [x] make sure to not bundle react & react dom
+- [x] ensure there would be no repeat keys if multiple of same charts made
+- [ ] investigate ignoring of `gap` parameter?
+- [ ] go over the readme again
 
 ## Ideas or Tabled
 
@@ -75,17 +77,21 @@ TODOs & other task tracking / organizing things relevant to the docs website.
 
 ## ToDos
 
-- [ ] get started!
+- [ ] fix the `<LiveChart />` component
+  - seems to be ignoring given css?
+- [ ] should probably make the `changelog` page's styling of 'new', 'fix', and the likes into components
+
 
 ## Ideas or Tabled
 
-- A playground page for each package would be cool
+- ~~A playground page for each package would be cool~~
+  - Sort of working! `<LiveChart />`!
 
 ![](./extras/hsep.png)
 
 # `Misc/General`
 
-Anything else!!
+Anything else & things that may apply to all chart types
 
 ## ToDos
 
@@ -95,8 +101,19 @@ Anything else!!
 - [x] Gotta fix up build flow somehow
   - Now building & publishing core separately
 - [ ] Standardize logic organization across charts
+	- Ongoing
 	- Mainly just moving things around so stuff is declared in the same places chart to chart.
+- [ ] Test coverage!
+- [ ] See if there's a simple way to support repeating linear gradients.
 
 ## Ideas or Tabled
 
 - Reduce some manual
+
+# Potential Bugs / Things to investigate
+
+- [ ] small chart sizes (e.g. height & width 50px with larger values?)
+	- Looks a bit odd but I think that may be just due to how limited space is when it's that small.
+- [ ] numerical `gradientDirection`
+  - [ ] E.g. `45deg` doesn't seem to be working in the react package.
+  - [ ] should also allow negative numbers `-45deg`

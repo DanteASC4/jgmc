@@ -7,8 +7,8 @@ import type {
 	PathChartMaskProps,
 } from "$types";
 
-const createStop = (color: string, offset: number) => (
-	<stop offset={`${offset}%`} stopColor={color} />
+const createStop = (color: string, offset: number, key: string) => (
+	<stop key={key} offset={`${offset}%`} stopColor={color} />
 );
 
 export const LinearGradientDefs = memo(function LinearGradientDefs({
@@ -38,7 +38,7 @@ export const LinearGradientDefs = memo(function LinearGradientDefs({
 		} else {
 			color = colors[i];
 		}
-		stops.push(createStop(color, stopOff));
+		stops.push(createStop(color, stopOff, `gradient-stop-${i}`));
 	}
 
 	let gDirection = "";

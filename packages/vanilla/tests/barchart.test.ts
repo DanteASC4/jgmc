@@ -194,7 +194,7 @@ Deno.test(function docsExamplesSet() {
 
 Deno.test(function barchartExtras() {
 	const tbc0 = barchart({
-		data: [50, 100, 30],
+		data: [50, 1000, 30],
 		placement: "top",
 		labels: ["1st", "2nd"],
 	});
@@ -208,14 +208,14 @@ Deno.test(function barchartExtras() {
 	assertEquals(typeof tbc1, "string");
 
 	const tbc2 = barchart({
-		data: [50, 100, 30],
+		data: [50, 1000, 30],
 		labels: ["1st", "2nd", "3rd"],
 		placement: "bottom",
 	});
 	assertEquals(typeof tbc2, "string");
 
 	const tbc3 = barchart({
-		data: [50, 100, 30],
+		data: [50, 1000, 30],
 		labels: ["1st", "2nd", "3rd"],
 		placement: "left",
 	});
