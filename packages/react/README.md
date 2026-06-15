@@ -106,7 +106,7 @@ That being said there are a couple dev dependencies!
  └─ assets
 ```
 
-Dir Breakdown
+#### Dir Breakdown
 
 - `/tests`
     - Deno powered unit testing!
@@ -117,6 +117,11 @@ Dir Breakdown
         - DOM serialization related functions
 - `/scripts`
     - Currently houses the file used to publish a new version of the package to npm
-- `/asssets`
+- `/assets`
     - Mainly holding images for markdown referencing.
     - Also can contain other extra things not necessarily critical to lib!
+
+#### Important Files
+
+- `mod.ts` is where everything the package exports is declared
+- `types.ts` is a local types file for any vanilla-specific typing needs

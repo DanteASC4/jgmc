@@ -39,6 +39,38 @@ const shared = {
 	},
 };
 
+const removeReactDependency = (pkgName: string) => {
+	if (pkgName !== "react") return;
+
+	const packageJsonPath = "npm/react/package.json";
+	const packageLockPath = "npm/react/package-lock.json";
+	const packageJson = JSON.parse(Deno.readTextFileSync(packageJsonPath));
+
+	delete packageJson.dependencies?.react;
+	if (
+		packageJson.dependencies &&
+		Object.keys(packageJson.dependencies).length === 0
+	) {
+		delete packageJson.dependencies;
+	}
+
+	Deno.writeTextFileSync(
+		packageJsonPath,
+		`${JSON.stringify(packageJson, null, 2)}\n`,
+	);
+
+	try {
+		const packageLock = JSON.parse(Deno.readTextFileSync(packageLockPath));
+		delete packageLock.packages?.[""]?.dependencies?.react;
+		Deno.writeTextFileSync(
+			packageLockPath,
+			`${JSON.stringify(packageLock, null, 2)}\n`,
+		);
+	} catch {
+		// dnt may skip lockfile creation depending on package manager options.
+	}
+};
+
 await emptyDir("npm");
 for (const pkg of packages) {
 	await build({
@@ -72,6 +104,7 @@ for (const pkg of packages) {
 		},
 		rootTestDir: `./packages/${pkg.name}/test`,
 		postBuild() {
+			removeReactDependency(pkg.name);
 			Deno.copyFileSync("LICENSE", `npm/${pkg.name}/LICENSE`);
 			Deno.copyFileSync(
 				`packages/${pkg.name}/README.md`,

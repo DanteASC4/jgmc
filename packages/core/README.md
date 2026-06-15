@@ -63,4 +63,23 @@ That being said there are a couple dev dependencies!
 
 ### Project Structure
 
-ToDo!
+```
+core
+ ├─ types.ts
+ ├─ tests
+ │  └─ generaloperations.test.ts
+ ├─ src
+ │  ├─ utils
+ │  │  ├─ general-operations.ts
+ │  │  └─ escape.ts
+ │  ├─ piechart.ts
+ │  ├─ linechart.ts
+ │  ├─ labels.ts
+ │  ├─ donutchart.ts
+ │  ├─ defaults.ts
+ │  ├─ common.ts
+ │  ├─ circularcharts.ts
+ │  └─ barchart.ts
+ ├─ README.md
+ └─ mod.ts
+```
