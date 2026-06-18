@@ -2164,3 +2164,173 @@ I basically just need some way to start the run all the tests & *then* the galle
 It also can be temporary, because I decided to look into it again & this time I found a bug report [for exactly this](https://github.com/denoland/deno/issues/27586), that was fixed **yesterday** as of writing!!! Wow!
 
 Funny odds of that happening lol.
+
+# 6/16/2026
+
+So! I've been working plenty on the lib and it's in great shape. I'd also been thinking in the back of my mind how I want to expand things. Namely what do I really want to add?
+
+Revisiting my original motivation for this library, the main focus has really been ease of use.
+
+I was inspired by the google sheets `SPARKLINE` function, and I was confident I could build a library that gives that level of information with the same minimal overhead required & for the most part I think I can say I've done that!
+
+And so, I've been thinking about what's next for this library, and that means it's time to revisit the roadmap.
+
+I still think I shouldn't go too deep into adding the finer details of charts. That being things like true axis control, with full tick control & grid lines etc... At least right now I don't think that would be that valuable of a focus.
+
+## The Current Roadmap
+
+The current roadmap is basically the following:
+
+- Definite
+	- Done - has been added
+		- ~~Stacked Bar Chart~~
+		- ~~Line Chart~~
+		- ~~Labelling Overhaul~~
+	- Ongoing - in progress
+		- Framework specific exports (actually framework specific packages!)
+		- Additional chart options (stuff like stroke and other tweaks were made)
+	- Not added yet
+		- Accessibility
+- Maybe
+	- Plugins
+	- ASCII / CLI output
+	- Additional chart types
+	- Themes
+- No
+	- Animations
+
+Let's take a look at each of those potential areas of expansion.
+
+### Framework Specific ~~Exports~~ -> Packages
+
+This is ongoing, and has been great to have for both learning and real world use.
+Right now I only have vanilla & React, but the foundation for allowing additional frameworks is already in place.
+I have no plans to stop adding framework specific packages, but I think after the next I may hit pause on it.
+
+The next framework is definitely **svelte**! And it should be pretty straightforward to add as it's my favorite framework, I just need to learn a bit about how svelte packages are structured!
+
+### Additional Chart Options
+
+This one is ongoing, as I'm always open to any ideas for new chart options, of course adding them would depend on how useful they are.
+
+That being said, I will be pausing on prioritizing this for the time being as I can't think of any that would really be that impactful.
+
+### Accessibility
+
+This is something that when I started the library I had been doing a bit of or so I thought, but then I got a bunch of react warnings about unknown attributes and the like. And it technically increases the output size so I just removed what I'd added for it and left it out.
+
+But I think it's still worth adding. It would essentially be a `accessible: true` option where if enabled would set attributes and whatever else is needed to make the chart accessible.
+
+That being said I would need to spend some time researching standards for SVG accessibility, which I'm not opposed to but also not dying to do. So I will get to this, but I'm not sure when.
+
+### Plugins
+
+This I think has potential, but I think at least for now it isn't that worth the effort to have some sort of actual 'extensible plugin' system. My initial reasoning for 'plugins' was for a handful of features that felt useful but too big & dynamic to include initially.
+
+Those being:
+- Legend creation
+- Some sort of hover tooltip
+- A 'click to save' button
+
+But, having brainstormed about each of those I think there may be room for adding them as just features.
+
+**A Legend** upon further consideration could be trivial.
+
+I intentionally left out 'chart titles' as I felt that was out of scope for a 'chart', and would clutter the chart itself.
+Also adding a title would be incredibly simple on your own, it would just be a centered `h1` or something above it, or whatever you want.
+
+A proper legend is a bit more involved though.
+
+Buuuuuuuuut I got the idea of making a standalone `legend` function, that can take the same data, labels, & color options as whatever chart you want, and output a simple legend.
+
+It would be lightweight, easy to use, and I think simple to implement since I'm imagining it would be a series of small colored squares with a label next to each, colored according.
+
+
+**Hover Tooltip**
+
+This sounds useful, and I think it could be useful as well except the implementation here is a bit more tricky. I have a good idea for it that I think could work well, but would need to experiment a bit with.
+
+So for now tabling this until I have time to mess around with it.
+
+**A click to save button**
+
+This would likely also not be super hard on it's own, but I'd want it somehow integrated in the chart.
+
+The thing is I don't think it's that killer of a feature so I'm going to keep this tabled for now.
+
+### ASCII / CLI Output
+
+So I actually experimented with this already, and created a `barchart` function that outputs ASCII text based charts, though it's undocumented. And I'm quite happy with the result.
+
+The problem is that implementation wise it's fundamentally quite different from working with SVGs & their coordinate space. Which I'm not against at all, and I think it would be potentially pretty useful, but I know if I were to focus on this it'd slow down development significantly.
+
+So for now I'm going to keep it tabled, but I will definitely be doing ASCII output at some point.
+
+### Additional Chart Types
+
+This is similar to the 'additional chart options' where I'm open to it, but it would need to be super useful. There's a ton of chart types out there, but a lot of them are extremely niche & not commonly used, much less used correctly.
+
+I think I've definitely got the most common and useful chart types for now and I definitely will add more but not now. Unless I see something super worthwhile to add which would be fine.
+
+### Themes
+
+I love ricing & styling things. Adding a theme system sounds fun too, and I think something I find useful in other visualization tools is definitely some way to keep common styles consistent across instances, and potentially utilize some built-in themes.
+
+So I'm actually considering adding a simple theme system. The only thing is 'how' since I want to keep it very straightforward, and without introducing any additional complexity for users.
+
+My gut says that further utilizing 'classes' may be the way, since CSS can style all the same things for SVG, so perhaps better utilizing the class names I have built-in would be the way, and providing some copyable stylesheets & a theme generator on the docs site would be the way.
+
+Actually writing that out sounds quite good. I'll move this up on the list of things to do.
+
+### Animations
+
+This is similar to the ASCII output, where I love animations, and am interested in animating the charts, but I know it would be a lot of work to implement properly, and it would slow down things a ton.
+
+Not only that, but as I've shown in the docs already, there are already some fantastic animation libraries out there which can easily animate SVG elements.
+
+I think maybe a page on animating each chart type in different ways with different animation libraries would be a great addition to the docs. True baked in animation feels just way too out of scope.
+
+## New Ideas
+
+So that was the old roadmap and previous ideas I've had. As part of brainstorming I of course have been trying to think up entirely *new* ideas.
+
+And I've landed on a real curve ball that I'm incredibly excited about & 1000% going to do... `3D` chart types!
+
+I'm talking from the ground up, WebGPU based rendering of 3D charts, creatable with the same simple API.
+
+Not only that, but I want them to be streamable charts. WebGPU is incredibly powerful, and I want to leverage that to make the charts live!
+
+It would hypothetically be usable like:
+
+```ts
+const chart = new VolumetricChart({ data: [...]});
+
+websocket.onmessage = (event) => {
+    chart.update(event.data);
+};
+```
+
+What's a `VolumetricChart`? A 3D chart that as the name suggests, visualizes volumetric data across 3 axes.
+
+The options out there for creating 3D charts are quite lacking, and if I can make them both performant and easy to use I think this library would really fill a gap in the ecosystem.
+
+That being said I have a ton of research and learning to do.
+
+**Update** so I've been doing some basic searching on 3D visualizations and it's an interesting field.
+
+Here's a short list of some of the ones I'm seeing:
+- Volumetric Visualization
+- 3D Bivariate / Mesh Surface Plot
+- 3D Vector Glyphs (Hedgehogs / Arrow Plots)
+- Hyperstreamlines
+- Lidar / 3D Point Clouds
+- 3D Graph / Network Layouts
+
+Some of the things I'm seeing in the images ofthese look like physics, I can't image what the data for those even looks like. But that excites me! I'm going to start right away on learning more about & implementing 3D charts!
+
+And to start out I'm going to focus on:
+- Volumetric Visualization
+- 3D Bivariate / Mesh Surface Plot
+- Lidar / 3D Point Clouds
+
+Also I need to update the docs roadmap!
