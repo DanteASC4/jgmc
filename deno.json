@@ -4,6 +4,7 @@
 		"packages/core",
 		"packages/vanilla",
 		"packages/react",
+		"packages/webgpu",
 		"e2e/gallery"
 	],
 	"tasks": {

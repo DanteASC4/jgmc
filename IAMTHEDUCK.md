@@ -2334,3 +2334,68 @@ And to start out I'm going to focus on:
 - Lidar / 3D Point Clouds
 
 Also I need to update the docs roadmap!
+
+# 6/16/2026
+
+Ok it's been a bit since my last update here. The last thing I set out to do was learn more about `WebGPU` & implement **3D Charts**!!
+
+And boy did I learn about webgpu.
+
+![](./extras/webgpu_tuff.png)
+
+WebGPU is no joke. It's extremely powerful, as I've heard & the reason it's able to be so efficient is because not only is it fully utilizing your GPU, but it's extremely, and I mean extremely explicit. Which makes complete sense.
+
+It's also very different from typical TypeScript and would require writing `WGSL` (webgpu shader language). So it's a lot to learn! Which is exciting, but also means that if I were to commit to building with it, updates to the library would slow down drastically.
+
+That is to say I have a few options.
+
+## Commit to learning WebGPU
+
+Spend time learning WGSL, all things WebGPU, typed arrays, buffers, and the likes to get things working. I've begun playing with it and it's fun. Very complicated for sure, but enjoyable! There's no doubt that I'll take the time to learn it, but this path would be 'stop everything else' and do what I can to learn it.
+
+- Pros
+  - Strong outcomes
+  - Zero dependency
+  - Lifecycle ownership
+- Cons
+  - Very time consuming to fully learn
+
+## Use a library
+
+There's a lot of verbosity to WebGPU that there are already libraries solving for which is really cool.
+
+Three.js while large does fully support WebGPU, so much so that they have their own subset of the shader language WGSL called TSL - Three.Js Shader Language. It's awesome! I'm also actually already very familiar with Three.js and like it a lot.
+
+But it's a very heavy lib, and not only have I wanted this project to be `0` deps from the get-go, but I wouldn't be leveraging most of what the library is capable of here.
+
+- Pros
+  - Faster development
+  - Less overhead for development
+  - Maybe more extensible?
+- Cons
+  - Super heavy
+  - Won't learn as much
+
+## Outsource it to AI
+
+I could likely get something working pretty well with AI but this would be undesirable for a couple reasons that I think don't need much explanation.
+
+- Pros
+  - Fastest development
+  - Likely high quality output
+    - I wouldn't be worried about validating what it rights for the most part as I'm somewhat familiar with opengl & not a complete stranger to graphics programming
+- Cons
+  - Expensive
+  - Won't learn much either
+
+## What I'm gonna do
+
+So I want to learn WebGPU, not only am I very interested in graphics programming in general, I think this would be a great use case for it.
+
+But it'd likely be a while before I ship anything utilizing it if I focused on just that. Instead I'll take my time learning it but also work on other things here since I do want this library to be something useful.
+
+And after looking into it, I'm not fully convinced of how *useful* 3D visualization would be at this point in time.
+
+That being said I'm just going to shift the roadmap a bit & jump on `@jgmc/svelte`. I've left my favorite framework hanging for far too long. Then update the docs with a gallery & maybe true playground!
+
+I also got a domain for the docs site! Anyway hope if anyone reads this you're having a good day!
