@@ -1,6 +1,6 @@
 {
   "name": "@jgmc/core",
-  "version": "0.5.1",
+  "version": "0.5.4",
   "tasks": {
     "test": "deno test --allow-write --allow-read --allow-env tests/",
     "dev": "deno test --watch --allow-write --allow-read --allow-env tests/"

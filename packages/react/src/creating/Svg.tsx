@@ -12,6 +12,7 @@ export const Svg = memo(function Svg({
 	children,
 }: SvgPropsCustom) {
 	return (
+		// biome-ignore lint/a11y/noSvgWithoutTitle: Title added where used
 		<svg
 			xmlnsXlink="http://www.w3.org/1999/xlink"
 			xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +20,6 @@ export const Svg = memo(function Svg({
 			height={height}
 			viewBox={`0 0 ${vWidth} ${vHeight}`}
 		>
-			<title>BarChart</title>
 			{children}
 		</svg>
 	);

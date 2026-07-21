@@ -13,6 +13,7 @@ import {
 	getOnlyItemOrWrap,
 	randId,
 	type StringOrNumber,
+	sumArray,
 } from "@jgmc/core";
 import {
 	createBarChartMask,
@@ -100,7 +101,7 @@ export function barchart({
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,
 	);
-	const sum = dataLabels === "percentage" ? data.reduce((a, b) => a + b, 0) : 0;
+	const sum = sumArray(data);
 	const createdBars = [];
 	const createdMaskingBars = [];
 	const createdLabels = [];

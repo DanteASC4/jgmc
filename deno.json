@@ -1,10 +1,10 @@
 {
-	"nodeModulesDir": "auto",
+	"nodeModulesDir": "manual",
 	"workspace": [
 		"packages/core",
 		"packages/vanilla",
 		"packages/react",
-		"packages/webgpu",
+		"packages/svelte",
 		"e2e/gallery"
 	],
 	"tasks": {

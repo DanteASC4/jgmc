@@ -1,0 +1,43 @@
+{
+	"name": "@jgmc/svelte",
+	"version": "0.5.4",
+	"type": "module",
+	"description": "Svelte distribution of JGMC, includes idiomatic Svelte component charts, typed props, reactive updates, direct svg dom with no @html or other element setting and more.",
+	"keywords": [
+		"charts",
+		"graphs",
+		"svg",
+		"data-visualization",
+		"ssr",
+		"lightweight",
+		"svelte"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/danteasc4/jgmc.git"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/danteasc4/jgmc/issues"
+	},
+	"scripts": {
+		"format": "prettier --write \"src/**/*.svelte\"",
+		"format:check": "prettier --check \"src/**/*.svelte\""
+	},
+	"dependencies": {
+		"@jgmc/core": "^0.5.3"
+	},
+	"peerDependencies": {
+		"svelte": "^5.56.6"
+	},
+	"devDependencies": {
+		"@sveltejs/package": "^2.5.8",
+		"@sveltejs/vite-plugin-svelte": "^7.2.0",
+		"prettier": "^3.9.5",
+		"prettier-plugin-svelte": "^4.1.1",
+		"svelte": "^5.56.6",
+		"svelte-check": "^4.7.3",
+		"typescript": "^6.0.3",
+		"vite": "^8.1.5"
+	}
+}
