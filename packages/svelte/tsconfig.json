@@ -10,6 +10,6 @@
 		"skipLibCheck": true,
 		"noEmit": true
 	},
-	"include": ["src/**/*.ts", "src/**/*.svelte", "types.ts"],
+	"include": ["src/**/*.ts", "src/**/*.svelte", "types.ts", "../../temp/Masking.svelte.ts"],
 	"exclude": ["node_modules", "dist"]
 }

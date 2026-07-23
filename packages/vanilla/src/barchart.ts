@@ -1,18 +1,19 @@
 import {
-	autoBarWidth,
-	autoGap,
 	autoMaxNumerical,
 	BarChartDefaults,
 	type BarChartNumericalOptions,
+	calcAutoGap,
 	calcBarCoords,
 	calcBarDims,
 	calcBarLabelCoords,
 	calcDataLabelCoords,
+	calcDataPointsAmt,
+	calcEvenWidth,
 	calcImageLabelOffset,
+	calcTrueVDims,
 	getDataLabelText,
 	getOnlyItemOrWrap,
 	randId,
-	type StringOrNumber,
 	sumArray,
 } from "@jgmc/core";
 import {
@@ -42,50 +43,36 @@ export function barchart({
 	gradientColors,
 	gradientMode,
 	gradientDirection,
-}: BarChartNumericalOptions) {
+}: BarChartNumericalOptions): string {
 	const largest = autoMaxNumerical(data);
 
 	if (!vWidth) vWidth = width;
 	if (!vHeight) vHeight = height;
 
-	const hasNormalLabels = labels && labels.length > 0;
-	const hasImageLabels = imageLabels && imageLabels.length > 0;
-	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
-
-	const dataPointsAmt = hasLabels
-		? Math.max(
-				data.length,
-				labels ? labels.length : imageLabels ? imageLabels.length : 0,
-			)
-		: data.length;
-
-	const evenWidth =
-		placement === "top" || placement === "bottom"
-			? autoBarWidth(width, dataPointsAmt)
-			: autoBarWidth(height, dataPointsAmt);
-
-	if (!gap) {
-		gap =
-			placement === "top" || placement === "bottom"
-				? autoGap(width, dataPointsAmt)
-				: autoGap(height, dataPointsAmt);
-	}
+	const hasNormalLabels = Array.isArray(labels) && labels.length > 0;
+	const hasImageLabels = Array.isArray(imageLabels) && imageLabels.length > 0;
+	const hasLabels = hasNormalLabels || !!dataLabels || hasImageLabels;
 	const topOrBot = placement === "top" || placement === "bottom";
 	const exceedsWidth = data.some((v) => v > vWidth);
 	const exceedsHeight = data.some((v) => v > vHeight);
 
-	let trueVWidth: StringOrNumber = vWidth;
-	let trueVHeight: StringOrNumber = vHeight;
+	const dataPointsAmt = calcDataPointsAmt(data, hasLabels, labels, imageLabels);
 
-	if (topOrBot) {
-		if (exceedsHeight) {
-			trueVHeight = max ? max : largest;
-		}
-	} else {
-		if (exceedsWidth) {
-			trueVWidth = max ? max : largest;
-		}
+	const evenWidth = calcEvenWidth(topOrBot, width, height, dataPointsAmt);
+
+	if (!gap) {
+		gap = calcAutoGap(topOrBot, width, height, dataPointsAmt, gap);
 	}
+
+	const [trueVWidth, trueVHeight] = calcTrueVDims(
+		topOrBot,
+		vWidth,
+		vHeight,
+		exceedsWidth,
+		exceedsHeight,
+		largest,
+		max,
+	);
 
 	let isGradient = false;
 	let gradientId: string | null = null;

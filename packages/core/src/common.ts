@@ -1,5 +1,5 @@
 import type { BarChartOptionsBase } from "@jgmc/core";
-import type { Labels } from "$types";
+import type { ImageLabel, Labels } from "$types";
 
 /**
  * Utility function to calculate an automatic gap size between items based on the length of the surface and the number of items.
@@ -7,8 +7,30 @@ import type { Labels } from "$types";
  * @param numItems - number of items being placed on the surface (e.g. number of bars in a bar chart)
  * @returns calculated gap size between items, which is 1/4 of the average space allocated for each item on the surface
  */
-export const autoGap = (surfaceLength: number, numItems: number) => {
+export const autoGap = (surfaceLength: number, numItems: number): number => {
 	return surfaceLength / numItems / 4;
+};
+
+/**
+ * Utility function that calculates the number of datapoints that would need iteration.
+ * This is useful as if there are more labels than datapoints, the chart will take that datapoint as `0`.
+ * @param data - data array passed into the chart function
+ * @param hasLabels - whether there are any form of labels present
+ * @param labels - potential labels array
+ * @param imageLabels - potential image label array
+ * @returns True amount of datapoints for iteration
+ */
+export const calcDataPointsAmt = (
+	data: number[],
+	hasLabels: boolean,
+	labels?: string[],
+	imageLabels?: ImageLabel[],
+): number => {
+	if (!hasLabels) return data.length;
+	return Math.max(
+		data.length,
+		labels ? labels.length : imageLabels ? imageLabels.length : 0,
+	);
 };
 
 /**
@@ -17,7 +39,7 @@ export const autoGap = (surfaceLength: number, numItems: number) => {
  * @param ofnum - number to calculate the percentage of
  * @returns percentage value
  */
-export const asPercent = (num: number, ofnum: number) => {
+export const asPercent = (num: number, ofnum: number): number => {
 	return (num * 100) / ofnum;
 };
 
@@ -28,7 +50,7 @@ export const asPercent = (num: number, ofnum: number) => {
  * @param upDown - direction to round ("up" or "down")
  * @returns rounded number
  */
-export const roundTo = (n: number, t = 10, upDown?: "up" | "down") => {
+export const roundTo = (n: number, t = 10, upDown?: "up" | "down"): number => {
 	if (upDown === "up") return Math.ceil(n / t) * t;
 	if (upDown === "down") return Math.floor(n / t) * t;
 	return Math.round(n / t) * t;
@@ -39,21 +61,21 @@ export const roundTo = (n: number, t = 10, upDown?: "up" | "down") => {
  * @param n - number to round to nearest 10
  * @returns number rounded to nearest 10
  */
-export const roundToTen = (n: number) => roundTo(n);
+export const roundToTen = (n: number): number => roundTo(n);
 
 /**
  * Utility function to round a number **up** to the nearest 10th
  * @param n - number to round up
  * @returns number rounded up to nearest 10th
  */
-export const roundUpToTen = (n: number) => roundTo(n, 10, "up");
+export const roundUpToTen = (n: number): number => roundTo(n, 10, "up");
 
 /**
  * Utility function to round a number **up** to the nearest 100th
  * @param n - number to round up
  * @returns number rounded up to nearest 100th
  */
-export const roundUpTo100 = (n: number) => roundTo(n, 100, "up");
+export const roundUpTo100 = (n: number): number => roundTo(n, 100, "up");
 
 /**
  * Simple distance formula implementation
@@ -135,7 +157,7 @@ export const getDataLabelText = (
 	datalabelChoice: Labels["dataLabels"],
 	dataPoint: number,
 	sum: number,
-) =>
+): string =>
 	datalabelChoice === "literal"
 		? `${dataPoint}`
 		: `${asPercent(dataPoint, sum).toFixed(1)}%`;
@@ -148,7 +170,7 @@ export const getDataLabelText = (
  */
 export const calcImageLabelOffset = (
 	placement: BarChartOptionsBase["placement"],
-) => {
+): [number, number] => {
 	const xOffset =
 		placement === "top" || placement === "bottom"
 			? 0
@@ -162,7 +184,7 @@ export const calcImageLabelOffset = (
 				? 15
 				: -15;
 
-	return [xOffset, yOffset] as const;
+	return [xOffset, yOffset];
 };
 
 export const classNames = {

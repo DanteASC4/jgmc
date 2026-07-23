@@ -34,13 +34,15 @@
     "jsr:@ts-morph/common@0.27": "0.27.0",
     "npm:@biomejs/biome@*": "2.4.15",
     "npm:@biomejs/biome@^2.4.15": "2.4.15",
-    "npm:@jgmc/core@~0.5.3": "0.5.3",
+    "npm:@jgmc/core@~0.5.3": "0.5.4",
     "npm:@sveltejs/package@^2.5.8": "2.5.8_svelte@5.56.6_typescript@6.0.3",
     "npm:@sveltejs/vite-plugin-svelte@^7.2.0": "7.2.0_svelte@5.56.6_vite@8.1.5",
     "npm:@types/react-dom@^19.2.3": "19.2.3_@types+react@19.2.15",
     "npm:@types/react@^19.2.15": "19.2.15",
     "npm:hono@^4.8.12": "4.9.2",
     "npm:linkedom@~0.18.12": "0.18.12",
+    "npm:prettier-plugin-svelte@^4.1.1": "4.1.1_prettier@3.9.6_svelte@5.56.6",
+    "npm:prettier@^3.9.5": "3.9.6",
     "npm:react-dom@^19.2.6": "19.2.6_react@19.2.6",
     "npm:react@^19.2.6": "19.2.6",
     "npm:svelte-check@^4.7.3": "4.7.3_svelte@5.56.6_typescript@6.0.3",
@@ -246,9 +248,7 @@
         "tslib"
       ]
     },
-    "@jgmc/core@0.5.3": {
-      "integrity": "sha512-9h37qtgCp3mFCNEI8uL4wX+N8nwaG4vaQwJzJeVASsvloxr86+PNsUGfJvN7Ex8wPp2Fob4Kq3jcI561jJ+gdA=="
-    },
+    "@jgmc/core@0.5.4": {},
     "@jridgewell/gen-mapping@0.3.13": {
       "integrity": "sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==",
       "dependencies": [
@@ -685,6 +685,17 @@
         "source-map-js"
       ]
     },
+    "prettier-plugin-svelte@4.1.1_prettier@3.9.6_svelte@5.56.6": {
+      "integrity": "sha512-wXvbXMjSvb4C9ENWTHXyd+ihakKCsJ6rJhLP6/8HFNj4GkZr48jqL9PoKsl2sk7SyCZRTnJ7O2TTowUpOxP/KA==",
+      "dependencies": [
+        "prettier",
+        "svelte"
+      ]
+    },
+    "prettier@3.9.6": {
+      "integrity": "sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==",
+      "bin": true
+    },
     "react-dom@19.2.6_react@19.2.6": {
       "integrity": "sha512-0prMI+hvBbPjsWnxDLxlCGyM8PN6UuWjEUCYmZhO67xIV9Xasa/r/vDnq+Xyq4Lo27g8QSbO5YzARu0D1Sps3g==",
       "dependencies": [
@@ -896,6 +907,9 @@
           "jsr:@std/testing@^1.0.18"
         ]
       }
+    },
+    "links": {
+      "npm:@jgmc/core@0.5.4": {}
     }
   }
 }

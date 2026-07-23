@@ -66,9 +66,9 @@ export const LineChart = ({
 		isGradient = true;
 		if (!gradientMode) gradientMode = "individual";
 	}
-	const hasNormalLabels = labels && labels.length > 0;
-	const hasImageLabels = imageLabels && imageLabels.length > 0;
-	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
+	const hasNormalLabels = Array.isArray(labels) && labels.length > 0;
+	const hasImageLabels = Array.isArray(imageLabels) && imageLabels.length > 0;
+	const hasLabels = hasNormalLabels || !!dataLabels || hasImageLabels;
 
 	const subgrouping = imageLabels?.some(
 		(item) => item.topText || item.bottomText,

@@ -1,18 +1,18 @@
 /** @jsxRuntime automatic */
 /** @jsxImportSource react */
 import {
-	autoBarWidth,
-	autoGap,
 	autoMaxNumerical,
 	BarChartStackedDefaults,
+	calcAutoGap,
 	calcBarCoords,
 	calcBarDims,
 	calcBarLabelCoords,
 	calcDataLabelCoords,
+	calcEvenWidth,
 	calcImageLabelOffset,
+	calcTrueVDims,
 	getDataLabelText,
 	getOnlyItemOrWrap,
-	type StringOrNumber,
 	stackedToSummed,
 	sumArray,
 } from "@jgmc/core";
@@ -43,9 +43,9 @@ export const BarChartStacked = ({
 	gradientMode,
 	gradientDirection,
 }: BarChartStackedProps) => {
-	const hasNormalLabels = labels && labels.length > 0;
-	const hasImageLabels = imageLabels && imageLabels.length > 0;
-	const hasLabels = hasNormalLabels || dataLabels || hasImageLabels;
+	const hasNormalLabels = Array.isArray(labels) && labels.length > 0;
+	const hasImageLabels = Array.isArray(imageLabels) && imageLabels.length > 0;
+	const hasLabels = hasNormalLabels || !!dataLabels || hasImageLabels;
 
 	const dataPointsAmt = hasLabels
 		? Math.max(
@@ -74,39 +74,29 @@ export const BarChartStacked = ({
 	const largest = autoMaxNumerical(asNumerical);
 	if (!vWidth) vWidth = width;
 	if (!vHeight) vHeight = height;
+	const topOrBot = placement === "top" || placement === "bottom";
+	const exceedsWidth = asNumerical.some((v) => v > vWidth);
+	const exceedsHeight = asNumerical.some((v) => v > vHeight);
 
-	const evenWidth =
-		placement === "top" || placement === "bottom"
-			? autoBarWidth(width, dataPointsAmt)
-			: autoBarWidth(height, dataPointsAmt);
+	const evenWidth = calcEvenWidth(topOrBot, width, height, dataPointsAmt);
 
 	if (!barWidth) {
 		barWidth = evenWidth;
 	}
 
 	if (!gap) {
-		gap =
-			placement === "top" || placement === "bottom"
-				? autoGap(width, dataPointsAmt)
-				: autoGap(height, dataPointsAmt);
+		gap = calcAutoGap(topOrBot, width, height, dataPointsAmt, gap);
 	}
 
-	const topOrBot = placement === "top" || placement === "bottom";
-	const exceedsWidth = asNumerical.some((v) => v > vWidth);
-	const exceedsHeight = asNumerical.some((v) => v > vHeight);
-
-	let trueVWidth: StringOrNumber = vWidth;
-	let trueVHeight: StringOrNumber = vHeight;
-
-	if (topOrBot) {
-		if (exceedsHeight) {
-			trueVHeight = max ? max : largest;
-		}
-	} else {
-		if (exceedsWidth) {
-			trueVWidth = max ? max : largest;
-		}
-	}
+	const [trueVWidth, trueVHeight] = calcTrueVDims(
+		topOrBot,
+		vWidth,
+		vHeight,
+		exceedsWidth,
+		exceedsHeight,
+		largest,
+		max,
+	);
 
 	let isGradient = false;
 	const gradientId = useId();

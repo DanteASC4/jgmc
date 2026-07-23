@@ -9,13 +9,13 @@ export const calcSmoothControlPoints = (
 	return [mx, coordFrom[1], mx, coordTo[1]];
 };
 
-export const autoOffset = (width: number, numPoints: number) =>
+export const autoOffset = (width: number, numPoints: number): number =>
 	width / numPoints;
 
 export const genSingleControlPoint = (
 	coord1: [number, number],
 	coord2: [number, number],
-) => {
+): [number, number] => {
 	const x1 = coord1[0];
 	const y1 = coord1[1];
 	const x2 = coord2[0];
@@ -29,7 +29,9 @@ export const genSingleControlPoint = (
 	return controlP;
 };
 
-export const genControlPoints = (coords: [number, number][]) => {
+export const genControlPoints = (
+	coords: [number, number][],
+): [number, number][] => {
 	const controlPoints: [number, number][] = [];
 	const asPairs = chunk(coords, 2);
 	let i = 0;
@@ -59,7 +61,7 @@ export const genCoordsStraight = (
 	offset: number,
 	max: number,
 	min: number,
-) => {
+): [number, number][] => {
 	const coords: [number, number][] = [];
 	for (let i = 0; i < vals.length; i++) {
 		const x = offset * i;

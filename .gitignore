@@ -6,3 +6,4 @@ e2e/gallery/**/*.html
 .vscode/
 .zed/
 *.*profile*
+dist/

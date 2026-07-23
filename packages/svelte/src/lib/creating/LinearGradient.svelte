@@ -1,8 +1,9 @@
 <script lang="ts">
-	import type {
-		GradientColor,
-		LinearGradientDirection,
-		LinearGradientType,
+	import {
+		formatGradientDirection,
+		type GradientColor,
+		type LinearGradientDirection,
+		type LinearGradientType,
 	} from "@jgmc/core";
 	import type { Snippet } from "svelte";
 
@@ -24,16 +25,17 @@
 		children,
 	}: LinearGradientProps = $props();
 
-	const trueGradientDirection = $derived.by(() => {
-		if (!direction) return "rotate(0,0.5,0.5)";
+	const trueGradientDirection = $derived(formatGradientDirection(direction));
+	// const trueGradientDirection = $derived.by(() => {
+	// 	if (!direction) return "rotate(0,0.5,0.5)";
 
-		if (direction === "left-to-right") return "rotate(0,0.5,0.5)";
-		else if (direction === "right-to-left") return "rotate(180,0.5,0.5)";
-		else if (direction === "top-to-bottom") return "rotate(90,0.5,0.5)";
-		else if (direction === "bottom-to-top") return "rotate(270,0.5,0.5)";
+	// 	if (direction === "left-to-right") return "rotate(0,0.5,0.5)";
+	// 	else if (direction === "right-to-left") return "rotate(180,0.5,0.5)";
+	// 	else if (direction === "top-to-bottom") return "rotate(90,0.5,0.5)";
+	// 	else if (direction === "bottom-to-top") return "rotate(270,0.5,0.5)";
 
-		return `rotate(${direction},0.5,0.5)`;
-	});
+	// 	return `rotate(${direction},0.5,0.5)`;
+	// });
 
 	const gradientStops = $derived.by(() => {
 		if (!Array.isArray(gradientColors) || gradientColors.length === 0)

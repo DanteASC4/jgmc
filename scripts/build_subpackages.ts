@@ -14,6 +14,13 @@ const packages = [
 	},
 ];
 
+const localCore = Deno.args.includes("--local-core");
+const version = Deno.args.find((arg) => !arg.startsWith("--"));
+
+if (!version) {
+	throw new Error("Build version required. Example: 0.5.4");
+}
+
 const shared = {
 	shims: {
 		deno: true,
@@ -71,32 +78,68 @@ const removeReactDependency = (pkgName: string) => {
 	}
 };
 
-await emptyDir("npm");
+const runSvelteTask = async (task: string) => {
+	const command = new Deno.Command(Deno.execPath(), {
+		args: ["task", "--cwd=packages/svelte", task],
+		stderr: "inherit",
+		stdout: "inherit",
+	});
+	const result = await command.output();
+
+	if (!result.success) {
+		throw new Error(`Svelte task failed: ${task}`);
+	}
+};
+
+const buildSveltePackage = async () => {
+	await runSvelteTask("check");
+	await runSvelteTask("build");
+
+	const outputDir = "npm/svelte";
+	await emptyDir(outputDir);
+	copySync("packages/svelte/dist", `${outputDir}/dist`, {
+		overwrite: true,
+	});
+	Deno.copyFileSync("LICENSE", `${outputDir}/LICENSE`);
+	Deno.copyFileSync("packages/svelte/README.md", `${outputDir}/README.md`);
+
+	const packageJson = JSON.parse(
+		Deno.readTextFileSync("packages/svelte/package.json"),
+	);
+	packageJson.version = version;
+	packageJson.dependencies = {
+		...(packageJson.dependencies ?? {}),
+		"@jgmc/core": localCore ? "file:../core" : `^${version}`,
+	};
+
+	Deno.writeTextFileSync(
+		`${outputDir}/package.json`,
+		`${JSON.stringify(packageJson, null, 2)}\n`,
+	);
+};
+
 for (const pkg of packages) {
+	await emptyDir(`npm/${pkg.name}`);
 	await build({
 		entryPoints: [`./packages/${pkg.name}/mod.ts`],
 		outDir: `./npm/${pkg.name}`,
 		shims: shared.shims,
-		mappings:
-			pkg.name !== "core"
-				? {
-						"./packages/core/mod.ts": {
-							name: "@jgmc/core",
-							version: `^${Deno.args[0]}`,
-						},
-					}
-				: undefined,
+		mappings: {
+			"./packages/core/mod.ts": {
+				name: "@jgmc/core",
+				version: localCore ? "file:../core" : `^${version}`,
+			},
+		},
 		package: {
 			name: `@jgmc/${pkg.name}`,
-			version: Deno.args[0],
+			version,
 			description: pkg.description,
-			peerDependencies:
-				pkg.name === "react"
-					? {
-							react: "^19.0.0",
-							"react-dom": "^19.0.0",
-						}
-					: undefined,
+			peerDependencies: pkg.name === "react"
+				? {
+					react: "^19.0.0",
+					"react-dom": "^19.0.0",
+				}
+				: undefined,
 			...shared.package,
 		},
 		compilerOptions: {
@@ -118,3 +161,4 @@ for (const pkg of packages) {
 }
 
 // Svelte Package Building
+await buildSveltePackage();

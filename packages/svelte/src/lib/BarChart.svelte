@@ -1,21 +1,20 @@
 <script lang="ts">
 	import {
-		autoBarWidth,
-		autoGap,
 		autoMaxNumerical,
 		BarChartDefaults,
 		type BarChartNumericalOptions,
+		calcAutoGap,
 		calcBarCoords,
 		calcBarDims,
 		calcBarLabelCoords,
 		calcDataLabelCoords,
+		calcDataPointsAmt,
+		calcEvenWidth,
 		calcImageLabelOffset,
+		calcTrueVDims,
 		classNames,
 		getDataLabelText,
 		getOnlyItemOrWrap,
-		type LinearGradientDirection,
-		randId,
-		type StringOrNumber,
 		sumArray,
 	} from "@jgmc/core";
 	import ImageLabel from "./creating/ImageLabel.svelte";
@@ -50,52 +49,40 @@
 	const viewHeight = $derived(vHeight ?? height);
 
 	const hasNormalLabels = $derived(Array.isArray(labels) && labels.length > 0);
-	const hasImageLabels = $derived(imageLabels && imageLabels.length > 0);
-	const hasLabels = $derived(hasNormalLabels || dataLabels || hasImageLabels);
-
-	const dataPointsAmt = $derived(
-		hasLabels
-			? Math.max(
-					data.length,
-					labels ? labels.length : imageLabels ? imageLabels.length : 0,
-				)
-			: data.length,
+	const hasImageLabels = $derived(
+		Array.isArray(imageLabels) && imageLabels.length > 0,
 	);
-
-	const evenWidth = $derived(
-		placement === "top" || placement === "bottom"
-			? autoBarWidth(width, dataPointsAmt)
-			: autoBarWidth(height, dataPointsAmt),
-	);
-
-	const trueGap = $derived(
-		gap
-			? gap
-			: placement === "top" || placement === "bottom"
-				? autoGap(width, dataPointsAmt)
-				: autoGap(height, dataPointsAmt),
-	);
+	const hasLabels = $derived(hasNormalLabels || !!dataLabels || hasImageLabels);
 
 	const topOrBot = $derived(placement === "top" || placement === "bottom");
 	const exceedsWidth = $derived(data.some((v) => v > viewWidth));
 	const exceedsHeight = $derived(data.some((v) => v > viewHeight));
 
-	const trueVWidth: StringOrNumber = $derived.by(() => {
-		if (!topOrBot && exceedsWidth) {
-			return max ? max : largest;
-		}
-		return viewWidth;
-	});
-	const trueVHeight = $derived.by(() => {
-		if (topOrBot && exceedsHeight) {
-			return max ? max : largest;
-		}
-		return viewHeight;
-	});
-
-	const isGradient = $derived(
-		Boolean(gradientColors) && gradientColors && gradientColors.length > 0,
+	const dataPointsAmt = $derived(
+		calcDataPointsAmt(data, hasLabels, labels, imageLabels),
 	);
+
+	const evenWidth = $derived(
+		calcEvenWidth(topOrBot, width, height, dataPointsAmt),
+	);
+
+	const trueGap = $derived(
+		calcAutoGap(topOrBot, width, height, dataPointsAmt, gap),
+	);
+
+	const [trueVWidth, trueVHeight] = $derived(
+		calcTrueVDims(
+			topOrBot,
+			viewWidth,
+			viewHeight,
+			exceedsWidth,
+			exceedsHeight,
+			largest,
+			max,
+		),
+	);
+
+	const isGradient = $derived(!!gradientColors && gradientColors.length > 0);
 	const gradientInitId = $props.id();
 	const gradientId = $derived(`${gradientInitId}-gradient`);
 	const trueGradientMode: BarChartNumericalOptions["gradientMode"] = $derived(
@@ -187,39 +174,6 @@
 				/>
 			{/each}
 		</LinearGradient>
-		<!-- <defs>
-			<linearGradient id={gradientId} gradientTransform={trueGradientDirection}>
-				{#each gradientStops as stop}
-					<stop stop-color={stop[0]} offset={`${stop[1]}%`} />
-				{/each}
-			</linearGradient>
-			{#if trueGradientMode === "continuous" && gradientMaskId}
-				<mask id={gradientMaskId}>
-					<rect x={0} y={0} width="100%" height="100%" fill="#000000" />
-					{#each barRenderData as bar}
-						{let { x, y, width, height } = bar}
-						<rect
-							class={classNames.rectEle}
-							{x}
-							{y}
-							{width}
-							{height}
-							fill={"#ffffff"}
-						/>
-					{/each}
-				</mask>
-			{/if}
-		</defs>
-		{#if trueGradientMode === "continuous" && gradientMaskId && gradientId}
-			<rect
-				mask={`url('#${gradientMaskId}')`}
-				x={0}
-				y={0}
-				width="100%"
-				height="100%"
-				fill={`url('#${gradientId}')`}
-			/>
-		{/if} -->
 	{/if}
 	{#each barRenderData as bar, i}
 		{let {

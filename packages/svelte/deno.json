@@ -1,9 +1,9 @@
 {
   "name": "@jgmc/svelte",
-  "version": "0.5.4",
-  "tasks": {
-    "test": "deno test --allow-write --allow-read --allow-env tests/",
-    "dev": "deno test --watch --allow-write --allow-read --allow-env tests/"
+	"version": "0.5.4",
+	"tasks": {
+		"test": "deno task --cwd=../../e2e/test-svelte-ts test:run",
+		"dev": "deno task --cwd=../../e2e/test-svelte-ts dev"
   },
 	"imports": {
 		"$types": "./types.ts",

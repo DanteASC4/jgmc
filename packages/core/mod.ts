@@ -3,6 +3,7 @@ export * from "./src/circularcharts.ts";
 export * from "./src/common.ts";
 export * from "./src/defaults.ts";
 export * from "./src/donutchart.ts";
+export * from "./src/gradients.ts";
 export * from "./src/labels.ts";
 export * from "./src/linechart.ts";
 export * from "./src/piechart.ts";

@@ -48,7 +48,7 @@ TODOs & other task tracking / organizing things relevant to the `@jgmc/react` pa
 	- [x] LineChart
 - [x] make sure to not bundle react & react dom
 - [x] ensure there would be no repeat keys if multiple of same charts made
-- [ ] investigate ignoring of `gap` parameter?
+- [x] investigate ignoring of `gap` parameter?
 - [ ] go over the readme again
 
 ## Ideas or Tabled
@@ -63,7 +63,19 @@ TODOs & other task tracking / organizing things relevant to the `@jgmc/svelte` p
 
 ## ToDos
 
-- [ ] get started!
+- [x] get started!
+  - [ ] Implement charts
+    - [ ] BarChart
+    - [ ] BarChartStacked
+    - [ ] DonutChart
+    - [ ] PieChart
+    - [ ] LineChart
+  - [ ] Basic tests for charts
+    - [ ] BarChart
+    - [ ] BarChartStacked
+    - [ ] DonutChart
+    - [ ] PieChart
+    - [ ] LineChart
 
 ## Ideas or Tabled
 
@@ -80,7 +92,10 @@ TODOs & other task tracking / organizing things relevant to the docs website.
 - [ ] fix the `<LiveChart />` component
   - seems to be ignoring given css?
 - [ ] should probably make the `changelog` page's styling of 'new', 'fix', and the likes into components
-- [ ] Move site to standalone site!
+- [x] Move site to standalone site!
+- [ ] Svelte section
+- [ ] Dedicated playground / chart builder page
+- [ ] Chart gallery
 
 
 ## Ideas or Tabled
@@ -101,11 +116,23 @@ Anything else & things that may apply to all chart types
 - [ ] Expand on & update the `e2e` tests folder!
 - [x] Gotta fix up build flow somehow
   - Now building & publishing core separately
-- [ ] Standardize logic organization across charts
-	- Ongoing
-	- Mainly just moving things around so stuff is declared in the same places chart to chart.
-- [ ] Test coverage!
 - [ ] See if there's a simple way to support repeating linear gradients.
+- [ ] `id` parameter?
+  - I feel like it'd be quite useful for styling to be able to do stuff like
+	```css
+		#myChart {
+			rect {
+				fill: "#000"
+			}
+		}
+  ```
+	- Though I think adding an ID manually also wouldn't be too difficult, would be nice for convenience.
+
+Ongoing things
+
+- Standardize logic organization across charts (ongoing)
+	- Mainly just moving things around so stuff is declared in the same places chart to chart.
+- Test coverage!
 
 ## Ideas or Tabled
 

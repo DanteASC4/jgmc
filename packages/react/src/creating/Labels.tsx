@@ -37,9 +37,10 @@ export const ImageLabelView = memo(function ImageLabel({
 	y,
 	labelColor,
 	subgrouping = false,
-	width = 50,
-	height = 50,
 }: ImageLabelProps) {
+	const width = imgLabel.width ?? 50;
+	const height = imgLabel.height ?? 50;
+
 	if (subgrouping) {
 		return (
 			<g

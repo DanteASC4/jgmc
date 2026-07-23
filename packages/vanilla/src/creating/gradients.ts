@@ -1,4 +1,5 @@
 import {
+formatGradientDirection,
 	type GradientColor,
 	type LinearGradientDirection,
 	type LinearGradientType,
@@ -43,12 +44,7 @@ export const createLinearGradient = (
 		stops.push(createStop(color, stopOff));
 	}
 
-	let gDirection = "";
-	if (gDir === "left-to-right") gDirection = "rotate(0,0.5,0.5)";
-	else if (gDir === "right-to-left") gDirection = "rotate(180,0.5,0.5)";
-	else if (gDir === "top-to-bottom") gDirection = "rotate(90,0.5,0.5)";
-	else if (gDir === "bottom-to-top") gDirection = "rotate(270,0.5,0.5)";
-	else gDirection = `rotate(${gDir},0.5,0.5)`;
+	const gDirection = formatGradientDirection(gDir);
 
 	if (gMode === "individual") {
 		const defs = `<defs><linearGradient id="${gid}" gradientTransform="${gDirection}">${stops.join("")}</linearGradient></defs>`;

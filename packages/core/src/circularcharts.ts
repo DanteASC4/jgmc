@@ -1,4 +1,6 @@
-export const decimalPercentsToStarts = (decimalPercents: number[]) => {
+export const decimalPercentsToStarts = (
+	decimalPercents: number[],
+): number[] => {
 	return decimalPercents.map((p, i) => {
 		const v = p + decimalPercents.slice(0, i).reduce((v, c) => v + c, 0);
 		const b = v < 0 ? 1 + v : v;
@@ -12,7 +14,7 @@ export const getCoordsForCircularCharts = (
 	radius: number,
 	quarterTurnAngle: number,
 	center: [number, number],
-) => {
+): [number, number, number][] => {
 	return asDists.map((d, i) => {
 		const angle = d / radius - quarterTurnAngle;
 		return [

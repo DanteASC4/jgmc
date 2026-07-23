@@ -1,5 +1,6 @@
 {
 	"nodeModulesDir": "manual",
+	"links": ["./npm/core"],
 	"workspace": [
 		"packages/core",
 		"packages/vanilla",
@@ -8,6 +9,10 @@
 		"e2e/gallery"
 	],
 	"tasks": {
+		"build:core": "deno run -A scripts/build_core.ts",
+		"build:subpackages": "deno run -A scripts/build_subpackages.ts",
+		"build:subpackages:local": "deno run -A scripts/build_subpackages.ts --local-core",
+		"build:svelte": "deno task --cwd=packages/svelte build",
 		"go": {
 			"command": "deno task --recursive dev",
 			"description": "Runs all tests for all sub-packages & the gallery in watch mode"
@@ -60,5 +65,8 @@
 	},
 	"compilerOptions": {
 		"lib": ["dom", "deno.ns"]
+	},
+	"lint": {
+		"exclude": ["docs/","e2e/test-svelte-ts","npm/"]
 	}
 }

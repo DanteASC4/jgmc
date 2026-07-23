@@ -7,7 +7,7 @@ export const calcBarLabelCoords = (
 	trueBarWidth: number,
 	trueBarHeight: number,
 	textOffset = 15,
-) => {
+): [number, number] => {
 	let textX = 0;
 	let textY = 0;
 

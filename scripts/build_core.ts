@@ -1,7 +1,12 @@
-import { build, emptyDir } from "@deno/dnt";
+import { build } from "@deno/dnt";
 import { copySync } from "@std/fs";
 
-await emptyDir("npm");
+for await (const entry of Deno.readDir("npm/core")) {
+	if (entry.name !== "package.json") {
+		await Deno.remove(`npm/core/${entry.name}`, { recursive: true });
+	}
+}
+
 await build({
 	entryPoints: ["./packages/core/mod.ts"],
 	outDir: "./npm/core",

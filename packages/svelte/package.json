@@ -17,10 +17,21 @@
 		"url": "git+https://github.com/danteasc4/jgmc.git"
 	},
 	"license": "MIT",
+	"files": ["dist"],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"svelte": "./dist/index.js",
+			"default": "./dist/index.js"
+		}
+	},
+	"svelte": "./dist/index.js",
 	"bugs": {
 		"url": "https://github.com/danteasc4/jgmc/issues"
 	},
 	"scripts": {
+		"build": "svelte-package",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"format": "prettier --write \"src/**/*.svelte\"",
 		"format:check": "prettier --check \"src/**/*.svelte\""
 	},
