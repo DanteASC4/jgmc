@@ -134,12 +134,13 @@ for (const pkg of packages) {
 			name: `@jgmc/${pkg.name}`,
 			version,
 			description: pkg.description,
-			peerDependencies: pkg.name === "react"
-				? {
-					react: "^19.0.0",
-					"react-dom": "^19.0.0",
-				}
-				: undefined,
+			peerDependencies:
+				pkg.name === "react"
+					? {
+							react: "^19.0.0",
+							"react-dom": "^19.0.0",
+						}
+					: undefined,
 			...shared.package,
 		},
 		compilerOptions: {

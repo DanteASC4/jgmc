@@ -7,3 +7,4 @@ e2e/gallery/**/*.html
 .zed/
 *.*profile*
 dist/
+.svelte-kit/

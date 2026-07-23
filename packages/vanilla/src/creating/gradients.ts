@@ -1,5 +1,5 @@
 import {
-formatGradientDirection,
+	formatGradientDirection,
 	type GradientColor,
 	type LinearGradientDirection,
 	type LinearGradientType,

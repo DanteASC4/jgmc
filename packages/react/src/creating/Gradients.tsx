@@ -1,5 +1,7 @@
 /** @jsxRuntime automatic */
 /** @jsxImportSource react */
+
+import { formatGradientDirection } from "@jgmc/core";
 import { memo } from "react";
 import type {
 	BarChartMaskProps,
@@ -41,12 +43,7 @@ export const LinearGradientDefs = memo(function LinearGradientDefs({
 		stops.push(createStop(color, stopOff, `gradient-stop-${i}`));
 	}
 
-	let gDirection = "";
-	if (gDir === "left-to-right") gDirection = "rotate(0,0.5,0.5)";
-	else if (gDir === "right-to-left") gDirection = "rotate(180,0.5,0.5)";
-	else if (gDir === "top-to-bottom") gDirection = "rotate(90,0.5,0.5)";
-	else if (gDir === "bottom-to-top") gDirection = "rotate(270,0.5,0.5)";
-	else gDirection = `rotate(${gDir},0.5,0.5)`;
+	const gDirection = formatGradientDirection(gDir);
 
 	return (
 		<>
